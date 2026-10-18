@@ -55,43 +55,46 @@ export function Home() {
       {/* =========================================================================
           TOP BAR: Clean Telegram Mini App Header (64px per layout spec)
          ========================================================================= */}
-      <header className="flex min-h-16 items-center justify-between gap-3">
-        {/* Left Side: Greeting */}
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-            Hi, Maya
-          </h1>
-          <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
-            Good food keeps the campus moving.
-          </p>
-        </div>
+      <header className="min-h-16 flex flex-col flex-1 items-start justify-between gap-0">
+        <div className="flex items-center gap-3">
+          {/* Left Side: Greeting */}
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+              Hi, Maya
+            </h1>
+          </div>
 
-        {/* Right Side: Wallet Balance pill and User Avatar */}
-        <div className="flex shrink-0 items-center gap-2">
-          {/* Wallet Balance Pill */}
-          <Link
-            to="/wallet"
-            className="flex h-10 items-center gap-2 rounded-full border border-border bg-card px-3 shadow-none transition-all hover:bg-secondary active:scale-95"
-            title="Wallet Balance"
-          >
-            <div className="flex size-6 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <FontAwesomeIcon icon={faWallet} className="size-3.5" />
-            </div>
-            <div className="flex items-baseline gap-1">
-              <span className="font-semibold text-sm text-foreground">152.50</span>
-              <span className="text-[11px] font-semibold text-muted-foreground">ETB</span>
-            </div>
-          </Link>
+          {/* Right Side: Wallet Balance pill and User Avatar */}
+          <div className="flex shrink-0 items-center gap-2">
+            {/* Wallet Balance Pill */}
+            <Link
+              to="/wallet"
+              className="flex h-10 items-center gap-2 rounded-full border border-border bg-card px-3 shadow-none transition-all hover:bg-secondary active:scale-95"
+              title="Wallet Balance"
+            >
+              <div className="flex size-6 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <FontAwesomeIcon icon={faWallet} className="size-3.5" />
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className="font-semibold text-sm text-foreground">152.50</span>
+                <span className="text-[11px] font-semibold text-muted-foreground">ETB</span>
+              </div>
+            </Link>
 
-          {/* User Avatar */}
-          <Link
-            to="/profile"
-            className="flex shrink-0 rounded-full transition-transform active:scale-95"
-            title="Profile"
-          >
-            <UserAvatar initials="MO" isMe size="md" />
-          </Link>
+            {/* User Avatar */}
+            <Link
+              to="/profile"
+              className="flex shrink-0 rounded-full transition-transform active:scale-95"
+              title="Profile"
+            >
+              <UserAvatar initials="MO" isMe size="md" />
+            </Link>
+          </div>
         </div>
+        <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+          Good food keeps the campus moving.
+        </p>
+
       </header>
 
       {/* =========================================================================
@@ -125,11 +128,10 @@ export function Home() {
               type="button"
               onClick={() => setCurrentSlide(idx)}
               aria-label={`Go to slide ${idx + 1}`}
-              className={`h-2 rounded-full transition-all duration-200 ${
-                idx === currentSlide
+              className={`h-2 rounded-full transition-all duration-200 ${idx === currentSlide
                   ? 'w-6 bg-white'
                   : 'w-2 bg-white/45 hover:bg-white/80'
-              }`}
+                }`}
             />
           ))}
         </div>
