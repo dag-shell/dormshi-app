@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { ChevronRight, Clock, MapPin } from 'lucide-react';
 import { StatusBadge } from '@common/StatusBadge';
-import { UserAvatar } from '@common/UserAvatar';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import type { OrderStatus } from '@/types/dormshi';
 
 export interface RequestCardData {
@@ -43,71 +43,79 @@ export function RequestCard({ request, action, showRole = false }: RequestCardPr
     requesterName: 'Maya Okafor',
     requesterInitials: 'MO',
     isMine: true,
-    offerCount: 3,
-    price: '15.80 DC'
+    offerCount: 2,
+    price: 'ETB 120'
   };
 
   const isMine = req.isMine ?? (req.requesterId === 'u_me');
   const isFulfilling = req.isFulfilling ?? (req.agreement?.fulfillerId === 'u_me');
-  const requesterName = req.requesterName ?? (isMine ? 'Maya Okafor' : 'Jordan Reyes');
-  const requesterInitials = req.requesterInitials ?? (isMine ? 'MO' : 'JR');
   const offersCount = req.offerCount ?? (req.offers?.length ?? 0);
   const timeText = req.timeAgo ?? '11m ago';
 
   return (
-    <Card className="relative flex flex-col transition-colors hover:border-ring">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-2">
-        <div className="flex items-center gap-2">
-          <StatusBadge status={req.status} />
-          {showRole && (isMine || isFulfilling) && (
-            <span className="text-xs text-muted-foreground">
-              {isMine ? 'You requested' : 'You’re delivering'}
-            </span>
-          )}
-        </div>
-        <span className="text-xs text-muted-foreground">{timeText}</span>
-      </CardHeader>
+    <Card className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/70 bg-card p-5 transition-all hover:border-primary/30 hover:shadow-xs">
+      <div>
+        {/* Top Header line: Status badge + Offer count + Role tag */}
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusBadge status={req.status} />
+            {offersCount > 0 && (
+              <span className="text-xs text-muted-foreground">
+                · {offersCount} {offersCount === 1 ? 'offer' : 'offers'}
+              </span>
+            )}
+            {showRole && (isMine || isFulfilling) && (
+              <span className="rounded-md bg-secondary px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                {isMine ? 'Your request' : 'You’re delivering'}
+              </span>
+            )}
+          </div>
 
-      <CardContent className="flex-1 p-4 pt-1">
-        <CardTitle className="text-base font-medium leading-6">
+          <ChevronRight className="size-4 shrink-0 text-muted-foreground/60 transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+        </div>
+
+        {/* Food Title with Link */}
+        <h4 className="mt-3 text-base font-semibold text-foreground sm:text-lg">
           <Link
             to={`/requests/${req.id}`}
-            className="after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-ring"
+            className="after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-ring"
           >
             {req.food}
           </Link>
-        </CardTitle>
+        </h4>
 
-        <dl className="mb-0 mt-3 space-y-1 text-sm">
-          <div className="flex gap-2">
-            <dt className="w-10 shrink-0 text-muted-foreground">From</dt>
-            <dd className="truncate">{req.pickup}</dd>
+        {/* Pickup & Destination */}
+        <div className="mt-2.5 space-y-1 text-xs text-muted-foreground sm:text-sm">
+          <div className="flex items-center gap-2">
+            <MapPin className="size-3.5 shrink-0 text-muted-foreground" />
+            <span className="truncate">
+              <span className="font-medium text-foreground/85">From:</span> {req.pickup}
+            </span>
           </div>
-          <div className="flex gap-2">
-            <dt className="w-10 shrink-0 text-muted-foreground">To</dt>
-            <dd className="truncate">{req.destination}</dd>
+          <div className="flex items-center gap-2">
+            <MapPin className="size-3.5 shrink-0 text-muted-foreground" />
+            <span className="truncate">
+              <span className="font-medium text-foreground/85">To:</span> {req.destination}
+            </span>
           </div>
-        </dl>
-      </CardContent>
-
-      <CardFooter className="mt-auto flex items-center justify-between gap-3 border-t p-4 pt-3">
-        <div className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
-          <UserAvatar initials={requesterInitials} isMe={isMine} size="sm" />
-          <span className="truncate">
-            {isMine ? 'You' : requesterName}
-            {!isMine && req.distanceKm && req.distanceKm > 0 ? ` · ${req.distanceKm} km` : ''}
-          </span>
         </div>
+      </div>
+
+      {/* Card Footer: Time Ago & Price badge / Action */}
+      <div className="mt-4 flex items-center justify-between border-t border-border/50 pt-3">
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <Clock className="size-3.5 shrink-0" />
+          <span>{timeText}</span>
+        </div>
+
         {action ? (
           <div className="relative z-10 shrink-0">{action}</div>
-        ) : req.price ? (
-          <span className="shrink-0 font-mono text-sm font-medium">{req.price}</span>
         ) : (
-          <span className="shrink-0 text-xs font-medium text-muted-foreground">
-            {offersCount === 0 ? 'No offers yet' : `${offersCount} offer${offersCount > 1 ? 's' : ''}`}
+          <span className="rounded-md bg-primary-soft px-3 py-1 font-mono text-xs font-bold text-primary">
+            {req.price || (req.status === 'open' ? `${offersCount} offers` : 'Agreed')}
           </span>
         )}
-      </CardFooter>
+      </div>
     </Card>
   );
 }

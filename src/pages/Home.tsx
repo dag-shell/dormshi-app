@@ -1,55 +1,174 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  ChevronDown,
+  ListOrdered,
+  Plus,
+  Truck,
+  Wallet
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { UserAvatar } from '@common/UserAvatar';
 import { RequestCard } from '@/components/home/RequestCard';
 import { OfferSheet } from '@/components/home/OfferSheet';
 
+const adImages = [
+  {
+    id: 1,
+    url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1400&q=80',
+    alt: 'Campus food delivery promo banner'
+  },
+  {
+    id: 2,
+    url: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1400&q=80',
+    alt: 'Dining deals and student deliveries'
+  },
+  {
+    id: 3,
+    url: 'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?auto=format&fit=crop&w=1400&q=80',
+    alt: 'Coffee and afternoon campus snacks'
+  }
+];
+
 export function Home() {
   const [offerOpen, setOfferOpen] = useState(false);
+  const [activeRequest, setActiveRequest] = useState<{ id?: string; food?: string } | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Auto-advance ad banner image every 5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % adImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const handleMakeOffer = (req: { id: string; food: string }) => {
+    setActiveRequest(req);
+    setOfferOpen(true);
+  };
 
   return (
-    <div className="mx-auto max-w-6xl space-y-8 px-5 pt-6 lg:px-10 lg:pt-10">
-      <header className="flex items-center justify-between">
-        <div>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight lg:text-3xl">Hi, Maya</h1>
+    <div className="mx-auto max-w-4xl space-y-7 px-4 pt-4 pb-20 sm:px-6 lg:px-8 lg:pt-8">
+      {/* =========================================================================
+          TOP BAR: Clean Telegram Mini App Header
+         ========================================================================= */}
+      <header className="flex items-start justify-between gap-3">
+        {/* Left Side: Greeting */}
+        <div className="pt-0.5">
+          <h1 className="flex items-center gap-1.5 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            Hi, Maya <span className="inline-block text-xl sm:text-2xl">👋</span>
+          </h1>
+          <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+            Good food keeps the campus moving.
+          </p>
         </div>
-        <span
-          className="grid size-8 place-items-center rounded-lg bg-foreground text-sm font-semibold text-background lg:hidden"
-          aria-label="Dormshi"
-        >
-          d
-        </span>
+
+        {/* Right Side: Wallet Balance pill and User Avatar */}
+        <div className="flex shrink-0 items-center gap-2">
+          {/* Wallet Balance Pill */}
+          <Link
+            to="/wallet"
+            className="flex h-10 items-center gap-2 rounded-full border border-border/80 bg-card px-3.5 shadow-xs transition-all hover:bg-secondary active:scale-95"
+            title="Wallet Balance"
+          >
+            <div className="flex size-6 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <Wallet className="size-3.5" />
+            </div>
+            <span className="font-semibold text-sm text-foreground">152.5</span>
+          </Link>
+
+          {/* User Avatar */}
+          <Link
+            to="/profile"
+            className="flex shrink-0 rounded-full transition-transform active:scale-95"
+            title="Profile"
+          >
+            <UserAvatar initials="MO" isMe size="md" />
+          </Link>
+        </div>
       </header>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Link
-          to="/requests/new"
-          className="flex items-center gap-4 rounded-xl bg-primary p-5 text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:order-2 lg:col-span-2 lg:p-6"
-        >
-          <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-primary-foreground text-primary">
-            <Plus className="size-5" aria-hidden="true" />
-          </span>
-          <span className="flex-1">
-            <span className="block text-base font-semibold lg:text-lg">What are you craving?</span>
-            <span className="block text-sm opacity-90">Post a request. Nearby students send offers and you pick one.</span>
-          </span>
-        </Link>
-      </div>
+      {/* =========================================================================
+          ADS IMAGE SLIDER: Pure sliding image banner with no other components in it
+         ========================================================================= */}
+      <section
+        aria-label="Promotional banner slider"
+        className="relative h-44 w-full overflow-hidden rounded-3xl bg-secondary/50 shadow-xs sm:h-56 md:h-64"
+      >
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={adImages[currentSlide].id}
+            src={adImages[currentSlide].url}
+            alt={adImages[currentSlide].alt}
+            initial={{ opacity: 0, scale: 1.02 }}
+            animate={{ opacity: 0.88, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.4, ease: 'easeInOut' }}
+            className="h-full w-full object-cover"
+          />
+        </AnimatePresence>
 
-      <section aria-labelledby="requests-title" className="pb-4">
-        <h2 id="requests-title" className="mb-3 text-base font-semibold tracking-tight">Requests</h2>
-        <Tabs defaultValue="posted">
-          <TabsList className="w-full md:w-auto">
-            <TabsTrigger value="posted">Posted (2)</TabsTrigger>
-            <TabsTrigger value="delivering">Delivering (2)</TabsTrigger>
-            <TabsTrigger value="nearby">Nearby (3)</TabsTrigger>
-            <TabsTrigger value="history">History</TabsTrigger>
+        {/* Dark bottom gradient overlay to give high contrast for the bullets */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/70 via-black/35 to-transparent z-10" />
+
+        {/* Slide Indicator Dots with clear contrast */}
+        <div className="absolute bottom-3.5 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full bg-black/50 px-3.5 py-1.5 backdrop-blur-md ring-1 ring-white/15 shadow-md">
+          {adImages.map((s, idx) => (
+            <button
+              key={s.id}
+              type="button"
+              onClick={() => setCurrentSlide(idx)}
+              aria-label={`Go to slide ${idx + 1}`}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                idx === currentSlide
+                  ? 'w-6 bg-white shadow-xs'
+                  : 'w-2 bg-white/45 hover:bg-white/80'
+              }`}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* =========================================================================
+          TABS: Single Toggle between Delivery Requests & My Requests
+         ========================================================================= */}
+      <section aria-labelledby="requests-title" className="space-y-4">
+        <Tabs defaultValue="my-requests" className="w-full">
+          {/* 2-Pill Toggle */}
+          <TabsList className="flex h-auto w-full justify-start gap-2.5 bg-transparent p-0 sm:w-auto">
+            <TabsTrigger
+              value="my-requests"
+              className="flex items-center gap-2 rounded-full bg-[#EDE9E1] px-5 py-2.5 text-xs font-semibold text-[#1A231F] shadow-none transition-all hover:bg-[#E4DFD5] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:text-sm"
+            >
+              <ListOrdered className="size-4" /> My Requests
+            </TabsTrigger>
+            <TabsTrigger
+              value="delivery"
+              className="flex items-center gap-2 rounded-full bg-[#EDE9E1] px-5 py-2.5 text-xs font-semibold text-[#1A231F] shadow-none transition-all hover:bg-[#E4DFD5] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:text-sm"
+            >
+              <Truck className="size-4" /> Delivery Requests
+            </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="posted" className="mt-4">
-            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {/* 1. MY REQUESTS: Requests sent by the user */}
+          <TabsContent value="my-requests" className="mt-6 space-y-4">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-xs text-muted-foreground">Food orders you posted waiting for delivery or delivered.</p>
+              </div>
+              <Link
+                to="/requests/new"
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 active:scale-95 sm:px-4.5 sm:py-2.5 sm:text-sm"
+              >
+                <Plus className="size-4" />
+                <span>New request</span>
+              </Link>
+            </div>
+
+            <div className="space-y-3.5">
               <RequestCard
                 request={{
                   id: 'r1',
@@ -61,7 +180,8 @@ export function Home() {
                   requesterName: 'You',
                   requesterInitials: 'MO',
                   isMine: true,
-                  offerCount: 3
+                  offerCount: 2,
+                  price: 'ETB 120'
                 }}
                 showRole
               />
@@ -73,7 +193,23 @@ export function Home() {
                   destination: 'Science Library, Room 204',
                   status: 'on_the_way',
                   timeAgo: '34m ago',
-                  price: '14.50 DC',
+                  price: 'ETB 140',
+                  requesterName: 'You',
+                  requesterInitials: 'MO',
+                  isMine: true,
+                  offerCount: 1
+                }}
+                showRole
+              />
+              <RequestCard
+                request={{
+                  id: 'r8',
+                  food: 'Burrito bowl with chicken, mild salsa',
+                  pickup: 'Chipotle, Main St',
+                  destination: 'Hartley Hall 3B',
+                  status: 'completed',
+                  timeAgo: 'Yesterday',
+                  price: 'ETB 150',
                   requesterName: 'You',
                   requesterInitials: 'MO',
                   isMine: true
@@ -83,43 +219,17 @@ export function Home() {
             </div>
           </TabsContent>
 
-          <TabsContent value="delivering" className="mt-4 space-y-6">
-            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-              <RequestCard
-                request={{
-                  id: 'r3',
-                  food: 'Veggie poke bowl, no avocado',
-                  pickup: 'Poke Republic, Student Center',
-                  destination: 'Larkin House lobby',
-                  status: 'getting_food',
-                  timeAgo: '20m ago',
-                  price: '17.00 DC',
-                  requesterName: 'Priya Nair',
-                  requesterInitials: 'PN',
-                  isFulfilling: true
-                }}
-                showRole
-              />
-              <RequestCard
-                request={{
-                  id: 'r7',
-                  food: '2 pepperoni slices + a Coke',
-                  pickup: "Gino's Pizza",
-                  destination: 'Music Hall, practice room 7',
-                  status: 'open',
-                  timeAgo: '18m ago',
-                  requesterName: 'Dev Mehta',
-                  requesterInitials: 'DM',
-                  offerCount: 2
-                }}
-                showRole
-              />
+          {/* 2. DELIVERY REQUESTS: Other students' requests where you can make offers */}
+          <TabsContent value="delivery" className="mt-6 space-y-4">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-xs text-muted-foreground">
+                  Requests from other students waiting for a deliverer. Send an offer to earn DC!
+                </p>
+              </div>
             </div>
-          </TabsContent>
 
-          <TabsContent value="nearby" className="mt-4">
-            <p className="mb-3 text-xs text-muted-foreground">Open requests within 1.5 km, closest first.</p>
-            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            <div className="space-y-3.5">
               <RequestCard
                 request={{
                   id: 'r4',
@@ -131,10 +241,15 @@ export function Home() {
                   distanceKm: 0.3,
                   requesterName: 'Aisha Bello',
                   requesterInitials: 'AB',
-                  offerCount: 1
+                  offerCount: 1,
+                  price: 'ETB 110'
                 }}
                 action={
-                  <Button size="sm" variant="outline" onClick={() => setOfferOpen(true)}>
+                  <Button
+                    size="sm"
+                    onClick={() => handleMakeOffer({ id: 'r4', food: 'Iced oat latte + blueberry muffin' })}
+                    className="rounded-full px-4 font-semibold"
+                  >
                     Make offer
                   </Button>
                 }
@@ -150,10 +265,15 @@ export function Home() {
                   distanceKm: 0.6,
                   requesterName: 'Tomás Ruiz',
                   requesterInitials: 'TR',
-                  offerCount: 0
+                  offerCount: 0,
+                  price: 'ETB 160'
                 }}
                 action={
-                  <Button size="sm" variant="outline" onClick={() => setOfferOpen(true)}>
+                  <Button
+                    size="sm"
+                    onClick={() => handleMakeOffer({ id: 'r5', food: 'Pad thai, medium spicy, with tofu' })}
+                    className="rounded-full px-4 font-semibold"
+                  >
                     Make offer
                   </Button>
                 }
@@ -169,70 +289,55 @@ export function Home() {
                   distanceKm: 0.8,
                   requesterName: 'Lena Park',
                   requesterInitials: 'LP',
-                  offerCount: 0
+                  offerCount: 0,
+                  price: 'ETB 90'
                 }}
                 action={
-                  <Button size="sm" variant="outline" onClick={() => setOfferOpen(true)}>
+                  <Button
+                    size="sm"
+                    onClick={() => handleMakeOffer({ id: 'r6', food: '2 Clif bars (chocolate chip) + sparkling water' })}
+                    className="rounded-full px-4 font-semibold"
+                  >
+                    Make offer
+                  </Button>
+                }
+              />
+              <RequestCard
+                request={{
+                  id: 'r7',
+                  food: '2 pepperoni slices + a Coke',
+                  pickup: "Gino's Pizza",
+                  destination: 'Music Hall, practice room 7',
+                  status: 'open',
+                  timeAgo: '18m ago',
+                  requesterName: 'Dev Mehta',
+                  requesterInitials: 'DM',
+                  offerCount: 2,
+                  price: 'ETB 130'
+                }}
+                action={
+                  <Button
+                    size="sm"
+                    onClick={() => handleMakeOffer({ id: 'r7', food: '2 pepperoni slices + a Coke' })}
+                    className="rounded-full px-4 font-semibold"
+                  >
                     Make offer
                   </Button>
                 }
               />
             </div>
           </TabsContent>
-
-          <TabsContent value="history" className="mt-4">
-            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-              <RequestCard
-                request={{
-                  id: 'r8',
-                  food: 'Burrito bowl with chicken, mild salsa',
-                  pickup: 'Chipotle, Main St',
-                  destination: 'Hartley Hall 3B',
-                  status: 'completed',
-                  timeAgo: 'Yesterday',
-                  price: '16.75 DC',
-                  requesterName: 'Jordan Reyes',
-                  requesterInitials: 'JR',
-                  isMine: true
-                }}
-                showRole
-              />
-              <RequestCard
-                request={{
-                  id: 'r9',
-                  food: 'Everything bagel with scallion cream cheese ×2',
-                  pickup: 'Brick Oven Bagels',
-                  destination: 'Okoro Commons, 2nd floor',
-                  status: 'completed',
-                  timeAgo: '2 days ago',
-                  price: '12.00 DC',
-                  requesterName: 'Dev Mehta',
-                  requesterInitials: 'DM',
-                  isFulfilling: true
-                }}
-                showRole
-              />
-              <RequestCard
-                request={{
-                  id: 'r10',
-                  food: 'Mango smoothie, large',
-                  pickup: 'Juice Junction',
-                  destination: 'Hartley Hall 3B',
-                  status: 'cancelled',
-                  timeAgo: '4 days ago',
-                  price: '9.25 DC',
-                  requesterName: 'Tomás Ruiz',
-                  requesterInitials: 'TR',
-                  isMine: true
-                }}
-                showRole
-              />
-            </div>
-          </TabsContent>
         </Tabs>
       </section>
 
-      <OfferSheet request={offerOpen ? { id: 'r4', food: 'Iced oat latte + blueberry muffin' } : null} onClose={() => setOfferOpen(false)} />
+      {/* Offer Sheet Modal */}
+      <OfferSheet
+        request={offerOpen ? activeRequest : null}
+        onClose={() => {
+          setOfferOpen(false);
+          setActiveRequest(null);
+        }}
+      />
     </div>
   );
 }

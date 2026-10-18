@@ -10,24 +10,20 @@ Minimal database design derived from `@src` for the `tgcloud` SQLite platform (`
 | `id` | `text` PK | User ID (`u_me`, `u_lena`) |
 | `tg_id` | `integer` | Unique, from Telegram `initData` |
 | `name` | `text` | Full name |
-| `campus` | `text` | University |
-| `dorm` | `text` | Dormitory / hall |
+| `main_balance` | `real` | Account balance (default `0.0`) |
+| `reward_balance` | `real` | Reward balance (default `0.0`) |
+| `escrow_balance` | `real` | Escrow balance (default `0.0`) |
+| `university_code` | `text` | University name |
+| `campus_code` | `text` | University campus |
 | `rating` | `real` | Rating (default `5.0`) |
 | `deliveries`| `integer` | Delivery count (default `0`) |
+| `requests` | `integer` | Requests count (default `0`) |
 
-### 2. `wallets`
-| Column | Type | Notes |
-|---|---|---|
-| `user_id` | `text` PK | References `users.id` |
-| `available` | `real` | Spendable DC |
-| `reserved` | `real` | Escrow DC (active orders) |
-
-### 3. `requests`
+### 2. `requests`
 | Column | Type | Notes |
 |---|---|---|
 | `id` | `text` PK | Request ID (`r1`, `r_...`) |
 | `requester_id` | `text` | Created by `users.id` |
-| `food` | `text` | Items ordered |
 | `pickup` | `text` | Restaurant / pickup spot |
 | `destination` | `text` | Drop-off dorm / room |
 | `instructions` | `text` | Optional delivery notes |
@@ -40,6 +36,14 @@ Minimal database design derived from `@src` for the `tgcloud` SQLite platform (`
 | `cancel_reason` | `text` | Optional cancellation reason |
 | `dispute_reason` | `text` | Optional dispute reason |
 | `created_at` | `integer` | Timestamp |
+
+### 3. `requested_items`
+| Column | Type | Notes |
+|---|---|---|
+| `id` | `text` PK | Requested item ID |
+| `request_id` | `text` | References `requests.id` |
+| `name` | `text` | Item name |
+| `quantity` | `integer` | Item quantity |
 
 ### 4. `offers`
 | Column | Type | Notes |
@@ -79,10 +83,11 @@ export const users = table('users', {
   id: text('id').primaryKey(),
   tgId: integer('tg_id').unique(),
   name: text('name').notNull(),
-  campus: text('campus').notNull(),
-  dorm: text('dorm').notNull(),
+  universityCode: text('university_code').notNull(),
+  campusCode: text('campus_code').notNull(),
   rating: real('rating').default(5.0),
   deliveries: integer('deliveries').default(0),
+  requests: integer('requests').default(0),
 });
 
 export const wallets = table('wallets', {

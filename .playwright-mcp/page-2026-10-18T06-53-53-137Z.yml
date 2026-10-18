@@ -1,0 +1,83 @@
+- generic [ref=e2]:
+  - main [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic [ref=e7]:
+          - heading "Hi, Maya 👋" [level=1] [ref=e8]:
+            - text: Hi, Maya
+            - generic [ref=e9]: 👋
+          - paragraph [ref=e10]: Good food keeps the campus moving.
+        - generic [ref=e11]:
+          - link "152.5" [ref=e12] [cursor=pointer]:
+            - /url: /wallet
+          - link "MO" [ref=e17] [cursor=pointer]:
+            - /url: /profile
+      - region "Promotional banner slider" [ref=e22]:
+        - img "Campus food delivery promo banner" [ref=e23]
+        - generic [ref=e24]:
+          - button "Go to slide 1" [ref=e25] [cursor=pointer]
+          - button "Go to slide 2" [ref=e26] [cursor=pointer]
+          - button "Go to slide 3" [ref=e27] [cursor=pointer]
+      - region [ref=e28]:
+        - generic [ref=e29]:
+          - tablist [ref=e30]:
+            - tab "Delivery Requests" [selected] [ref=e31] [cursor=pointer]
+            - tab "My Requests" [ref=e37] [cursor=pointer]
+          - tabpanel "Delivery Requests" [ref=e41]:
+            - generic [ref=e43]:
+              - heading "Delivery Requests" [level=3] [ref=e44]
+              - paragraph [ref=e45]: Requests from other students waiting for a deliverer. Send an offer to earn DC!
+            - generic [ref=e46]:
+              - generic [ref=e47]:
+                - generic [ref=e48]:
+                  - generic [ref=e50]:
+                    - generic [ref=e51]: Open
+                    - generic [ref=e53]: · 1 offer
+                  - heading [level=4] [ref=e56]:
+                    - link "Iced oat latte + blueberry muffin" [ref=e57] [cursor=pointer]:
+                      - /url: /requests/r4
+                  - generic [ref=e58]:
+                    - generic [ref=e59]: "From: Bean Counter Café"
+                    - generic [ref=e64]: "To: Engineering Building, Lab 1.12"
+                - generic [ref=e69]:
+                  - generic [ref=e70]: 4m ago
+                  - button "Make offer" [ref=e76] [cursor=pointer]
+              - generic [ref=e77]:
+                - generic [ref=e78]:
+                  - generic [ref=e79]: Open
+                  - heading [level=4] [ref=e85]:
+                    - link "Pad thai, medium spicy, with tofu" [ref=e86] [cursor=pointer]:
+                      - /url: /requests/r5
+                  - generic [ref=e87]:
+                    - generic [ref=e88]: "From: Thai Orchid, Campus Ave"
+                    - generic [ref=e93]: "To: Ellis Hall, Room 410"
+                - generic [ref=e98]:
+                  - generic [ref=e99]: 7m ago
+                  - button "Make offer" [ref=e105] [cursor=pointer]
+              - generic [ref=e106]:
+                - generic [ref=e107]:
+                  - generic [ref=e108]: Open
+                  - heading [level=4] [ref=e114]:
+                    - link "2 Clif bars (chocolate chip) + sparkling water" [ref=e115] [cursor=pointer]:
+                      - /url: /requests/r6
+                  - generic [ref=e116]:
+                    - generic [ref=e117]: "From: CVS on College St"
+                    - generic [ref=e122]: "To: Rec Center front desk"
+                - generic [ref=e127]:
+                  - generic [ref=e128]: 13m ago
+                  - button "Make offer" [ref=e134] [cursor=pointer]
+              - generic [ref=e135]:
+                - generic [ref=e136]:
+                  - generic [ref=e138]:
+                    - generic [ref=e139]: Open
+                    - generic [ref=e141]: · 2 offers
+                  - heading [level=4] [ref=e144]:
+                    - link "2 pepperoni slices + a Coke" [ref=e145] [cursor=pointer]:
+                      - /url: /requests/r7
+                  - generic [ref=e146]:
+                    - generic [ref=e147]: "From: Gino's Pizza"
+                    - generic [ref=e152]: "To: Music Hall, practice room 7"
+                - generic [ref=e157]:
+                  - generic [ref=e158]: 18m ago
+                  - button "Make offer" [ref=e164] [cursor=pointer]
+  - region "Notifications alt+T"
