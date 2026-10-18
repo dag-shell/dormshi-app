@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { StatusBadge } from '@common/StatusBadge';
 import { OfferCard } from '@/components/request-details/OfferCard';
@@ -7,12 +7,42 @@ import { BottomSheet } from '@common/BottomSheet';
 import { TermsBreakdown } from '@common/TermsBreakdown';
 import { ReasonSheet } from '@/components/order/ReasonSheet';
 import { Button } from '@/components/ui/button';
+import type { OrderStatus } from '@/types/dormshi';
 
 export function RequestDetails() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [sort, setSort] = useState<'total' | 'eta'>('total');
   const [pendingOpen, setPendingOpen] = useState(false);
   const [cancelOpen, setCancelOpen] = useState(false);
+
+  const state = (location.state as {
+    food?: string;
+    items?: { name: string; quantity: number; price?: number }[];
+    pickup?: string;
+    destination?: string;
+    instructions?: string;
+    status?: OrderStatus;
+    agreement?: { foodPrice: number; deliveryFee: number };
+  }) || {};
+
+  const orderTitle = state.food || 'Taro milk tea, Boba';
+  const pickup = state.pickup || 'Tea Lab, Union Square';
+  const destination = state.destination || 'Hartley Hall, 3rd floor lounge';
+  const instructions = state.instructions || 'Less ice on both please. Text me when downstairs.';
+  const status: OrderStatus = state.status || 'open';
+  const agreement = state.agreement;
+
+  const isFinalized = Boolean(agreement || status !== 'open');
+
+  const items = state.items || [
+    { name: 'Taro milk tea', quantity: 2, price: isFinalized ? 50 : undefined },
+    { name: 'Boba topping', quantity: 2, price: isFinalized ? 10 : undefined },
+  ];
+
+  const foodTotal = isFinalized ? (agreement?.foodPrice ?? 120) : null;
+  const deliveryFee = isFinalized ? (agreement?.deliveryFee ?? 20) : null;
+  const grandTotal = isFinalized && foodTotal && deliveryFee ? foodTotal + deliveryFee : null;
 
   return (
     <div>
@@ -22,25 +52,79 @@ export function RequestDetails() {
         <section className="overflow-hidden rounded-lg border border-border bg-card p-5 lg:sticky lg:top-24">
           <div>
             <div className="flex items-center justify-between">
-              <StatusBadge status="open" />
+              <StatusBadge status={status} />
+              <span className="font-mono text-xs text-muted-foreground">#DMS-R1</span>
             </div>
             <h2 className="mt-3 text-lg font-semibold leading-snug tracking-tight">
-              Taro milk tea, Boba
+              {orderTitle}
             </h2>
-            <dl className="mt-4 space-y-3 text-sm">
+
+            {/* Items Breakdown with Quantity and Price */}
+            <div className="mt-5 border-t border-border/70 pt-4">
+              <h3 className="text-xs font-semibold text-muted-foreground">
+                Items ({items.reduce((acc, i) => acc + i.quantity, 0)})
+              </h3>
+              <ul className="mt-2 divide-y divide-border/50 text-sm">
+                {items.map((item, idx) => (
+                  <li key={idx} className="flex items-center justify-between py-2">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-xs font-semibold text-muted-foreground">
+                        {item.quantity}x
+                      </span>
+                      <span className="font-medium text-foreground">{item.name}</span>
+                    </div>
+                    <span className="font-mono text-xs font-medium text-foreground">
+                      {isFinalized && item.price ? `ETB ${(item.price * item.quantity).toFixed(2)}` : '---'}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Price Breakdown: --- until offer accepted and finalized */}
+              <div className="mt-3 space-y-1.5 border-t border-border/50 pt-3 text-xs">
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Food total</span>
+                  <span className="font-mono font-medium text-foreground">
+                    {isFinalized && foodTotal ? `ETB ${foodTotal.toFixed(2)}` : '---'}
+                  </span>
+                </div>
+                <div className="flex justify-between text-muted-foreground">
+                  <span>Delivery fee</span>
+                  <span className="font-mono font-medium text-foreground">
+                    {isFinalized && deliveryFee ? `ETB ${deliveryFee.toFixed(2)}` : '---'}
+                  </span>
+                </div>
+                <div className="flex justify-between border-t border-border/40 pt-2 text-sm font-semibold text-foreground">
+                  <span>Total</span>
+                  <span className="font-mono">
+                    {isFinalized && grandTotal ? `ETB ${grandTotal.toFixed(2)}` : '---'}
+                  </span>
+                </div>
+              </div>
+              {!isFinalized && (
+                <p className="mt-2.5 text-[11px] text-muted-foreground">
+                  Prices finalize once you accept an offer.
+                </p>
+              )}
+            </div>
+
+            {/* Pickup & Destination */}
+            <dl className="mt-5 space-y-3 border-t border-border/70 pt-4 text-sm">
               <div>
                 <dt className="text-xs text-muted-foreground">Pickup</dt>
-                <dd className="mt-1 font-medium">Tea Lab, Union Square</dd>
+                <dd className="mt-1 font-medium">{pickup}</dd>
               </div>
               <div>
                 <dt className="text-xs text-muted-foreground">Deliver to</dt>
-                <dd className="mt-1 font-medium">Hartley Hall, 3rd floor lounge</dd>
+                <dd className="mt-1 font-medium">{destination}</dd>
               </div>
             </dl>
-            <p className="mt-4 rounded-lg bg-secondary px-3 py-2 text-sm leading-6 text-muted-foreground">
-              Less ice on both please. Text me when you are downstairs and I will come down.
-            </p>
-            <p className="mt-3 text-xs text-muted-foreground">Payment method: Dormshi wallet</p>
+
+            {instructions && (
+              <p className="mt-4 rounded-lg bg-secondary px-3 py-2 text-sm leading-6 text-muted-foreground">
+                {instructions}
+              </p>
+            )}
           </div>
         </section>
 

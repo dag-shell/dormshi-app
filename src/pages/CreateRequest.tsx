@@ -54,7 +54,20 @@ export function CreateRequest() {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const orderTitle = food.join(', ');
-    navigate('/requests/r1', { state: { food: orderTitle, pickup, destination, instructions } });
+    const items = food.map((name) => ({
+      name,
+      quantity: quantities[name] || 1,
+    }));
+    navigate('/requests/r1', {
+      state: {
+        food: orderTitle,
+        items,
+        pickup,
+        destination,
+        instructions,
+        status: 'open',
+      },
+    });
   };
 
   return (
