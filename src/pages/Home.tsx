@@ -55,8 +55,8 @@ export function Home() {
       {/* =========================================================================
           TOP BAR: Clean Telegram Mini App Header (64px per layout spec)
          ========================================================================= */}
-      <header className="min-h-16 flex flex-col flex-1 items-start justify-between gap-0">
-        <div className="flex items-center gap-3">
+      <header className="min-h-16 flex flex-col flex-1">
+        <div className="flex items-center justify-between w-full">
           {/* Left Side: Greeting */}
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
@@ -91,7 +91,7 @@ export function Home() {
             </Link>
           </div>
         </div>
-        <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+        <p className="mt-3 text-xs text-muted-foreground sm:text-sm italic text-left">
           Good food keeps the campus moving.
         </p>
 
@@ -148,13 +148,13 @@ export function Home() {
               value="my-requests"
               className="flex items-center gap-2 rounded-full bg-secondary px-5 py-2 text-xs font-semibold text-secondary-foreground shadow-none transition-all hover:bg-secondary/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:text-sm"
             >
-              <FontAwesomeIcon icon={faListOl} className="size-3.5" /> My Requests
+              <FontAwesomeIcon icon={faListOl} className="size-3.5" /> My requests
             </TabsTrigger>
             <TabsTrigger
               value="delivery"
               className="flex items-center gap-2 rounded-full bg-secondary px-5 py-2 text-xs font-semibold text-secondary-foreground shadow-none transition-all hover:bg-secondary/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:text-sm"
             >
-              <FontAwesomeIcon icon={faTruck} className="size-3.5" /> Delivery Requests
+              <FontAwesomeIcon icon={faTruck} className="size-3.5" /> Delivery requests
             </TabsTrigger>
           </TabsList>
 
@@ -162,7 +162,7 @@ export function Home() {
           <TabsContent value="my-requests" className="mt-6 space-y-4">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-xs text-muted-foreground">Food orders you posted waiting for delivery or delivered.</p>
+                <p className="text-xs text-muted-foreground">Orders you placed.</p>
               </div>
               <Link
                 to="/requests/new"
@@ -229,7 +229,7 @@ export function Home() {
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-xs text-muted-foreground">
-                  Requests from other students waiting for a deliverer. Send an offer to earn ETB!
+                  Requests waiting for delivery. Send an offer to earn.
                 </p>
               </div>
             </div>

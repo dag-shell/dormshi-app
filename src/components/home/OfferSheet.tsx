@@ -30,7 +30,7 @@ export function OfferSheet({ request, onClose }: OfferSheetProps) {
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
-      toast.success(`Offer of ETB ${total} sent to student!`);
+      toast.success(`Offer of ETB ${total} sent.`);
       onClose();
     }, 600);
   };
