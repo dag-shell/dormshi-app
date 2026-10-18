@@ -34,7 +34,7 @@ export function StatusTimeline(_props?: { request?: unknown }) {
               }`}
             >
               {step.done && <FontAwesomeIcon icon={faCheck} className="size-2.5" />}
-              {step.current && <span className="size-2 animate-pulse rounded-full bg-primary" />}
+              {step.current && <span className="size-2 rounded-full bg-primary" />}
             </span>
             <div className="flex min-w-0 flex-1 items-start justify-between gap-2">
               <div>

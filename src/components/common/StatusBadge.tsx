@@ -28,15 +28,11 @@ const styles: Record<string, string> = {
 };
 
 export function StatusBadge({ status }: { status: OrderStatus | string }) {
-  const live = ['getting_food', 'picked_up', 'on_the_way'].includes(status);
   const label = statusLabels[status] ?? status;
   const style = styles[status] ?? styles.open;
 
   return (
-    <Badge variant="outline" className={cn('h-6 gap-2 px-2 text-xs font-medium', style)}>
-      {(status === 'open' || live) && (
-        <span className={cn('size-1.5 rounded-full bg-primary', live && 'animate-pulse')} aria-hidden="true" />
-      )}
+    <Badge variant="outline" className={cn('h-6 px-2.5 text-xs font-medium', style)}>
       {label}
     </Badge>
   );

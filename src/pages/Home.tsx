@@ -143,7 +143,7 @@ export function Home() {
       <section aria-labelledby="requests-title" className="space-y-4">
         <Tabs defaultValue="my-requests" className="w-full">
           {/* Segmented Filter Toggle (styled like Wallet transaction filter) */}
-          <TabsList className="inline-flex h-auto items-center rounded-full border border-border bg-card p-1">
+          <TabsList className="inline-flex h-auto items-center rounded-full border border-border bg-card p-1 fixed bottom-6 left-1/2 z-10 -translate-x-1/2">
             <TabsTrigger
               value="my-requests"
               className="flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-muted-foreground transition-all hover:text-foreground data-[state=active]:bg-secondary data-[state=active]:font-semibold data-[state=active]:text-foreground sm:text-sm"
@@ -162,6 +162,7 @@ export function Home() {
           <TabsContent value="my-requests" className="mt-6 space-y-4">
             <div className="flex items-center justify-between gap-3">
               <div>
+                <h3 className="font-semibold">My Requests</h3>
                 <p className="text-xs text-muted-foreground">Orders you placed.</p>
               </div>
               <Link
@@ -225,6 +226,7 @@ export function Home() {
           <TabsContent value="delivery" className="mt-6 space-y-4">
             <div className="flex items-center justify-between gap-3">
               <div>
+                <h3 className="font-semibold">Delivery Requests</h3>
                 <p className="text-xs text-muted-foreground">
                   Requests waiting for delivery. Send an offer to earn.
                 </p>
