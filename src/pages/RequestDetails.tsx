@@ -19,13 +19,8 @@ export function RequestDetails() {
       <PageHeader title="Your request" subtitle="Posted 11m ago" />
 
       <div className="mx-auto grid max-w-6xl gap-6 px-5 py-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start lg:gap-8 lg:px-10 lg:py-8">
-        <section className="overflow-hidden rounded-xl border bg-card lg:sticky lg:top-24">
-          <img
-            src="/007177f6-8043-4f64-8f61-c59a69941bd3.jpg"
-            alt="Reference provided by requester"
-            className="aspect-[16/9] w-full object-cover"
-          />
-          <div className="p-4">
+        <section className="overflow-hidden rounded-lg border border-border bg-card p-5 lg:sticky lg:top-24">
+          <div>
             <div className="flex items-center justify-between">
               <StatusBadge status="open" />
             </div>
