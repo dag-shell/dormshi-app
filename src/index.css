@@ -4,7 +4,7 @@
 /* INTERNAL USE NAME: Mono */
 @import url('https://fonts.googleapis.com/css2?family=Geist+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 /* --- MANAGED FONT IMPORTS END --- */
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 /* @import url() FONT IMPORTS MUST ALWAYS BE AT THE VERY TOP OF THIS FILE, ABOVE THE TAILWIND IMPORTS — DO NOT DELETE THIS COMMENT */
 
@@ -17,36 +17,36 @@
 
 @custom-variant dark (&:is(.dark *));
 :root {
-  --background: #FBF9F4;
-  --foreground: #1A231F;
+  --background: #FFFFFF;
+  --foreground: #191919;
   --card: #FFFFFF;
-  --card-foreground: #1A231F;
+  --card-foreground: #191919;
   --popover: #FFFFFF;
-  --popover-foreground: #1A231F;
-  --primary: #163A2B;
+  --popover-foreground: #191919;
+  --primary: #D91400;
   --primary-foreground: #FFFFFF;
-  --primary-soft: #E8F5EE;
-  --secondary: #F3EFE6;
-  --secondary-foreground: #1A231F;
-  --muted: #F3EFE6;
-  --muted-foreground: #6F7B74;
-  --accent: #E8F5EE;
-  --accent-foreground: #163A2B;
-  --destructive: #D9483B;
+  --primary-soft: #FFF0ED;
+  --secondary: #F1F1F1;
+  --secondary-foreground: #191919;
+  --muted: #F7F7F7;
+  --muted-foreground: #606060;
+  --accent: #D91400;
+  --accent-foreground: #FFFFFF;
+  --destructive: #D91400;
   --destructive-foreground: #FFFFFF;
-  --destructive-soft: #FDE8E7;
-  --border: #E8E4DA;
-  --input: #E8E4DA;
-  --ring: #163A2B;
-  --radius: 0.875rem;
-  --sidebar: #FBF9F4;
-  --sidebar-foreground: #1A231F;
-  --sidebar-primary: #163A2B;
+  --destructive-soft: #FFF0ED;
+  --border: #E4E4E4;
+  --input: #E4E4E4;
+  --ring: #D91400;
+  --radius: 0.5rem;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #191919;
+  --sidebar-primary: #D91400;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #E8F5EE;
-  --sidebar-accent-foreground: #163A2B;
-  --sidebar-border: #E8E4DA;
-  --sidebar-ring: #163A2B;
+  --sidebar-accent: #FFF0ED;
+  --sidebar-accent-foreground: #D91400;
+  --sidebar-border: #E4E4E4;
+  --sidebar-ring: #D91400;
 }
 :root.dark {
   --background: oklch(0.145 0 0);
