@@ -211,7 +211,7 @@ export function Home() {
               <RequestCard
                 request={{
                   id: 'r1',
-                  food: '2 large taro milk teas, 50% sugar, with boba',
+                  food: 'Taro milk tea, Boba',
                   pickup: 'Tea Lab, Union Square',
                   destination: 'Hartley Hall, 3rd floor lounge',
                   status: 'open',
@@ -226,7 +226,7 @@ export function Home() {
               <RequestCard
                 request={{
                   id: 'r2',
-                  food: 'Chicken shawarma wrap + garlic fries',
+                  food: 'Chicken shawarma wrap, Garlic fries',
                   pickup: 'Halal Cart, 5th & Main',
                   destination: 'Science Library, Room 204',
                   status: 'on_the_way',
@@ -241,7 +241,7 @@ export function Home() {
               <RequestCard
                 request={{
                   id: 'r8',
-                  food: 'Burrito bowl with chicken, mild salsa',
+                  food: 'Burrito bowl, Chicken',
                   pickup: 'Chipotle, Main St',
                   destination: 'Hartley Hall 3B',
                   status: 'completed',
@@ -270,7 +270,7 @@ export function Home() {
               <RequestCard
                 request={{
                   id: 'r4',
-                  food: 'Iced oat latte, blueberry muffin',
+                  food: 'Iced oat latte, Blueberry muffin',
                   pickup: 'Bean Counter Café',
                   destination: 'Engineering Building, Lab 1.12',
                   status: 'open',
@@ -284,7 +284,7 @@ export function Home() {
                 action={
                   <Button
                     size="sm"
-                    onClick={() => handleMakeOffer({ id: 'r4', food: 'Iced oat latte, blueberry muffin' })}
+                    onClick={() => handleMakeOffer({ id: 'r4', food: 'Iced oat latte, Blueberry muffin' })}
                     className="rounded-full px-4 font-semibold"
                   >
                     Make offer
@@ -294,7 +294,7 @@ export function Home() {
               <RequestCard
                 request={{
                   id: 'r5',
-                  food: 'Pad thai, medium spicy, with tofu',
+                  food: 'Pad thai, Tofu',
                   pickup: 'Thai Orchid, Campus Ave',
                   destination: 'Ellis Hall, Room 410',
                   status: 'open',
@@ -308,7 +308,7 @@ export function Home() {
                 action={
                   <Button
                     size="sm"
-                    onClick={() => handleMakeOffer({ id: 'r5', food: 'Pad thai, medium spicy, with tofu' })}
+                    onClick={() => handleMakeOffer({ id: 'r5', food: 'Pad thai, Tofu' })}
                     className="rounded-full px-4 font-semibold"
                   >
                     Make offer
@@ -318,7 +318,7 @@ export function Home() {
               <RequestCard
                 request={{
                   id: 'r6',
-                  food: '2 Clif bars, sparkling water',
+                  food: 'Clif bar, Sparkling water',
                   pickup: 'CVS on College St',
                   destination: 'Rec Center front desk',
                   status: 'open',
@@ -332,7 +332,7 @@ export function Home() {
                 action={
                   <Button
                     size="sm"
-                    onClick={() => handleMakeOffer({ id: 'r6', food: '2 Clif bars, sparkling water' })}
+                    onClick={() => handleMakeOffer({ id: 'r6', food: 'Clif bar, Sparkling water' })}
                     className="rounded-full px-4 font-semibold"
                   >
                     Make offer
@@ -342,7 +342,7 @@ export function Home() {
               <RequestCard
                 request={{
                   id: 'r7',
-                  food: '2 pepperoni slices, Coke',
+                  food: 'Pepperoni pizza, Coke',
                   pickup: "Gino's Pizza",
                   destination: 'Music Hall, practice room 7',
                   status: 'open',
@@ -355,7 +355,7 @@ export function Home() {
                 action={
                   <Button
                     size="sm"
-                    onClick={() => handleMakeOffer({ id: 'r7', food: '2 pepperoni slices, Coke' })}
+                    onClick={() => handleMakeOffer({ id: 'r7', food: 'Pepperoni pizza, Coke' })}
                     className="rounded-full px-4 font-semibold"
                   >
                     Make offer

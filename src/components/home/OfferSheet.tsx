@@ -40,7 +40,7 @@ export function OfferSheet({ request, onClose }: OfferSheetProps) {
       open={!!request}
       onClose={onClose}
       title="Make an offer"
-      description={request?.food ?? '2 large taro milk teas, 50% sugar, with boba'}
+      description={request?.food ?? 'Taro milk tea, Boba'}
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-2 gap-3">

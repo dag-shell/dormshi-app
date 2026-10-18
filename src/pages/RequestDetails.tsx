@@ -25,7 +25,7 @@ export function RequestDetails() {
               <StatusBadge status="open" />
             </div>
             <h2 className="mt-3 text-lg font-semibold leading-snug tracking-tight">
-              2 large taro milk teas, 50% sugar, with boba
+              Taro milk tea, Boba
             </h2>
             <dl className="mt-4 space-y-3 text-sm">
               <div>
