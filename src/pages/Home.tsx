@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -36,6 +36,7 @@ export function Home() {
   const [offerOpen, setOfferOpen] = useState(false);
   const [activeRequest, setActiveRequest] = useState<{ id?: string; food?: string } | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [activeTab, setActiveTab] = useState<'my-requests' | 'delivery'>('my-requests');
 
   // Auto-advance ad banner image every 5 seconds
   useEffect(() => {
@@ -51,7 +52,7 @@ export function Home() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6 px-4 pt-4 pb-20 sm:px-6 lg:px-8 lg:pt-8">
+    <div className="mx-auto max-w-4xl space-y-6 px-4 pt-4 pb-28 sm:px-6 lg:px-8 lg:pt-8">
       {/* =========================================================================
           TOP BAR: Clean Telegram Mini App Header (64px per layout spec)
          ========================================================================= */}
@@ -141,20 +142,52 @@ export function Home() {
           TABS: Single Toggle between Delivery Requests & My Requests
          ========================================================================= */}
       <section aria-labelledby="requests-title" className="space-y-4">
-        <Tabs defaultValue="my-requests" className="w-full">
-          {/* Segmented Filter Toggle (styled like Wallet transaction filter) */}
-          <TabsList className="inline-flex h-auto items-center rounded-full border border-border bg-card p-1 fixed bottom-6 left-1/2 z-10 -translate-x-1/2">
+        <Tabs
+          value={activeTab}
+          onValueChange={(val) => setActiveTab(val as 'my-requests' | 'delivery')}
+          className="w-full"
+        >
+          {/* Floating Pill Dock: Collapses inactive tab to icon only with smooth animation */}
+          <TabsList className="fixed bottom-6 left-1/2 z-30 inline-flex h-11 -translate-x-1/2 items-center gap-1 rounded-full border border-border/80 bg-card/95 p-1 shadow-[0_8px_30px_rgba(0,0,0,0.14)] backdrop-blur-md dark:border-border dark:shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
             <TabsTrigger
               value="my-requests"
-              className="flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-muted-foreground transition-all hover:text-foreground data-[state=active]:bg-secondary data-[state=active]:font-semibold data-[state=active]:text-foreground sm:text-sm"
+              aria-label="My requests"
+              className="relative flex h-9 items-center justify-center rounded-full px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground data-[state=active]:bg-secondary data-[state=active]:font-semibold data-[state=active]:text-foreground sm:text-sm"
             >
-              <FontAwesomeIcon icon={faListOl} className="size-3.5" /> My requests
+              <FontAwesomeIcon icon={faListOl} className="size-3.5 shrink-0" />
+              <AnimatePresence initial={false}>
+                {activeTab === 'my-requests' && (
+                  <motion.span
+                    initial={{ width: 0, opacity: 0, marginLeft: 0 }}
+                    animate={{ width: 'auto', opacity: 1, marginLeft: 8 }}
+                    exit={{ width: 0, opacity: 0, marginLeft: 0 }}
+                    transition={{ duration: 0.2, ease: [0.4, 0.4, 0, 1] }}
+                    className="overflow-hidden whitespace-nowrap"
+                  >
+                    My requests
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </TabsTrigger>
             <TabsTrigger
               value="delivery"
-              className="flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-muted-foreground transition-all hover:text-foreground data-[state=active]:bg-secondary data-[state=active]:font-semibold data-[state=active]:text-foreground sm:text-sm"
+              aria-label="Delivery requests"
+              className="relative flex h-9 items-center justify-center rounded-full px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground data-[state=active]:bg-secondary data-[state=active]:font-semibold data-[state=active]:text-foreground sm:text-sm"
             >
-              <FontAwesomeIcon icon={faTruck} className="size-3.5" /> Delivery requests
+              <FontAwesomeIcon icon={faTruck} className="size-3.5 shrink-0" />
+              <AnimatePresence initial={false}>
+                {activeTab === 'delivery' && (
+                  <motion.span
+                    initial={{ width: 0, opacity: 0, marginLeft: 0 }}
+                    animate={{ width: 'auto', opacity: 1, marginLeft: 8 }}
+                    exit={{ width: 0, opacity: 0, marginLeft: 0 }}
+                    transition={{ duration: 0.2, ease: [0.4, 0.4, 0, 1] }}
+                    className="overflow-hidden whitespace-nowrap"
+                  >
+                    Delivery requests
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </TabsTrigger>
           </TabsList>
 
