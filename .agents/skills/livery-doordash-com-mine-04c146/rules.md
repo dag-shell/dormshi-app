@@ -1,6 +1,6 @@
 # doordash.com: your pages: design rules
 
-A dark interface on a near-black neutral background where a dark indigo accent marks the next step. Type is DD Norms set tight at large sizes, corners are fully rounded on controls, and depth comes from soft neutral shadows.
+A dark interface on a near-black neutral background where a DoorDash red (#D91400) accent marks the next step. Type is DD Norms set tight at large sizes, corners are fully rounded on controls, and depth comes from soft neutral shadows.
 
 Measured from 1 links; values in `tokens.json` start from the first one:
 
@@ -35,7 +35,7 @@ _Why:_ Fully rounded shapes make up 66% of measured radii; they soften an otherw
 ## Never
 
 - **Never tint shadows with colour.** Every measured shadow is neutral; a coloured glow would read as a different product.
-- **Never introduce a second accent colour.** Only one saturated colour (#0000ee) carries weight in the measured palette.
+- **Never introduce a second accent colour.** Only one saturated colour (#D91400) carries weight in the measured palette.
 - **Never use positive letter-spacing on headings.** Large type is tightened, down to -0.021em on the biggest sizes.
 - **Never square off buttons.** Measured buttons are fully rounded; square ones would break the shape language.
 - **Never animate longer than 250ms.** Every measured transition finishes within 250ms; slower motion would feel heavy here.
@@ -47,7 +47,7 @@ _Why:_ Fully rounded shapes make up 66% of measured radii; they soften an otherw
 
 - Dark theme: near-black neutral background (#00000000).
 - Body text #b2b2b2 on the background reads at 9.9:1; secondary text uses #606060.
-- Accent #0000ee (dark indigo) with #ffffff text on top of it.
+- Accent #D91400 (DoorDash red) with #ffffff text on top of it.
 
 ## Typography
 

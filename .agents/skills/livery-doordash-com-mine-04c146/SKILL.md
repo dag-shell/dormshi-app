@@ -7,7 +7,7 @@ description: "Apply the doordash.com: your pages design kit (Livery v1) to this 
 
 **Never edit a file before step 5. Ask, don't assume.**
 
-A dark interface on a near-black neutral background where a dark indigo accent marks the next step. Type is DD Norms set tight at large sizes, corners are fully rounded on controls, and depth comes from soft neutral shadows.
+A dark interface on a near-black neutral background where a DoorDash red (#D91400) accent marks the next step. Type is DD Norms set tight at large sizes, corners are fully rounded on controls, and depth comes from soft neutral shadows.
 
 Kit files (read each one only when its step needs it): `rules.md`, `tokens.json`, `fonts.json`, `icons.json`, `components.md`, `layout.md`, `motion.md`, `details.md`, `stack.md`, `voice.md`, `licences.md`, `frames/`.
 
