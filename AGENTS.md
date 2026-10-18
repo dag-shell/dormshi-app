@@ -152,3 +152,32 @@ The platform manages the bot's webhook for you, derived from your deployed
 `handlers/*`, and refreshes it on `push`. If it ever drifts — e.g. someone called
 `setWebhook` with the raw bot token — `npx tgcloud webhook` shows the mismatch and
 `npx tgcloud webhook sync` repairs it.
+
+## UI Design System & Guidelines (DoorDash Livery v1)
+
+The front-end adheres strictly to the DoorDash design kit:
+
+- **Accent & Colors**:
+  - Primary accent is **DoorDash Red** (`#D91400`) with `#FFFFFF` text.
+  - Light mode: background `#FFFFFF`, text `#191919`, secondary surface `#F1F1F1`, borders `#E4E4E4`.
+  - Dark mode: background `#121212`, text `#FFFFFF`, secondary `#262626`, borders `#2B2B2B`.
+  - *Never introduce a second accent color.*
+- **Controls & Radii**:
+  - **Pill shapes (`rounded-full`)** for all buttons, chips, badges, and toggle tabs. *Never square off buttons.*
+  - **8px (`rounded-lg`)** for containers: cards, inputs, dialogs, banner sheets.
+- **Shadows & Depth**:
+  - Soft neutral inset borders/shadows (`inset 0 0 0 1px #F1F1F1` or neutral border).
+  - *Never tint shadows with color.*
+- **Spacing**:
+  - Strict 4px grid: `2px`, `4px`, `8px`, `12px`, `16px`, `24px`, `32px`. Header height is 64px (`h-16`).
+- **Typography**:
+  - Body font: `Inter`. Headings tightened (`-0.021em` tracking).
+  - *Never set button labels in all-caps.*
+- **Motion**:
+  - Quick & quiet: transitions <= 200ms with cubic-bezier `(0.4, 0.4, 0, 1)`.
+  - Strictly support `prefers-reduced-motion: reduce`.
+- **Voice & Copy**:
+  - Concise, direct, and calm (~4 words per sentence average).
+  - Sentence-case headings and tab labels (*"My requests"*, *"Delivery requests"*).
+  - Avoid exclamation marks.
+
