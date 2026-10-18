@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { BottomSheet } from '../BottomSheet';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { BottomSheet } from '@common/BottomSheet';
+import { cn } from '@/lib/utils';
 
 interface ReasonSheetProps {
   open: boolean;
@@ -39,20 +41,32 @@ export function ReasonSheet({ open, onClose, title, description, reasons, note, 
 
   return (
     <BottomSheet open={open} onClose={onClose} title={title} description={description}>
-      <fieldset className="space-y-2">
-        <legend className="sr-only">Reason</legend>
-        {reasons.map((r) =>
-        <label
-          key={r}
-          className={`flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-3 text-sm transition-colors ${
-          selected === r ? 'border-primary bg-primary-soft' : 'bg-card hover:bg-secondary'}`
-          }>
-          
-            <input type="radio" name="reason" value={r} checked={selected === r} onChange={() => {setSelected(r);setError('');}} className="accent-[var(--primary)]" />
-            {r}
-          </label>
-        )}
-      </fieldset>
+      <RadioGroup
+        value={selected}
+        onValueChange={(val) => {
+          setSelected(val);
+          setError('');
+        }}
+        className="space-y-2"
+      >
+        {reasons.map((r) => {
+          const isSelected = selected === r;
+          const id = `reason-${r.toLowerCase().replace(/\s+/g, '-')}`;
+          return (
+            <label
+              key={r}
+              htmlFor={id}
+              className={cn(
+                'flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-3 text-sm transition-colors',
+                isSelected ? 'border-primary bg-primary-soft' : 'bg-card hover:bg-secondary'
+              )}
+            >
+              <RadioGroupItem value={r} id={id} />
+              <span className="font-medium text-foreground">{r}</span>
+            </label>
+          );
+        })}
+      </RadioGroup>
       {error && <p className="mt-2 text-xs text-destructive">{error}</p>}
       <div className="mt-4 space-y-2">
         <Label htmlFor="reason-details">Details (optional)</Label>
@@ -62,6 +76,6 @@ export function ReasonSheet({ open, onClose, title, description, reasons, note, 
       <Button variant={destructive ? 'destructive' : 'default'} size="lg" className="mt-4 h-11 w-full" onClick={submit}>
         {confirmLabel}
       </Button>
-    </BottomSheet>);
-
+    </BottomSheet>
+  );
 }

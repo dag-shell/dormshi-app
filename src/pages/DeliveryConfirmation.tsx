@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BadgeCheck, Check, ScanLine, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { PageHeader } from '../components/PageHeader';
-import { QRScanner } from '../components/QRScanner';
-import { TermsBreakdown } from '../components/TermsBreakdown';
-import { UserAvatar } from '../components/UserAvatar';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { QRScanner } from '@common/QRScanner';
+import { TermsBreakdown } from '@common/TermsBreakdown';
+import { UserAvatar } from '@common/UserAvatar';
 
 type Step = 'summary' | 'scanning' | 'verify' | 'receipt';
 

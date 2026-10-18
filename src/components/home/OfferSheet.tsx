@@ -3,8 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { BottomSheet } from './BottomSheet';
-import { MoneyField } from './MoneyField';
+import { BottomSheet } from '@common/BottomSheet';
+import { MoneyField } from '@common/MoneyField';
 
 interface OfferSheetProps {
   request?: { id?: string; food?: string } | null;

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { TermsBreakdown } from '../TermsBreakdown';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { TermsBreakdown } from '@common/TermsBreakdown';
 
 interface AgreementCardProps {
   request?: {
@@ -37,46 +38,48 @@ export function AgreementCard({ request, canPropose = true, onPropose }: Agreeme
   const change = request?.pendingChange;
 
   return (
-    <section aria-labelledby="terms-title" className="rounded-xl border bg-card p-4">
-      <div className="mb-3 flex items-center justify-between">
-        <h2 id="terms-title" className="flex items-center gap-2 text-sm font-semibold">
+    <Card aria-labelledby="terms-title">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-3">
+        <CardTitle id="terms-title" className="flex items-center gap-2 text-sm font-semibold">
           <Lock className="size-4" aria-hidden="true" /> Agreed terms
-        </h2>
+        </CardTitle>
         <span className="text-xs text-muted-foreground">Locked at 2:45 PM</span>
-      </div>
+      </CardHeader>
 
-      <TermsBreakdown
-        foodPrice={agreement.foodPrice ?? 12.8}
-        deliveryFee={agreement.deliveryFee ?? 3.0}
-        etaLabel={`${agreement.etaMinutes ?? 12} min`}
-      />
+      <CardContent className="p-4 pt-0">
+        <TermsBreakdown
+          foodPrice={agreement.foodPrice ?? 12.8}
+          deliveryFee={agreement.deliveryFee ?? 3.0}
+          etaLabel={`${agreement.etaMinutes ?? 12} min`}
+        />
 
-      <p className="mt-3 rounded-lg bg-primary-soft px-3 py-2 text-xs leading-5 text-primary">
-        15.80 DC is held in escrow. It is released only after QR-verified delivery.
-      </p>
+        <p className="mt-3 rounded-lg bg-primary-soft px-3 py-2 text-xs leading-5 text-primary">
+          15.80 DC is held in escrow. It is released only after QR-verified delivery.
+        </p>
 
-      {change && (
-        <div className="mt-3 rounded-lg border border-primary p-3" role="status">
-          <p className="text-sm font-medium">Jordan Reyes proposed new terms</p>
-          <p className="mt-1 text-xs text-muted-foreground">“{change.reason ?? 'Store was out of medium size, grabbed large instead.'}”</p>
-          <dl className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
-            <Diff label="Food" from={agreement.foodPrice ?? 12.8} to={change.foodPrice ?? 14.5} />
-            <Diff label="Fee" from={agreement.deliveryFee ?? 3.0} to={change.deliveryFee ?? 3.0} />
-            <Diff label="Minutes" from={agreement.etaMinutes ?? 12} to={change.etaMinutes ?? 18} whole />
-          </dl>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            <Button variant="outline">Decline</Button>
-            <Button>Approve</Button>
+        {change && (
+          <div className="mt-3 rounded-lg border border-primary p-3" role="status">
+            <p className="text-sm font-medium">Jordan Reyes proposed new terms</p>
+            <p className="mt-1 text-xs text-muted-foreground">“{change.reason ?? 'Store was out of medium size, grabbed large instead.'}”</p>
+            <dl className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
+              <Diff label="Food" from={agreement.foodPrice ?? 12.8} to={change.foodPrice ?? 14.5} />
+              <Diff label="Fee" from={agreement.deliveryFee ?? 3.0} to={change.deliveryFee ?? 3.0} />
+              <Diff label="Minutes" from={agreement.etaMinutes ?? 12} to={change.etaMinutes ?? 18} whole />
+            </dl>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <Button variant="outline">Decline</Button>
+              <Button>Approve</Button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {canPropose && !change && onPropose && (
-        <Button variant="ghost" size="sm" className="mt-2 w-full text-muted-foreground" onClick={onPropose}>
-          Propose a change to these terms
-        </Button>
-      )}
-    </section>
+        {canPropose && !change && onPropose && (
+          <Button variant="ghost" size="sm" className="mt-2 w-full text-muted-foreground" onClick={onPropose}>
+            Propose a change to these terms
+          </Button>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 

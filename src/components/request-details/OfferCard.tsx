@@ -1,7 +1,9 @@
 import React from 'react';
 import { Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { UserAvatar } from './UserAvatar';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
+import { UserAvatar } from '@common/UserAvatar';
 
 export interface OfferData {
   id?: string;
@@ -56,35 +58,39 @@ export function OfferCard({ offer, highlight, onAccept }: OfferCardProps) {
   const tag = highlight ?? data.highlight;
 
   return (
-    <article className="rounded-xl border bg-card p-4">
-      <div className="flex items-start gap-3">
-        <UserAvatar initials={initials} />
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center justify-between gap-2">
-            <p className="truncate font-medium">{name}</p>
-            {tag && (
-              <span className="shrink-0 rounded-md bg-primary-soft px-2 py-1 text-xs font-medium leading-none text-primary">
-                {tag}
-              </span>
-            )}
+    <Card>
+      <CardHeader className="p-4 pb-0">
+        <div className="flex items-start gap-3">
+          <UserAvatar initials={initials} />
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center justify-between gap-2">
+              <p className="truncate font-medium">{name}</p>
+              {tag && (
+                <Badge variant="outline" className="border-transparent bg-primary-soft text-primary font-medium">
+                  {tag}
+                </Badge>
+              )}
+            </div>
+            <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
+              <Star className="size-3 fill-current text-foreground" aria-label="Rating" />
+              <span className="font-medium text-foreground">{rating.toFixed(1)}</span>
+              <span>· {deliveries} deliveries · {dorm}</span>
+            </p>
           </div>
-          <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
-            <Star className="size-3 fill-current text-foreground" aria-label="Rating" />
-            <span className="font-medium text-foreground">{rating.toFixed(1)}</span>
-            <span>· {deliveries} deliveries · {dorm}</span>
-          </p>
         </div>
-      </div>
+      </CardHeader>
 
-      <dl className="mt-4 grid grid-cols-3 divide-x rounded-lg border bg-background text-center">
-        <Cell label="Food" value={String(foodPrice)} unit="DC" />
-        <Cell label="Delivery" value={String(deliveryFee)} unit="DC" />
-        <Cell label="Arrives in" value={String(etaMinutes)} unit="min" />
-      </dl>
+      <CardContent className="p-4">
+        <dl className="grid grid-cols-3 divide-x rounded-lg border bg-background text-center">
+          <Cell label="Food" value={String(foodPrice)} unit="DC" />
+          <Cell label="Delivery" value={String(deliveryFee)} unit="DC" />
+          <Cell label="Arrives in" value={String(etaMinutes)} unit="min" />
+        </dl>
 
-      {note && <p className="mt-3 text-sm text-muted-foreground">“{note}”</p>}
+        {note && <p className="mt-3 text-sm text-muted-foreground">“{note}”</p>}
+      </CardContent>
 
-      <div className="mt-4 flex items-center justify-between gap-3">
+      <CardFooter className="flex items-center justify-between gap-3 p-4 pt-0">
         <div>
           <p className="text-xs text-muted-foreground">Total · offered {timeAgo}</p>
           <p className="font-mono text-lg font-semibold">{total}</p>
@@ -94,8 +100,8 @@ export function OfferCard({ offer, highlight, onAccept }: OfferCardProps) {
             Accept offer
           </Button>
         )}
-      </div>
-    </article>
+      </CardFooter>
+    </Card>
   );
 }
 

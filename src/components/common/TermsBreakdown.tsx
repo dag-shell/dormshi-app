@@ -1,4 +1,5 @@
 import React from 'react';
+import { Separator } from '@/components/ui/separator';
 
 interface TermsBreakdownProps {
   foodPrice: number | string;
@@ -18,7 +19,8 @@ export function TermsBreakdown({ foodPrice, deliveryFee, etaLabel, showPaymentMe
       <Row label="Delivery fee" value={`${typeof deliveryFee === 'number' ? deliveryFee.toFixed(2) : deliveryFee} DC`} mono />
       {etaLabel && <Row label="Estimated arrival" value={etaLabel} />}
       {showPaymentMethod && <Row label="Payment method" value="DC wallet" />}
-      <div className="flex items-center justify-between border-t pt-3">
+      <Separator className="my-2" />
+      <div className="flex items-center justify-between pt-1">
         <dt className="font-medium">Total</dt>
         <dd className="font-mono text-base font-semibold">{total} DC</dd>
       </div>

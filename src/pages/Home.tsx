@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { RequestCard } from '../components/RequestCard';
-import { OfferSheet } from '../components/OfferSheet';
+import { RequestCard } from '@/components/home/RequestCard';
+import { OfferSheet } from '@/components/home/OfferSheet';
 
 export function Home() {
   const [offerOpen, setOfferOpen] = useState(false);

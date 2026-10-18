@@ -1,5 +1,5 @@
 import React from 'react';
-import { LegalDocument } from '../components/LegalDocument';
+import { LegalDocument } from '@common/LegalDocument';
 
 const privacySections = [
   {

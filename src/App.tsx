@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
-import { AppShell } from './components/AppShell';
+import { AppShell } from '@/components/layout/AppShell';
 import { Home } from './pages/Home';
 import { CreateRequest } from './pages/CreateRequest';
 import { RequestDetails } from './pages/RequestDetails';

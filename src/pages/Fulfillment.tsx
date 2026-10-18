@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { QrCode, Star } from 'lucide-react';
-import { PageHeader } from '../components/PageHeader';
-import { StatusBadge } from '../components/StatusBadge';
-import { UserAvatar } from '../components/UserAvatar';
-import { StatusTimeline } from '../components/order/StatusTimeline';
-import { AgreementCard } from '../components/order/AgreementCard';
-import { ChangeProposalSheet } from '../components/order/ChangeProposalSheet';
-import { ReasonSheet } from '../components/order/ReasonSheet';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { StatusBadge } from '@common/StatusBadge';
+import { UserAvatar } from '@common/UserAvatar';
+import { StatusTimeline } from '@/components/order/StatusTimeline';
+import { AgreementCard } from '@/components/order/AgreementCard';
+import { ChangeProposalSheet } from '@/components/order/ChangeProposalSheet';
+import { ReasonSheet } from '@/components/order/ReasonSheet';
 import { Button } from '@/components/ui/button';
 
 export function Fulfillment() {

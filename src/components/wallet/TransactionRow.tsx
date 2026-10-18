@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowDownLeft, ArrowUpRight, CheckCircle2, Landmark, Lock, Plus, RotateCcw, Bike } from 'lucide-react';
-import type { TransactionType } from '../../types/dormshi';
+import type { TransactionType } from '@/types/dormshi';
 
 const icons: Record<string, React.ElementType> = {
   purchase: Plus,

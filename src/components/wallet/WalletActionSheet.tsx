@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { BottomSheet } from '../BottomSheet';
-import { MoneyField } from '../MoneyField';
-import { QRScanner } from '../QRScanner';
-import { UserAvatar } from '../UserAvatar';
+import { BottomSheet } from '@common/BottomSheet';
+import { MoneyField } from '@common/MoneyField';
+import { QRScanner } from '@common/QRScanner';
+import { UserAvatar } from '@common/UserAvatar';
 
 export type WalletAction = 'buy' | 'send' | 'scan' | 'cashout';
 

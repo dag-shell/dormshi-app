@@ -4,9 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { PageHeader } from '../components/PageHeader';
-import { MultiSelect } from '../components/MultiSelect';
-import { SingleSelect } from '../components/SingleSelect';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { MultiSelect } from '@common/MultiSelect';
+import { SingleSelect } from '@common/SingleSelect';
 
 const foodOptions = [
   'Milk Tea with Boba',

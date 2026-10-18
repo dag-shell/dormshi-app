@@ -1,4 +1,6 @@
 import React from 'react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { cn } from '@/lib/utils';
 
 interface UserAvatarProps {
   initials?: string;
@@ -17,14 +19,16 @@ const sizes = {
 export function UserAvatar({ user, initials, isMe, size = 'md' }: UserAvatarProps) {
   const displayInitials = initials ?? user?.initials ?? 'MO';
   const activeMe = isMe ?? (user?.id === 'u_me');
+
   return (
-    <span
-      aria-hidden="true"
-      className={`inline-grid shrink-0 place-items-center rounded-full font-medium ${sizes[size]} ${
-        activeMe ? 'bg-primary text-primary-foreground' : 'border border-border bg-secondary text-foreground'
-      }`}
-    >
-      {displayInitials}
-    </span>
+    <Avatar className={sizes[size]}>
+      <AvatarFallback
+        className={cn(
+          activeMe ? 'bg-primary text-primary-foreground font-semibold' : 'border border-border bg-secondary text-foreground font-medium'
+        )}
+      >
+        {displayInitials}
+      </AvatarFallback>
+    </Avatar>
   );
 }

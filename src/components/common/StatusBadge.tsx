@@ -1,5 +1,7 @@
 import React from 'react';
-import type { OrderStatus } from '../types/dormshi';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
+import type { OrderStatus } from '@/types/dormshi';
 
 const statusLabels: Record<string, string> = {
   open: 'Open',
@@ -31,11 +33,11 @@ export function StatusBadge({ status }: { status: OrderStatus | string }) {
   const style = styles[status] ?? styles.open;
 
   return (
-    <span className={`inline-flex h-6 items-center gap-2 rounded-md border px-2 text-xs font-medium ${style}`}>
+    <Badge variant="outline" className={cn('h-6 gap-2 px-2 text-xs font-medium', style)}>
       {(status === 'open' || live) && (
-        <span className={`size-1.5 rounded-full bg-primary ${live ? 'animate-pulse' : ''}`} aria-hidden="true" />
+        <span className={cn('size-1.5 rounded-full bg-primary', live && 'animate-pulse')} aria-hidden="true" />
       )}
       {label}
-    </span>
+    </Badge>
   );
 }

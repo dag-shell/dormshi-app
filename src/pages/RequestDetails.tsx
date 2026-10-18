@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PageHeader } from '../components/PageHeader';
-import { StatusBadge } from '../components/StatusBadge';
-import { OfferCard } from '../components/OfferCard';
-import { BottomSheet } from '../components/BottomSheet';
-import { TermsBreakdown } from '../components/TermsBreakdown';
-import { ReasonSheet } from '../components/order/ReasonSheet';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { StatusBadge } from '@common/StatusBadge';
+import { OfferCard } from '@/components/request-details/OfferCard';
+import { BottomSheet } from '@common/BottomSheet';
+import { TermsBreakdown } from '@common/TermsBreakdown';
+import { ReasonSheet } from '@/components/order/ReasonSheet';
 import { Button } from '@/components/ui/button';
 
 export function RequestDetails() {

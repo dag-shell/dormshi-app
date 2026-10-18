@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { StatusBadge } from './StatusBadge';
-import { UserAvatar } from './UserAvatar';
-import type { OrderStatus } from '../types/dormshi';
+import { StatusBadge } from '@common/StatusBadge';
+import { UserAvatar } from '@common/UserAvatar';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import type { OrderStatus } from '@/types/dormshi';
 
 export interface RequestCardData {
   id: string;
@@ -54,8 +55,8 @@ export function RequestCard({ request, action, showRole = false }: RequestCardPr
   const timeText = req.timeAgo ?? '11m ago';
 
   return (
-    <article className="relative flex flex-col rounded-xl border bg-card p-4 transition-colors hover:border-ring">
-      <div className="flex items-center justify-between gap-2">
+    <Card className="relative flex flex-col transition-colors hover:border-ring">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-2">
         <div className="flex items-center gap-2">
           <StatusBadge status={req.status} />
           {showRole && (isMine || isFulfilling) && (
@@ -65,29 +66,31 @@ export function RequestCard({ request, action, showRole = false }: RequestCardPr
           )}
         </div>
         <span className="text-xs text-muted-foreground">{timeText}</span>
-      </div>
+      </CardHeader>
 
-      <h3 className="mt-3 text-base font-medium leading-6">
-        <Link
-          to={`/requests/${req.id}`}
-          className="after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-ring"
-        >
-          {req.food}
-        </Link>
-      </h3>
+      <CardContent className="flex-1 p-4 pt-1">
+        <CardTitle className="text-base font-medium leading-6">
+          <Link
+            to={`/requests/${req.id}`}
+            className="after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-ring"
+          >
+            {req.food}
+          </Link>
+        </CardTitle>
 
-      <dl className="mb-4 mt-2 space-y-1 text-sm">
-        <div className="flex gap-2">
-          <dt className="w-10 shrink-0 text-muted-foreground">From</dt>
-          <dd className="truncate">{req.pickup}</dd>
-        </div>
-        <div className="flex gap-2">
-          <dt className="w-10 shrink-0 text-muted-foreground">To</dt>
-          <dd className="truncate">{req.destination}</dd>
-        </div>
-      </dl>
+        <dl className="mb-0 mt-3 space-y-1 text-sm">
+          <div className="flex gap-2">
+            <dt className="w-10 shrink-0 text-muted-foreground">From</dt>
+            <dd className="truncate">{req.pickup}</dd>
+          </div>
+          <div className="flex gap-2">
+            <dt className="w-10 shrink-0 text-muted-foreground">To</dt>
+            <dd className="truncate">{req.destination}</dd>
+          </div>
+        </dl>
+      </CardContent>
 
-      <div className="mt-auto flex items-center justify-between gap-3 border-t pt-3">
+      <CardFooter className="mt-auto flex items-center justify-between gap-3 border-t p-4 pt-3">
         <div className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
           <UserAvatar initials={requesterInitials} isMe={isMine} size="sm" />
           <span className="truncate">
@@ -104,7 +107,7 @@ export function RequestCard({ request, action, showRole = false }: RequestCardPr
             {offersCount === 0 ? 'No offers yet' : `${offersCount} offer${offersCount > 1 ? 's' : ''}`}
           </span>
         )}
-      </div>
-    </article>
+      </CardFooter>
+    </Card>
   );
 }
