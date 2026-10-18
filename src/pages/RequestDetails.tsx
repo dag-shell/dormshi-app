@@ -45,7 +45,7 @@ export function RequestDetails() {
             <p className="mt-4 rounded-lg bg-secondary px-3 py-2 text-sm leading-6 text-muted-foreground">
               Less ice on both please. Text me when you are downstairs and I will come down.
             </p>
-            <p className="mt-3 text-xs text-muted-foreground">Payment method: DC wallet</p>
+            <p className="mt-3 text-xs text-muted-foreground">Payment method: Dormshi wallet</p>
           </div>
         </section>
 
@@ -89,7 +89,7 @@ export function RequestDetails() {
                 foodPrice: '12.80',
                 deliveryFee: '3.00',
                 etaMinutes: 12,
-                total: '15.80 DC',
+                total: 'ETB 128',
                 note: 'Already at Union Square, can grab it right now.',
                 timeAgo: '3m ago',
                 highlight: 'Best price'
@@ -107,7 +107,7 @@ export function RequestDetails() {
                 foodPrice: '13.00',
                 deliveryFee: '2.50',
                 etaMinutes: 15,
-                total: '15.50 DC',
+                total: 'ETB 125',
                 note: 'Heading back to Hartley anyway.',
                 timeAgo: '6m ago',
                 highlight: 'Fastest'
@@ -125,7 +125,7 @@ export function RequestDetails() {
                 foodPrice: '13.00',
                 deliveryFee: '1.75',
                 etaMinutes: 25,
-                total: '14.75 DC',
+                total: 'ETB 118',
                 note: 'Can pick up on my way out of class.',
                 timeAgo: '8m ago'
               }}
@@ -155,7 +155,7 @@ export function RequestDetails() {
           <dl className="divide-y rounded-lg border bg-card text-sm">
             <div className="flex gap-4 px-4 py-3">
               <dt className="w-24 shrink-0 font-medium">Now</dt>
-              <dd className="text-muted-foreground">15.80 DC is reserved from your wallet.</dd>
+              <dd className="text-muted-foreground">15.80 ETB is reserved from your wallet.</dd>
             </div>
             <div className="flex gap-4 px-4 py-3">
               <dt className="w-24 shrink-0 font-medium">At delivery</dt>
@@ -174,7 +174,7 @@ export function RequestDetails() {
               navigate('/requests/r2/track');
             }}
           >
-            Accept & reserve 15.80 DC
+            Accept & reserve 15.80 ETB
           </Button>
         </div>
       </BottomSheet>
@@ -185,7 +185,7 @@ export function RequestDetails() {
         title="Cancel request?"
         description="Fulfillers who offered will be notified."
         reasons={['I don’t need it anymore', 'Offers are too expensive', 'I posted the wrong details', 'Other']}
-        note="No DC has been reserved yet, so nothing needs to be refunded."
+        note="No funds have been reserved yet, so nothing needs to be refunded."
         confirmLabel="Cancel request"
         destructive
         onConfirm={() => {

@@ -51,15 +51,15 @@ export function Home() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl space-y-7 px-4 pt-4 pb-20 sm:px-6 lg:px-8 lg:pt-8">
+    <div className="mx-auto max-w-4xl space-y-6 px-4 pt-4 pb-20 sm:px-6 lg:px-8 lg:pt-8">
       {/* =========================================================================
           TOP BAR: Clean Telegram Mini App Header
          ========================================================================= */}
       <header className="flex items-start justify-between gap-3">
         {/* Left Side: Greeting */}
         <div className="pt-0.5">
-          <h1 className="flex items-center gap-1.5 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-            Hi, Maya <span className="inline-block text-xl sm:text-2xl">👋</span>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            Hi, Maya
           </h1>
           <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
             Good food keeps the campus moving.
@@ -77,7 +77,10 @@ export function Home() {
             <div className="flex size-6 items-center justify-center rounded-full bg-primary/10 text-primary">
               <FontAwesomeIcon icon={faWallet} className="size-3.5" />
             </div>
-            <span className="font-semibold text-sm text-foreground">152.5</span>
+            <div className="flex items-baseline gap-1">
+              <span className="font-semibold text-sm text-foreground">152.50</span>
+              <span className="text-[11px] font-semibold text-muted-foreground">ETB</span>
+            </div>
           </Link>
 
           {/* User Avatar */}
@@ -96,7 +99,7 @@ export function Home() {
          ========================================================================= */}
       <section
         aria-label="Promotional banner slider"
-        className="relative h-44 w-full overflow-hidden rounded-3xl bg-secondary/50 shadow-xs sm:h-56 md:h-64"
+        className="relative h-44 w-full overflow-hidden rounded-2xl bg-secondary/50 shadow-xs sm:h-56 md:h-64"
       >
         <AnimatePresence mode="wait">
           <motion.img
@@ -141,13 +144,13 @@ export function Home() {
           <TabsList className="flex h-auto w-full justify-start gap-2.5 bg-transparent p-0 sm:w-auto">
             <TabsTrigger
               value="my-requests"
-              className="flex items-center gap-2 rounded-full bg-[#EDE9E1] px-5 py-2.5 text-xs font-semibold text-[#1A231F] shadow-none transition-all hover:bg-[#E4DFD5] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:text-sm"
+              className="flex items-center gap-2 rounded-full bg-secondary px-5 py-2.5 text-xs font-semibold text-secondary-foreground shadow-none transition-all hover:bg-secondary/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:text-sm"
             >
               <FontAwesomeIcon icon={faListOl} className="size-3.5" /> My Requests
             </TabsTrigger>
             <TabsTrigger
               value="delivery"
-              className="flex items-center gap-2 rounded-full bg-[#EDE9E1] px-5 py-2.5 text-xs font-semibold text-[#1A231F] shadow-none transition-all hover:bg-[#E4DFD5] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:text-sm"
+              className="flex items-center gap-2 rounded-full bg-secondary px-5 py-2.5 text-xs font-semibold text-secondary-foreground shadow-none transition-all hover:bg-secondary/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:text-sm"
             >
               <FontAwesomeIcon icon={faTruck} className="size-3.5" /> Delivery Requests
             </TabsTrigger>
@@ -168,7 +171,7 @@ export function Home() {
               </Link>
             </div>
 
-            <div className="space-y-3.5">
+            <div className="space-y-3">
               <RequestCard
                 request={{
                   id: 'r1',
@@ -224,12 +227,12 @@ export function Home() {
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-xs text-muted-foreground">
-                  Requests from other students waiting for a deliverer. Send an offer to earn DC!
+                  Requests from other students waiting for a deliverer. Send an offer to earn ETB!
                 </p>
               </div>
             </div>
 
-            <div className="space-y-3.5">
+            <div className="space-y-3">
               <RequestCard
                 request={{
                   id: 'r4',

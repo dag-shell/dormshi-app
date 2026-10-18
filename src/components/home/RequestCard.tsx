@@ -66,13 +66,13 @@ export function RequestCard({ request, action, showRole = false }: RequestCardPr
               </span>
             )}
             {showRole && (isMine || isFulfilling) && (
-              <span className="rounded-md bg-secondary px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+              <span className="rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-muted-foreground">
                 {isMine ? 'Your request' : 'You’re delivering'}
               </span>
             )}
           </div>
 
-          <FontAwesomeIcon icon={faChevronRight} className="size-3.5 shrink-0 text-muted-foreground/60 transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+          <FontAwesomeIcon icon={faChevronRight} className="size-3.5 shrink-0 text-muted-foreground/60 transition-colors group-hover:text-foreground" />
         </div>
 
         {/* Food Title with Link */}
@@ -86,7 +86,7 @@ export function RequestCard({ request, action, showRole = false }: RequestCardPr
         </h4>
 
         {/* Pickup & Destination */}
-        <div className="mt-2.5 space-y-1 text-xs text-muted-foreground sm:text-sm">
+        <div className="mt-2 space-y-1 text-xs text-muted-foreground sm:text-sm">
           <div className="flex items-center gap-2">
             <FontAwesomeIcon icon={faLocationDot} className="size-3.5 shrink-0 text-muted-foreground" />
             <span className="truncate">

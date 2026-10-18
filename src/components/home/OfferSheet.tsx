@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -18,6 +19,7 @@ export function OfferSheet({ request, onClose }: OfferSheetProps) {
   const [deliveryFee, setDeliveryFee] = useState('2.50');
   const [eta, setEta] = useState('15');
   const [note, setNote] = useState('Already at the dining hall, can grab it right away!');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const food = parseFloat(foodPrice) || 0;
   const fee = parseFloat(deliveryFee) || 0;
@@ -25,7 +27,12 @@ export function OfferSheet({ request, onClose }: OfferSheetProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onClose();
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      toast.success(`Offer of ETB ${total} sent to student!`);
+      onClose();
+    }, 600);
   };
 
   return (
@@ -80,11 +87,11 @@ export function OfferSheet({ request, onClose }: OfferSheetProps) {
 
         <div className="flex items-center justify-between rounded-lg bg-secondary px-4 py-3 text-sm">
           <span className="text-muted-foreground">Requester pays</span>
-          <span className="font-mono font-semibold">{total} DC</span>
+          <span className="font-mono font-semibold">ETB {total}</span>
         </div>
 
-        <Button type="submit" size="lg" className="h-11 w-full text-sm">
-          Send offer
+        <Button type="submit" size="lg" disabled={isSubmitting} className="h-11 w-full text-sm">
+          {isSubmitting ? 'Sending offer…' : 'Send offer'}
         </Button>
         <p className="text-center text-xs text-muted-foreground">
           The requester chooses which offer to accept. Terms lock once accepted.

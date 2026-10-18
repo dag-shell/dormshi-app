@@ -55,7 +55,7 @@ export function AgreementCard({ request, canPropose = true, onPropose }: Agreeme
         />
 
         <p className="mt-3 rounded-lg bg-primary-soft px-3 py-2 text-xs leading-5 text-primary">
-          15.80 DC is held in escrow. It is released only after QR-verified delivery.
+          15.80 ETB is held in escrow. It is released only after QR-verified delivery.
         </p>
 
         {change && (

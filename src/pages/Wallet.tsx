@@ -49,11 +49,11 @@ export function Wallet() {
             <p className="text-xs opacity-70">Available balance</p>
             <p className="mt-1 font-mono text-4xl font-semibold tracking-tight">
               42.75
-              <span className="ml-2 text-base font-medium opacity-70">DC</span>
+              <span className="ml-2 text-base font-medium opacity-70">ETB</span>
             </p>
             <div className="mt-4 flex items-center justify-between border-t border-white/15 pt-3 text-sm">
               <span className="opacity-70">Reserved in escrow</span>
-              <span className="font-mono">32.00 DC</span>
+              <span className="font-mono">32.00 ETB</span>
             </div>
           </section>
 

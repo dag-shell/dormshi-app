@@ -1,6 +1,4 @@
-# Dormshi Database Schema
-
-Minimal database design derived from `@src` for the `tgcloud` SQLite platform (`sdk/db`).
+# Database
 
 
 
