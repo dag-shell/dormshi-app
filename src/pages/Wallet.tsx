@@ -77,15 +77,15 @@ export function Wallet() {
         <section aria-labelledby="history-title" className="md:rounded-xl md:border md:bg-card md:px-6 md:pb-2 md:pt-5">
           <div className="flex items-center justify-between">
             <h2 id="history-title" className="font-semibold tracking-tight">Transactions</h2>
-            <div className="flex rounded-lg border bg-card p-1 text-xs" role="group" aria-label="Filter transactions">
+            <div className="flex rounded-full border border-border bg-card p-1 text-xs" role="group" aria-label="Filter transactions">
               {filters.map((f) => (
                 <button
                   key={f.id}
                   type="button"
                   aria-pressed={filter === f.id}
                   onClick={() => setFilter(f.id)}
-                  className={`rounded-md px-3 py-1 font-medium ${
-                    filter === f.id ? 'bg-secondary text-foreground' : 'text-muted-foreground'
+                  className={`rounded-full px-3 py-1 font-medium transition-all ${
+                    filter === f.id ? 'bg-secondary font-semibold text-foreground' : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   {f.label}

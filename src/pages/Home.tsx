@@ -142,17 +142,17 @@ export function Home() {
          ========================================================================= */}
       <section aria-labelledby="requests-title" className="space-y-4">
         <Tabs defaultValue="my-requests" className="w-full">
-          {/* 2-Pill Toggle */}
-          <TabsList className="flex h-auto w-full justify-start gap-2 bg-transparent p-0 sm:w-auto">
+          {/* Segmented Filter Toggle (styled like Wallet transaction filter) */}
+          <TabsList className="inline-flex h-auto items-center rounded-full border border-border bg-card p-1">
             <TabsTrigger
               value="my-requests"
-              className="flex items-center gap-2 rounded-full bg-secondary px-5 py-2 text-xs font-semibold text-secondary-foreground shadow-none transition-all hover:bg-secondary/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:text-sm"
+              className="flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-muted-foreground transition-all hover:text-foreground data-[state=active]:bg-secondary data-[state=active]:font-semibold data-[state=active]:text-foreground sm:text-sm"
             >
               <FontAwesomeIcon icon={faListOl} className="size-3.5" /> My requests
             </TabsTrigger>
             <TabsTrigger
               value="delivery"
-              className="flex items-center gap-2 rounded-full bg-secondary px-5 py-2 text-xs font-semibold text-secondary-foreground shadow-none transition-all hover:bg-secondary/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:text-sm"
+              className="flex items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-muted-foreground transition-all hover:text-foreground data-[state=active]:bg-secondary data-[state=active]:font-semibold data-[state=active]:text-foreground sm:text-sm"
             >
               <FontAwesomeIcon icon={faTruck} className="size-3.5" /> Delivery requests
             </TabsTrigger>
@@ -188,7 +188,6 @@ export function Home() {
                   offerCount: 2,
                   price: 'ETB 120'
                 }}
-                showRole
               />
               <RequestCard
                 request={{
@@ -204,7 +203,6 @@ export function Home() {
                   isMine: true,
                   offerCount: 1
                 }}
-                showRole
               />
               <RequestCard
                 request={{
@@ -219,7 +217,6 @@ export function Home() {
                   requesterInitials: 'MO',
                   isMine: true
                 }}
-                showRole
               />
             </div>
           </TabsContent>
