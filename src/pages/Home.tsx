@@ -270,7 +270,7 @@ export function Home() {
               <RequestCard
                 request={{
                   id: 'r4',
-                  food: 'Iced oat latte + blueberry muffin',
+                  food: 'Iced oat latte, blueberry muffin',
                   pickup: 'Bean Counter Café',
                   destination: 'Engineering Building, Lab 1.12',
                   status: 'open',
@@ -284,7 +284,7 @@ export function Home() {
                 action={
                   <Button
                     size="sm"
-                    onClick={() => handleMakeOffer({ id: 'r4', food: 'Iced oat latte + blueberry muffin' })}
+                    onClick={() => handleMakeOffer({ id: 'r4', food: 'Iced oat latte, blueberry muffin' })}
                     className="rounded-full px-4 font-semibold"
                   >
                     Make offer
@@ -318,7 +318,7 @@ export function Home() {
               <RequestCard
                 request={{
                   id: 'r6',
-                  food: '2 Clif bars (chocolate chip) + sparkling water',
+                  food: '2 Clif bars, sparkling water',
                   pickup: 'CVS on College St',
                   destination: 'Rec Center front desk',
                   status: 'open',
@@ -332,7 +332,7 @@ export function Home() {
                 action={
                   <Button
                     size="sm"
-                    onClick={() => handleMakeOffer({ id: 'r6', food: '2 Clif bars (chocolate chip) + sparkling water' })}
+                    onClick={() => handleMakeOffer({ id: 'r6', food: '2 Clif bars, sparkling water' })}
                     className="rounded-full px-4 font-semibold"
                   >
                     Make offer
@@ -342,7 +342,7 @@ export function Home() {
               <RequestCard
                 request={{
                   id: 'r7',
-                  food: '2 pepperoni slices + a Coke',
+                  food: '2 pepperoni slices, Coke',
                   pickup: "Gino's Pizza",
                   destination: 'Music Hall, practice room 7',
                   status: 'open',
@@ -355,7 +355,7 @@ export function Home() {
                 action={
                   <Button
                     size="sm"
-                    onClick={() => handleMakeOffer({ id: 'r7', food: '2 pepperoni slices + a Coke' })}
+                    onClick={() => handleMakeOffer({ id: 'r7', food: '2 pepperoni slices, Coke' })}
                     className="rounded-full px-4 font-semibold"
                   >
                     Make offer
