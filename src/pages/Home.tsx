@@ -109,7 +109,7 @@ export function Home() {
             initial={{ opacity: 0, scale: 1.02 }}
             animate={{ opacity: 0.88, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.4, ease: 'easeInOut' }}
+            transition={{ duration: 0.2, ease: [0.4, 0.4, 0, 1] }}
             className="h-full w-full object-cover"
           />
         </AnimatePresence>
@@ -125,7 +125,7 @@ export function Home() {
               type="button"
               onClick={() => setCurrentSlide(idx)}
               aria-label={`Go to slide ${idx + 1}`}
-              className={`h-2 rounded-full transition-all duration-300 ${
+              className={`h-2 rounded-full transition-all duration-200 ${
                 idx === currentSlide
                   ? 'w-6 bg-white'
                   : 'w-2 bg-white/45 hover:bg-white/80'
