@@ -55,9 +55,6 @@ export function RequestDetails() {
               <StatusBadge status={status} />
               <span className="font-mono text-xs text-muted-foreground">#DMS-R1</span>
             </div>
-            <h2 className="mt-3 text-lg font-semibold leading-snug tracking-tight">
-              {orderTitle}
-            </h2>
 
             {/* Items Breakdown with Quantity and Price */}
             <div className="mt-5 border-t border-border/70 pt-4">
@@ -101,11 +98,6 @@ export function RequestDetails() {
                   </span>
                 </div>
               </div>
-              {!isFinalized && (
-                <p className="mt-2.5 text-[11px] text-muted-foreground">
-                  Prices finalize once you accept an offer.
-                </p>
-              )}
             </div>
 
             {/* Pickup & Destination */}
@@ -125,6 +117,10 @@ export function RequestDetails() {
                 {instructions}
               </p>
             )}
+
+            <Button variant="ghost" className="mt-4 w-full text-destructive" onClick={() => setCancelOpen(true)}>
+              Cancel request
+            </Button>
           </div>
         </section>
 
@@ -138,9 +134,8 @@ export function RequestDetails() {
                 type="button"
                 onClick={() => setSort('total')}
                 aria-pressed={sort === 'total'}
-                className={`rounded-md px-3 py-1 font-medium ${
-                  sort === 'total' ? 'bg-secondary text-foreground' : 'text-muted-foreground'
-                }`}
+                className={`rounded-md px-3 py-1 font-medium ${sort === 'total' ? 'bg-secondary text-foreground' : 'text-muted-foreground'
+                  }`}
               >
                 Lowest total
               </button>
@@ -148,9 +143,8 @@ export function RequestDetails() {
                 type="button"
                 onClick={() => setSort('eta')}
                 aria-pressed={sort === 'eta'}
-                className={`rounded-md px-3 py-1 font-medium ${
-                  sort === 'eta' ? 'bg-secondary text-foreground' : 'text-muted-foreground'
-                }`}
+                className={`rounded-md px-3 py-1 font-medium ${sort === 'eta' ? 'bg-secondary text-foreground' : 'text-muted-foreground'
+                  }`}
               >
                 Fastest
               </button>
@@ -158,13 +152,15 @@ export function RequestDetails() {
           </div>
 
           <div className="space-y-3">
+            <p className="mt-4 text-xs text-muted-foreground">
+              You choose who delivers. Accepting locks the price, fee, and time.
+            </p>
             <OfferCard
               offer={{
                 name: 'Lena Park',
                 initials: 'LP',
                 rating: 4.9,
                 deliveries: 84,
-                dorm: 'Hartley Hall 1A',
                 foodPrice: '12.80',
                 deliveryFee: '3.00',
                 etaMinutes: 12,
@@ -182,7 +178,6 @@ export function RequestDetails() {
                 initials: 'JR',
                 rating: 4.8,
                 deliveries: 61,
-                dorm: 'Ellis Hall',
                 foodPrice: '13.00',
                 deliveryFee: '2.50',
                 etaMinutes: 15,
@@ -200,7 +195,6 @@ export function RequestDetails() {
                 initials: 'DM',
                 rating: 4.6,
                 deliveries: 19,
-                dorm: 'Okoro Commons',
                 foodPrice: '13.00',
                 deliveryFee: '1.75',
                 etaMinutes: 25,
@@ -211,13 +205,6 @@ export function RequestDetails() {
               onAccept={() => setPendingOpen(true)}
             />
           </div>
-
-          <p className="mt-4 text-xs text-muted-foreground">
-            You choose who delivers. Accepting locks the price, fee, and time.
-          </p>
-          <Button variant="ghost" className="mt-4 w-full text-destructive" onClick={() => setCancelOpen(true)}>
-            Cancel request
-          </Button>
         </section>
       </div>
 

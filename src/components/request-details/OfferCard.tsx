@@ -1,9 +1,6 @@
-import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
+import { faChevronRight, faStar } from '@fortawesome/free-solid-svg-icons';
+import { Card, CardHeader, CardContent} from '@/components/ui/card';
 import { UserAvatar } from '@common/UserAvatar';
 
 export interface OfferData {
@@ -30,13 +27,12 @@ interface OfferCardProps {
   onAccept?: () => void;
 }
 
-export function OfferCard({ offer, highlight, onAccept }: OfferCardProps) {
+export function OfferCard({ offer }: OfferCardProps) {
   const data = offer ?? {
     name: 'Lena Park',
     initials: 'LP',
     rating: 4.9,
     deliveries: 84,
-    dorm: 'Hartley Hall 1A',
     foodPrice: '12.80',
     deliveryFee: '3.00',
     etaMinutes: 12,
@@ -49,14 +45,10 @@ export function OfferCard({ offer, highlight, onAccept }: OfferCardProps) {
   const initials = data.initials ?? (data.fulfillerId === 'u_jordan' ? 'JR' : data.fulfillerId === 'u_dev' ? 'DM' : 'LP');
   const rating = data.rating ?? 4.9;
   const deliveries = data.deliveries ?? 84;
-  const dorm = data.dorm ?? 'Hartley Hall 1A';
   const foodPrice = data.foodPrice ?? '12.80';
   const deliveryFee = data.deliveryFee ?? '3.00';
   const etaMinutes = data.etaMinutes ?? 12;
-  const total = data.total ?? '15.80 DC';
-  const note = data.note ?? 'Already at Union Square, can grab it right now.';
-  const timeAgo = data.timeAgo ?? '3m ago';
-  const tag = highlight ?? data.highlight;
+
 
   return (
     <Card>
@@ -66,16 +58,12 @@ export function OfferCard({ offer, highlight, onAccept }: OfferCardProps) {
           <div className="min-w-0 flex-1">
             <div className="flex items-center justify-between gap-2">
               <p className="truncate font-medium">{name}</p>
-              {tag && (
-                <Badge variant="outline" className="border-transparent bg-primary-soft text-primary font-medium">
-                  {tag}
-                </Badge>
-              )}
+              <FontAwesomeIcon icon={faChevronRight} className="size-3.5 shrink-0 text-muted-foreground/60 transition-colors group-hover:text-foreground" />
             </div>
             <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
               <FontAwesomeIcon icon={faStar} className="size-3 text-foreground" aria-label="Rating" />
               <span className="font-medium text-foreground">{rating.toFixed(1)}</span>
-              <span>· {deliveries} deliveries · {dorm}</span>
+              <span>· {deliveries} deliveries</span>
             </p>
           </div>
         </div>
@@ -83,25 +71,12 @@ export function OfferCard({ offer, highlight, onAccept }: OfferCardProps) {
 
       <CardContent className="p-4">
         <dl className="grid grid-cols-3 divide-x rounded-lg border bg-background text-center">
-          <Cell label="Food" value={String(foodPrice)} unit="DC" />
-          <Cell label="Delivery" value={String(deliveryFee)} unit="DC" />
+          <Cell label="Item Fee" value={String(foodPrice)} unit="DC" />
+          <Cell label="Delivery Fee" value={String(deliveryFee)} unit="DC" />
           <Cell label="Arrives in" value={String(etaMinutes)} unit="min" />
         </dl>
 
-        {note && <p className="mt-3 text-sm text-muted-foreground">“{note}”</p>}
       </CardContent>
-
-      <CardFooter className="flex items-center justify-between gap-3 p-4 pt-0">
-        <div>
-          <p className="text-xs text-muted-foreground">Total · offered {timeAgo}</p>
-          <p className="font-mono text-lg font-semibold">{total}</p>
-        </div>
-        {onAccept && (
-          <Button size="lg" onClick={onAccept} className="h-10 px-5">
-            Accept offer
-          </Button>
-        )}
-      </CardFooter>
     </Card>
   );
 }
