@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { StatusBadge } from '@common/StatusBadge';
-import { OfferCard } from '@/components/request-details/OfferCard';
+import { UserAvatar } from '@common/UserAvatar';
+import { OfferCard, type OfferData } from '@/components/request-details/OfferCard';
 import { BottomSheet } from '@common/BottomSheet';
-import { TermsBreakdown } from '@common/TermsBreakdown';
 import { ReasonSheet } from '@/components/order/ReasonSheet';
 import { Button } from '@/components/ui/button';
 import type { OrderStatus } from '@/types/dormshi';
@@ -13,8 +15,70 @@ export function RequestDetails() {
   const navigate = useNavigate();
   const location = useLocation();
   const [sort, setSort] = useState<'total' | 'eta'>('total');
-  const [pendingOpen, setPendingOpen] = useState(false);
+  const [selectedOffer, setSelectedOffer] = useState<OfferData | null>(null);
   const [cancelOpen, setCancelOpen] = useState(false);
+
+  const offers: OfferData[] = [
+    {
+      id: 'off_1',
+      name: 'Lena Park',
+      initials: 'LP',
+      rating: 4.9,
+      deliveries: 84,
+      dorm: 'Hartley Hall 1A',
+      foodPrice: 120.0,
+      deliveryFee: 25.0,
+      etaMinutes: 12,
+      total: '145.00 ETB',
+      availableItems: 'All (2)',
+      itemsAvailability: [
+        { name: 'Taro milk tea', quantity: 2, available: true, unitPrice: 50.0, price: 100.0 },
+        { name: 'Boba topping', quantity: 2, available: true, unitPrice: 10.0, price: 20.0 }
+      ],
+      note: 'Already at Union Square, verified pricing at the counter.',
+      timeAgo: '3m ago',
+      highlight: 'Best price'
+    },
+    {
+      id: 'off_2',
+      name: 'Jordan Reyes',
+      initials: 'JR',
+      rating: 4.8,
+      deliveries: 61,
+      dorm: 'Ellis Hall',
+      foodPrice: 100.0,
+      deliveryFee: 20.0,
+      etaMinutes: 15,
+      total: '120.00 ETB',
+      availableItems: '1 of 2',
+      itemsAvailability: [
+        { name: 'Taro milk tea', quantity: 2, unitPrice: 50.0, price: 100.0 },
+        { name: 'Boba topping', quantity: 2 }
+      ],
+      note: 'Heading to Hartley now. Boba is out of stock today, so only charging for the tea.',
+      timeAgo: '6m ago',
+      highlight: 'Fastest'
+    },
+    {
+      id: 'off_3',
+      name: 'Dev Mehta',
+      initials: 'DM',
+      rating: 4.6,
+      deliveries: 19,
+      dorm: 'Okoro Commons',
+      foodPrice: 120.0,
+      deliveryFee: 15.0,
+      etaMinutes: 25,
+      total: '135.00 ETB',
+      availableItems: 'All (2)',
+      itemsAvailability: [
+        { name: 'Taro milk tea', quantity: 2, available: true, unitPrice: 50.0, price: 100.0 },
+        { name: 'Boba topping', quantity: 2, available: true, unitPrice: 10.0, price: 20.0 }
+      ],
+      note: 'Can pick up on my way out of class. Store price confirmed.',
+      timeAgo: '8m ago'
+    }
+  ];
 
   const state = (location.state as {
     food?: string;
@@ -26,7 +90,6 @@ export function RequestDetails() {
     agreement?: { foodPrice: number; deliveryFee: number };
   }) || {};
 
-  const orderTitle = state.food || 'Taro milk tea, Boba';
   const pickup = state.pickup || 'Tea Lab, Union Square';
   const destination = state.destination || 'Hartley Hall, 3rd floor lounge';
   const instructions = state.instructions || 'Less ice on both please. Text me when downstairs.';
@@ -43,6 +106,30 @@ export function RequestDetails() {
   const foodTotal = isFinalized ? (agreement?.foodPrice ?? 120) : null;
   const deliveryFee = isFinalized ? (agreement?.deliveryFee ?? 20) : null;
   const grandTotal = isFinalized && foodTotal && deliveryFee ? foodTotal + deliveryFee : null;
+
+  const sortedOffers = [...offers].sort((a, b) => {
+    if (sort === 'total') {
+      const totalA = Number(a.foodPrice || 0) + Number(a.deliveryFee || 0);
+      const totalB = Number(b.foodPrice || 0) + Number(b.deliveryFee || 0);
+      return totalA - totalB;
+    }
+    return Number(a.etaMinutes || 0) - Number(b.etaMinutes || 0);
+  });
+
+  const isItemAvailable = (item: { price?: number; unitPrice?: number; available?: boolean }) => {
+    if (item.available !== undefined) return item.available;
+    const p = item.price ?? item.unitPrice;
+    return typeof p === 'number' && p > 0;
+  };
+
+  const offerItems = selectedOffer?.itemsAvailability || items.map((i) => ({
+    name: i.name,
+    quantity: i.quantity,
+    unitPrice: 50,
+    price: 50 * i.quantity
+  }));
+  const allAvailable = offerItems.every(isItemAvailable);
+  const availableCount = offerItems.filter(isItemAvailable).length;
 
   return (
     <div>
@@ -118,7 +205,7 @@ export function RequestDetails() {
               </p>
             )}
 
-            <Button variant="ghost" className="mt-4 w-full text-destructive" onClick={() => setCancelOpen(true)}>
+            <Button variant="ghost" className="mt-4 w-full rounded-full text-destructive" onClick={() => setCancelOpen(true)}>
               Cancel request
             </Button>
           </div>
@@ -127,14 +214,14 @@ export function RequestDetails() {
         <section aria-labelledby="offers-title">
           <div className="mb-3 flex items-center justify-between">
             <h2 id="offers-title" className="text-base font-semibold tracking-tight">
-              Offers <span className="text-muted-foreground">(3)</span>
+              Offers <span className="text-muted-foreground">({offers.length})</span>
             </h2>
-            <div className="flex rounded-lg border bg-card p-1 text-xs" role="group" aria-label="Sort offers">
+            <div className="flex rounded-full border bg-card p-1 text-xs" role="group" aria-label="Sort offers">
               <button
                 type="button"
                 onClick={() => setSort('total')}
                 aria-pressed={sort === 'total'}
-                className={`rounded-md px-3 py-1 font-medium ${sort === 'total' ? 'bg-secondary text-foreground' : 'text-muted-foreground'
+                className={`rounded-full px-3 py-1 font-medium transition-colors ${sort === 'total' ? 'bg-secondary text-foreground' : 'text-muted-foreground'
                   }`}
               >
                 Lowest total
@@ -143,7 +230,7 @@ export function RequestDetails() {
                 type="button"
                 onClick={() => setSort('eta')}
                 aria-pressed={sort === 'eta'}
-                className={`rounded-md px-3 py-1 font-medium ${sort === 'eta' ? 'bg-secondary text-foreground' : 'text-muted-foreground'
+                className={`rounded-full px-3 py-1 font-medium transition-colors ${sort === 'eta' ? 'bg-secondary text-foreground' : 'text-muted-foreground'
                   }`}
               >
                 Fastest
@@ -155,94 +242,178 @@ export function RequestDetails() {
             <p className="mt-4 text-xs text-muted-foreground">
               You choose who delivers. Accepting locks the price, fee, and time.
             </p>
-            <OfferCard
-              offer={{
-                name: 'Lena Park',
-                initials: 'LP',
-                rating: 4.9,
-                deliveries: 84,
-                foodPrice: '12.80',
-                deliveryFee: '3.00',
-                etaMinutes: 12,
-                total: 'ETB 128',
-                note: 'Already at Union Square, can grab it right now.',
-                timeAgo: '3m ago',
-                highlight: 'Best price'
-              }}
-              onAccept={() => setPendingOpen(true)}
-            />
-
-            <OfferCard
-              offer={{
-                name: 'Jordan Reyes',
-                initials: 'JR',
-                rating: 4.8,
-                deliveries: 61,
-                foodPrice: '13.00',
-                deliveryFee: '2.50',
-                etaMinutes: 15,
-                total: 'ETB 125',
-                note: 'Heading back to Hartley anyway.',
-                timeAgo: '6m ago',
-                highlight: 'Fastest'
-              }}
-              onAccept={() => setPendingOpen(true)}
-            />
-
-            <OfferCard
-              offer={{
-                name: 'Dev Mehta',
-                initials: 'DM',
-                rating: 4.6,
-                deliveries: 19,
-                foodPrice: '13.00',
-                deliveryFee: '1.75',
-                etaMinutes: 25,
-                total: 'ETB 118',
-                note: 'Can pick up on my way out of class.',
-                timeAgo: '8m ago'
-              }}
-              onAccept={() => setPendingOpen(true)}
-            />
+            {sortedOffers.map((offer) => (
+              <OfferCard
+                key={offer.id}
+                offer={offer}
+                onClick={() => setSelectedOffer(offer)}
+              />
+            ))}
           </div>
         </section>
       </div>
 
+      {/* Offer Details Sheet: Shows confirmed item availability and itemized pricing */}
       <BottomSheet
-        open={pendingOpen}
-        onClose={() => setPendingOpen(false)}
-        title="Accept this offer?"
-        description="Lena Park will get your food."
+        open={Boolean(selectedOffer)}
+        onClose={() => setSelectedOffer(null)}
+        title="Offer details"
+        description={selectedOffer ? `From ${selectedOffer.name}` : undefined}
       >
-        <div className="space-y-4">
-          <div className="rounded-lg border bg-card p-4">
-            <TermsBreakdown foodPrice={12.8} deliveryFee={3.0} etaLabel="12 min" />
+        {selectedOffer && (
+          <div className="space-y-4">
+            {/* Deliverer Profile Snippet */}
+            <div className="flex items-center gap-3 rounded-lg border border-border bg-card p-3">
+              <UserAvatar initials={selectedOffer.initials || 'MO'} />
+              <div className="min-w-0 flex-1">
+                <p className="font-semibold text-foreground">{selectedOffer.name}</p>
+                <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <FontAwesomeIcon icon={faStar} className="size-3 text-foreground" />
+                  <span className="font-medium text-foreground">{selectedOffer.rating}</span>
+                  <span>· {selectedOffer.deliveries} deliveries</span>
+                </p>
+              </div>
+            </div>
+
+            {/* Items & Cafe Prices Section */}
+            <div className="rounded-lg border border-border bg-card p-3.5">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-semibold text-muted-foreground">
+                  Items ({offerItems.reduce((acc, i) => acc + i.quantity, 0)})
+                </h3>
+                {availableCount < offerItems.length && (
+                  <span className="rounded-full bg-destructive/10 px-2.5 py-0.5 text-[11px] font-medium text-destructive">
+                    {offerItems.length - availableCount} out of stock
+                  </span>
+                )}
+              </div>
+
+              <ul className="mt-2 divide-y divide-border/50 text-xs">
+                {offerItems.map((item, idx) => {
+                  const available = isItemAvailable(item);
+                  const itemTotal = available
+                    ? (item.price ?? (item.unitPrice ? item.unitPrice * item.quantity : undefined))
+                    : undefined;
+                  const unitPrice = item.unitPrice ?? (item.price && item.quantity ? item.price / item.quantity : undefined);
+
+                  return (
+                    <li key={idx} className="py-2.5">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="font-medium text-foreground">
+                            {item.quantity}x {item.name}
+                          </p>
+                          {available && unitPrice !== undefined && (
+                            <p className="text-[11px] text-muted-foreground">
+                              ({unitPrice} ETB/item)
+                            </p>
+                          )}
+                        </div>
+                        <div>
+                          {available ? (
+                            <span className="font-mono text-xs font-semibold text-foreground">
+                              {itemTotal !== undefined ? `ETB ${itemTotal.toFixed(2)}` : '---'}
+                            </span>
+                          ) : (
+                            <span className="rounded-full bg-destructive/10 px-2.5 py-0.5 text-[11px] font-medium text-destructive">
+                              Out of stock
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            {/* Note from deliverer if any */}
+            {selectedOffer.note && (
+              <div className="space-y-1">
+                <span className="text-xs text-muted-foreground">Note from deliverer</span>
+                <p className="rounded-lg bg-secondary px-3 py-2 text-xs italic text-foreground">
+                  “{selectedOffer.note}”
+                </p>
+              </div>
+            )}
+
+            {/* Itemized Pricing & Delivery Fee */}
+            {(() => {
+              const foodCost = offerItems.reduce((sum, item) => {
+                if (!isItemAvailable(item)) return sum;
+                const cost = item.price ?? (item.unitPrice ? item.unitPrice * item.quantity : 0);
+                return sum + cost;
+              }, 0) || Number(selectedOffer.foodPrice || 0);
+
+              const fee = Number(selectedOffer.deliveryFee || 0);
+              const totalToPay = foodCost + fee;
+
+              return (
+                <>
+                  <div className="space-y-2 rounded-lg border border-border bg-card p-3.5 text-xs">
+                    <div className="flex justify-between text-muted-foreground">
+                      <span>Food cost (from cafe)</span>
+                      <span className="font-mono font-medium text-foreground">
+                        ETB {foodCost.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-muted-foreground">
+                      <span>Delivery fee</span>
+                      <span className="font-mono font-medium text-foreground">
+                        ETB {fee.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-muted-foreground">
+                      <span>Estimated arrival</span>
+                      <span className="font-mono font-medium text-foreground">
+                        ~{selectedOffer.etaMinutes} min
+                      </span>
+                    </div>
+                    <div className="flex justify-between border-t border-border/60 pt-2 text-sm font-semibold text-foreground">
+                      <span>Total to pay</span>
+                      <span className="font-mono font-bold text-primary">
+                        ETB {totalToPay.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Escrow and Protection Terms */}
+                  <dl className="divide-y rounded-lg border border-border bg-secondary/30 text-xs">
+                    <div className="flex gap-3 px-3 py-2.5">
+                      <dt className="w-16 shrink-0 font-medium text-foreground">Escrow</dt>
+                      <dd className="text-muted-foreground">
+                        Held safely. Released only after you scan QR code at delivery.
+                      </dd>
+                    </div>
+                    <div className="flex gap-3 px-3 py-2.5">
+                      <dt className="w-16 shrink-0 font-medium text-foreground">Refund</dt>
+                      <dd className="text-muted-foreground">
+                        Full instant refund if cancelled before store pickup.
+                      </dd>
+                    </div>
+                  </dl>
+
+                  <Button
+                    size="lg"
+                    className="h-11 w-full rounded-full text-sm font-semibold"
+                    onClick={() => {
+                      setSelectedOffer(null);
+                      navigate('/requests/r2/track', {
+                        state: {
+                          acceptedOffer: selectedOffer,
+                          total: totalToPay.toFixed(2),
+                          items: offerItems
+                        }
+                      });
+                    }}
+                  >
+                    Accept offer
+                  </Button>
+                </>
+              );
+            })()}
           </div>
-          <dl className="divide-y rounded-lg border bg-card text-sm">
-            <div className="flex gap-4 px-4 py-3">
-              <dt className="w-24 shrink-0 font-medium">Now</dt>
-              <dd className="text-muted-foreground">15.80 ETB is reserved from your wallet.</dd>
-            </div>
-            <div className="flex gap-4 px-4 py-3">
-              <dt className="w-24 shrink-0 font-medium">At delivery</dt>
-              <dd className="text-muted-foreground">Released after you scan Lena’s QR code.</dd>
-            </div>
-            <div className="flex gap-4 px-4 py-3">
-              <dt className="w-24 shrink-0 font-medium">If cancelled</dt>
-              <dd className="text-muted-foreground">Full refund any time before pickup.</dd>
-            </div>
-          </dl>
-          <Button
-            size="lg"
-            className="h-11 w-full"
-            onClick={() => {
-              setPendingOpen(false);
-              navigate('/requests/r2/track');
-            }}
-          >
-            Accept & reserve 15.80 ETB
-          </Button>
-        </div>
+        )}
       </BottomSheet>
 
       <ReasonSheet

@@ -19,24 +19,33 @@ export interface OfferData {
   highlight?: string;
   fulfillerId?: string;
   createdAt?: string;
+  availableItems?: string;
+  itemsAvailability?: {
+    name: string;
+    quantity: number;
+    unitPrice?: number;
+    price?: number;
+    available?: boolean;
+    note?: string;
+  }[];
 }
 
 interface OfferCardProps {
   offer?: OfferData;
   highlight?: string;
-  onAccept?: () => void;
+  onClick?: () => void;
 }
 
-export function OfferCard({ offer }: OfferCardProps) {
+export function OfferCard({ offer, onClick }: OfferCardProps) {
   const data = offer ?? {
     name: 'Lena Park',
     initials: 'LP',
     rating: 4.9,
     deliveries: 84,
-    foodPrice: '12.80',
+    availableItems: 'All (2)',
     deliveryFee: '3.00',
     etaMinutes: 12,
-    total: '15.80 DC',
+    total: '15.80 ETB',
     note: 'Already at Union Square, can grab it right now.',
     timeAgo: '3m ago'
   };
@@ -45,13 +54,15 @@ export function OfferCard({ offer }: OfferCardProps) {
   const initials = data.initials ?? (data.fulfillerId === 'u_jordan' ? 'JR' : data.fulfillerId === 'u_dev' ? 'DM' : 'LP');
   const rating = data.rating ?? 4.9;
   const deliveries = data.deliveries ?? 84;
-  const foodPrice = data.foodPrice ?? '12.80';
+  const availableItems = data.availableItems ?? 'All (2)';
   const deliveryFee = data.deliveryFee ?? '3.00';
   const etaMinutes = data.etaMinutes ?? 12;
 
-
   return (
-    <Card>
+    <Card
+      onClick={onClick}
+      className="group cursor-pointer rounded-lg border border-border bg-card transition-all hover:border-primary/40 active:scale-[0.99]"
+    >
       <CardHeader className="p-4 pb-0">
         <div className="flex items-start gap-3">
           <UserAvatar initials={initials} />
@@ -71,22 +82,21 @@ export function OfferCard({ offer }: OfferCardProps) {
 
       <CardContent className="p-4">
         <dl className="grid grid-cols-3 divide-x rounded-lg border bg-background text-center">
-          <Cell label="Item Fee" value={String(foodPrice)} unit="DC" />
-          <Cell label="Delivery Fee" value={String(deliveryFee)} unit="DC" />
+          <Cell label="Available Items" value={availableItems} />
+          <Cell label="Delivery Fee" value={String(deliveryFee)} unit="ETB" />
           <Cell label="Arrives in" value={String(etaMinutes)} unit="min" />
         </dl>
-
       </CardContent>
     </Card>
   );
 }
 
-function Cell({ label, value, unit }: { label: string; value: string; unit: string }) {
+function Cell({ label, value, unit }: { label: string; value: string; unit?: string }) {
   return (
     <div className="px-2 py-3">
       <dt className="text-xs text-muted-foreground">{label}</dt>
       <dd className="mt-1 font-mono text-sm font-medium">
-        {value} <span className="text-xs text-muted-foreground">{unit}</span>
+        {value} {unit && <span className="text-xs text-muted-foreground">{unit}</span>}
       </dd>
     </div>
   );
