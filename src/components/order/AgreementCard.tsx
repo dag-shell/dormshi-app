@@ -1,5 +1,6 @@
 import React from 'react';
-import { Lock } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { TermsBreakdown } from '@common/TermsBreakdown';
@@ -41,7 +42,7 @@ export function AgreementCard({ request, canPropose = true, onPropose }: Agreeme
     <Card aria-labelledby="terms-title">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 pb-3">
         <CardTitle id="terms-title" className="flex items-center gap-2 text-sm font-semibold">
-          <Lock className="size-4" aria-hidden="true" /> Agreed terms
+          <FontAwesomeIcon icon={faLock} className="size-3.5" aria-hidden="true" /> Agreed terms
         </CardTitle>
         <span className="text-xs text-muted-foreground">Locked at 2:45 PM</span>
       </CardHeader>

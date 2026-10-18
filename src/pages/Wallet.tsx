@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { ArrowUpRight, Landmark, Plus, ScanLine } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faArrowUp, faLandmark, faPlus, faQrcode } from '@fortawesome/free-solid-svg-icons';
 import { TransactionRow } from '../components/wallet/TransactionRow';
 import { WalletActionSheet, type WalletAction } from '../components/wallet/WalletActionSheet';
 
 type Filter = 'all' | 'in' | 'out' | 'hold';
 
-const actions: { id: WalletAction; label: string; icon: React.ElementType }[] = [
-  { id: 'buy', label: 'Buy', icon: Plus },
-  { id: 'send', label: 'Send', icon: ArrowUpRight },
-  { id: 'scan', label: 'Scan', icon: ScanLine },
-  { id: 'cashout', label: 'Cash out', icon: Landmark }
+const actions: { id: WalletAction; label: string; icon: IconDefinition }[] = [
+  { id: 'buy', label: 'Buy', icon: faPlus },
+  { id: 'send', label: 'Send', icon: faArrowUp },
+  { id: 'scan', label: 'Scan', icon: faQrcode },
+  { id: 'cashout', label: 'Cash out', icon: faLandmark }
 ];
 
 const filters: { id: Filter; label: string }[] = [
@@ -56,7 +58,7 @@ export function Wallet() {
           </section>
 
           <div className="grid grid-cols-4 gap-2 md:auto-rows-fr md:grid-cols-2 md:gap-4">
-            {actions.map(({ id, label, icon: Icon }) => (
+            {actions.map(({ id, label, icon }) => (
               <button
                 key={id}
                 type="button"
@@ -64,7 +66,7 @@ export function Wallet() {
                 className="flex flex-col items-center justify-center gap-2 rounded-xl border bg-card py-4 text-xs font-medium transition-colors hover:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:flex-row md:justify-start md:gap-3 md:px-5 md:text-sm"
               >
                 <span className={`grid size-9 place-items-center rounded-lg ${id === 'buy' ? 'bg-primary text-primary-foreground' : 'bg-secondary'}`}>
-                  <Icon className="size-4" aria-hidden="true" />
+                  <FontAwesomeIcon icon={icon} className="size-4" aria-hidden="true" />
                 </span>
                 {label}
               </button>

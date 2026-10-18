@@ -1,5 +1,6 @@
 import React from 'react';
-import { Star } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
@@ -72,7 +73,7 @@ export function OfferCard({ offer, highlight, onAccept }: OfferCardProps) {
               )}
             </div>
             <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
-              <Star className="size-3 fill-current text-foreground" aria-label="Rating" />
+              <FontAwesomeIcon icon={faStar} className="size-3 text-foreground" aria-label="Rating" />
               <span className="font-medium text-foreground">{rating.toFixed(1)}</span>
               <span>· {deliveries} deliveries · {dorm}</span>
             </p>

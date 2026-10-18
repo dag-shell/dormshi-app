@@ -1,5 +1,6 @@
 import React, { useEffect, useId, useRef, useState } from 'react';
-import { Check, ChevronDown, Minus, Plus, X } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faChevronDown, faMinus, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 interface MultiSelectProps {
   id: string;
@@ -99,7 +100,7 @@ export function MultiSelect({
                   aria-label={`Decrease ${v}`}
                   className="grid size-5 place-items-center rounded hover:bg-secondary disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
                   
-                  <Minus className="size-3" />
+                  <FontAwesomeIcon icon={faMinus} className="size-2.5" />
                 </button>
                 <span className="w-4 text-center font-mono text-xs" aria-live="polite">{qty}</span>
                 <button
@@ -112,7 +113,7 @@ export function MultiSelect({
                   aria-label={`Increase ${v}`}
                   className="grid size-5 place-items-center rounded hover:bg-secondary disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
                   
-                  <Plus className="size-3" />
+                  <FontAwesomeIcon icon={faPlus} className="size-2.5" />
                 </button>
               </span>
               }
@@ -125,7 +126,7 @@ export function MultiSelect({
                 aria-label={`Remove ${v}`}
                 className="grid size-5 place-items-center rounded hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
                 
-              <X className="size-3" />
+              <FontAwesomeIcon icon={faXmark} className="size-2.5" />
             </button>
           </span>);
 
@@ -149,7 +150,7 @@ export function MultiSelect({
           placeholder={value.length ? '' : placeholder}
           className="h-7 min-w-24 flex-1 bg-transparent px-2 text-sm outline-none placeholder:text-muted-foreground" />
         
-        <ChevronDown className="pointer-events-none absolute right-3 top-3 size-4 text-muted-foreground" aria-hidden="true" />
+        <FontAwesomeIcon icon={faChevronDown} className="pointer-events-none absolute right-3 top-3 size-3.5 text-muted-foreground" aria-hidden="true" />
       </div>
 
       {open &&
@@ -175,7 +176,7 @@ export function MultiSelect({
               className={`flex cursor-pointer items-center justify-between rounded-md px-3 py-2 text-sm ${i === highlight ? 'bg-secondary' : ''}`}>
               
                   {o}
-                  {selected && <Check className="size-4 text-primary" aria-hidden="true" />}
+                  {selected && <FontAwesomeIcon icon={faCheck} className="size-3.5 text-primary" aria-hidden="true" />}
                 </li>);
 
         })

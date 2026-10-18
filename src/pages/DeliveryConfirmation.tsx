@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { BadgeCheck, Check, ScanLine, Star } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleCheck, faCheck, faQrcode, faStar } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { QRScanner } from '@common/QRScanner';
@@ -45,7 +46,7 @@ export function DeliveryConfirmation() {
                 Agreed total is held in escrow. Scan Sam Whitaker’s QR code to release it.
               </p>
               <Button size="lg" className="h-12 w-full" onClick={() => setStep('scanning')}>
-                <ScanLine aria-hidden="true" /> Scan Sam Whitaker’s QR code
+                <FontAwesomeIcon icon={faQrcode} className="mr-2 size-4" aria-hidden="true" /> Scan Sam Whitaker’s QR code
               </Button>
               <p className="text-center text-xs text-muted-foreground">
                 Only confirm once you have your food in hand.
@@ -75,10 +76,10 @@ export function DeliveryConfirmation() {
                 </div>
                 <p className="mt-3 text-lg font-semibold tracking-tight">Sam Whitaker</p>
                 <p className="flex items-center gap-1 text-sm text-muted-foreground">
-                  <Star className="size-3.5 fill-current" aria-hidden="true" /> 4.7 · Brooks Hall
+                  <FontAwesomeIcon icon={faStar} className="size-3.5" aria-hidden="true" /> 4.7 · Brooks Hall
                 </p>
                 <p className="mt-3 inline-flex items-center gap-2 rounded-md bg-primary-soft px-3 py-1 text-xs font-medium text-primary">
-                  <BadgeCheck className="size-3.5" aria-hidden="true" /> Matches the fulfiller on this request
+                  <FontAwesomeIcon icon={faCircleCheck} className="size-3.5" aria-hidden="true" /> Matches the fulfiller on this request
                 </p>
                 <p className="mt-5 text-xs text-muted-foreground">Amount</p>
                 <p className="font-mono text-3xl font-semibold tracking-tight">14.50 DC</p>
@@ -104,7 +105,7 @@ export function DeliveryConfirmation() {
                   transition={{ type: 'spring', stiffness: 400, damping: 18 }}
                   className="grid size-14 place-items-center rounded-full bg-primary text-primary-foreground"
                 >
-                  <Check className="size-7" strokeWidth={3} aria-hidden="true" />
+                  <FontAwesomeIcon icon={faCheck} className="size-7" aria-hidden="true" />
                 </motion.span>
                 <h2 className="mt-4 text-xl font-semibold tracking-tight">Delivery confirmed</h2>
                 <p className="mt-1 text-sm text-muted-foreground">14.50 DC sent to Sam Whitaker</p>

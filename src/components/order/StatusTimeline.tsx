@@ -1,5 +1,6 @@
 import React from 'react';
-import { Check } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 const rawTimeline = [
   { status: 'accepted', label: 'Accepted', description: 'Terms locked and DC reserved in escrow', time: '2:38 PM', done: true },
@@ -32,7 +33,7 @@ export function StatusTimeline(_props?: { request?: unknown }) {
                   : 'border-border bg-card'
               }`}
             >
-              {step.done && <Check className="size-3" strokeWidth={3} />}
+              {step.done && <FontAwesomeIcon icon={faCheck} className="size-2.5" />}
               {step.current && <span className="size-2 animate-pulse rounded-full bg-primary" />}
             </span>
             <div className="flex min-w-0 flex-1 items-start justify-between gap-2">

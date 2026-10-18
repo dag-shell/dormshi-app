@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  ChevronDown,
-  ListOrdered,
-  Plus,
-  Truck,
-  Wallet
-} from 'lucide-react';
+  faListOl,
+  faPlus,
+  faTruck,
+  faWallet
+} from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { UserAvatar } from '@common/UserAvatar';
@@ -75,7 +75,7 @@ export function Home() {
             title="Wallet Balance"
           >
             <div className="flex size-6 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <Wallet className="size-3.5" />
+              <FontAwesomeIcon icon={faWallet} className="size-3.5" />
             </div>
             <span className="font-semibold text-sm text-foreground">152.5</span>
           </Link>
@@ -143,13 +143,13 @@ export function Home() {
               value="my-requests"
               className="flex items-center gap-2 rounded-full bg-[#EDE9E1] px-5 py-2.5 text-xs font-semibold text-[#1A231F] shadow-none transition-all hover:bg-[#E4DFD5] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:text-sm"
             >
-              <ListOrdered className="size-4" /> My Requests
+              <FontAwesomeIcon icon={faListOl} className="size-3.5" /> My Requests
             </TabsTrigger>
             <TabsTrigger
               value="delivery"
               className="flex items-center gap-2 rounded-full bg-[#EDE9E1] px-5 py-2.5 text-xs font-semibold text-[#1A231F] shadow-none transition-all hover:bg-[#E4DFD5] data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:text-sm"
             >
-              <Truck className="size-4" /> Delivery Requests
+              <FontAwesomeIcon icon={faTruck} className="size-3.5" /> Delivery Requests
             </TabsTrigger>
           </TabsList>
 
@@ -163,7 +163,7 @@ export function Home() {
                 to="/requests/new"
                 className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 active:scale-95 sm:px-4.5 sm:py-2.5 sm:text-sm"
               >
-                <Plus className="size-4" />
+                <FontAwesomeIcon icon={faPlus} className="size-3.5" />
                 <span>New request</span>
               </Link>
             </div>

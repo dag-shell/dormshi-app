@@ -2,75 +2,9 @@
 
 Minimal database design derived from `@src` for the `tgcloud` SQLite platform (`sdk/db`).
 
-## Tables
 
-### 1. `users`
-| Column | Type | Notes |
-|---|---|---|
-| `id` | `text` PK | User ID (`u_me`, `u_lena`) |
-| `tg_id` | `integer` | Unique, from Telegram `initData` |
-| `name` | `text` | Full name |
-| `main_balance` | `real` | Account balance (default `0.0`) |
-| `reward_balance` | `real` | Reward balance (default `0.0`) |
-| `escrow_balance` | `real` | Escrow balance (default `0.0`) |
-| `university_code` | `text` | University name |
-| `campus_code` | `text` | University campus |
-| `rating` | `real` | Rating (default `5.0`) |
-| `deliveries`| `integer` | Delivery count (default `0`) |
-| `requests` | `integer` | Requests count (default `0`) |
 
-### 2. `requests`
-| Column | Type | Notes |
-|---|---|---|
-| `id` | `text` PK | Request ID (`r1`, `r_...`) |
-| `requester_id` | `text` | Created by `users.id` |
-| `pickup` | `text` | Restaurant / pickup spot |
-| `destination` | `text` | Drop-off dorm / room |
-| `instructions` | `text` | Optional delivery notes |
-| `image_url` | `text` | Optional image |
-| `status` | `text` | `open`, `accepted`, `getting_food`, `picked_up`, `on_the_way`, `delivered`, `completed`, `cancelled`, `disputed` |
-| `distance_km` | `real` | Distance for nearby discovery |
-| `agreement` | `json` | Locked terms: `{ fulfillerId, foodPrice, deliveryFee, etaMinutes, acceptedAt }` |
-| `pending_change` | `json` | Renegotiated terms: `{ proposedBy, foodPrice, deliveryFee, etaMinutes, reason }` |
-| `status_history` | `json` | Array of `{ status, at }` |
-| `cancel_reason` | `text` | Optional cancellation reason |
-| `dispute_reason` | `text` | Optional dispute reason |
-| `created_at` | `integer` | Timestamp |
 
-### 3. `requested_items`
-| Column | Type | Notes |
-|---|---|---|
-| `id` | `text` PK | Requested item ID |
-| `request_id` | `text` | References `requests.id` |
-| `name` | `text` | Item name |
-| `quantity` | `integer` | Item quantity |
-
-### 4. `offers`
-| Column | Type | Notes |
-|---|---|---|
-| `id` | `text` PK | Offer ID (`o1`, `o_...`) |
-| `request_id` | `text` | Related `requests.id` |
-| `fulfiller_id` | `text` | Created by `users.id` |
-| `food_price` | `real` | Food cost |
-| `delivery_fee` | `real` | Delivery fee |
-| `eta_minutes` | `integer` | Estimated time in minutes |
-| `note` | `text` | Optional note |
-| `created_at` | `integer` | Timestamp |
-
-### 5. `transactions`
-| Column | Type | Notes |
-|---|---|---|
-| `id` | `text` PK | Transaction ID (`tx_01`) |
-| `reference` | `text` | Unique receipt code (`DMS-XXXXXX`) |
-| `user_id` | `text` | Account owner |
-| `type` | `text` | `purchase`, `sent`, `received`, `reserved`, `released`, `earned`, `refund`, `cash_out` |
-| `direction` | `text` | `in`, `out`, `hold` |
-| `amount` | `real` | DC amount |
-| `label` | `text` | Display description |
-| `counterparty_id` | `text` | Other user ID (optional) |
-| `request_id` | `text` | Related request ID (optional) |
-| `method` | `text` | Payment method (optional) |
-| `created_at` | `integer` | Timestamp |
 
 ---
 

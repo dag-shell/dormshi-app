@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, Clock, MapPin } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronRight, faClock, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { StatusBadge } from '@common/StatusBadge';
 import { Card } from '@/components/ui/card';
 import type { OrderStatus } from '@/types/dormshi';
@@ -71,7 +72,7 @@ export function RequestCard({ request, action, showRole = false }: RequestCardPr
             )}
           </div>
 
-          <ChevronRight className="size-4 shrink-0 text-muted-foreground/60 transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+          <FontAwesomeIcon icon={faChevronRight} className="size-3.5 shrink-0 text-muted-foreground/60 transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
         </div>
 
         {/* Food Title with Link */}
@@ -87,13 +88,13 @@ export function RequestCard({ request, action, showRole = false }: RequestCardPr
         {/* Pickup & Destination */}
         <div className="mt-2.5 space-y-1 text-xs text-muted-foreground sm:text-sm">
           <div className="flex items-center gap-2">
-            <MapPin className="size-3.5 shrink-0 text-muted-foreground" />
+            <FontAwesomeIcon icon={faLocationDot} className="size-3.5 shrink-0 text-muted-foreground" />
             <span className="truncate">
               <span className="font-medium text-foreground/85">From:</span> {req.pickup}
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <MapPin className="size-3.5 shrink-0 text-muted-foreground" />
+            <FontAwesomeIcon icon={faLocationDot} className="size-3.5 shrink-0 text-muted-foreground" />
             <span className="truncate">
               <span className="font-medium text-foreground/85">To:</span> {req.destination}
             </span>
@@ -104,7 +105,7 @@ export function RequestCard({ request, action, showRole = false }: RequestCardPr
       {/* Card Footer: Time Ago & Price badge / Action */}
       <div className="mt-4 flex items-center justify-between border-t border-border/50 pt-3">
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          <Clock className="size-3.5 shrink-0" />
+          <FontAwesomeIcon icon={faClock} className="size-3.5 shrink-0" />
           <span>{timeText}</span>
         </div>
 

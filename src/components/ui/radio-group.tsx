@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Circle } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { cn } from '@/lib/utils';
 
 interface RadioGroupContextValue {
@@ -83,7 +84,7 @@ const RadioGroupItem = React.forwardRef<HTMLButtonElement, RadioGroupItemProps>(
         )}
         {...props}
       >
-        {checked && <Circle className="h-2 w-2 fill-primary text-primary" />}
+        {checked && <FontAwesomeIcon icon={faCircle} className="h-2 w-2 text-primary" />}
       </button>
     );
   }

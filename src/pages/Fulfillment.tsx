@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { QrCode, Star } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faQrcode, faStar } from '@fortawesome/free-solid-svg-icons';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { StatusBadge } from '@common/StatusBadge';
 import { UserAvatar } from '@common/UserAvatar';
@@ -33,7 +34,7 @@ export function Fulfillment() {
               <div className="min-w-0 flex-1">
                 <p className="truncate font-medium">Sam Whitaker</p>
                 <p className="flex items-center gap-1 text-xs text-muted-foreground">
-                  Fulfiller · <Star className="size-3 fill-current" aria-hidden="true" /> 4.7 · Brooks Hall
+                  Fulfiller · <FontAwesomeIcon icon={faStar} className="size-3 text-foreground" aria-hidden="true" /> 4.7 · Brooks Hall
                 </p>
               </div>
             </div>
@@ -57,7 +58,7 @@ export function Fulfillment() {
             to="/requests/r2/confirm"
             className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-primary text-sm font-medium text-primary-foreground hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            <QrCode className="size-4" aria-hidden="true" /> Got it? Scan QR to confirm
+            <FontAwesomeIcon icon={faQrcode} className="size-4" aria-hidden="true" /> Got it? Scan QR to confirm
           </Link>
 
           <p className="rounded-lg bg-secondary px-4 py-3 text-sm text-muted-foreground">

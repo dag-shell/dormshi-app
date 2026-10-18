@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Check, ChevronDown } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { cn } from '@/lib/utils';
 
 interface SelectContextValue {
@@ -108,7 +109,7 @@ const SelectTrigger = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttrib
         {...props}
       >
         {children}
-        <ChevronDown className="h-4 w-4 opacity-50" />
+        <FontAwesomeIcon icon={faChevronDown} className="h-3.5 w-3.5 opacity-50" />
       </button>
     );
   }
@@ -181,7 +182,7 @@ const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
         <span className="truncate">{children}</span>
         {isSelected && (
           <span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
-            <Check className="h-4 w-4 text-primary" />
+            <FontAwesomeIcon icon={faCheck} className="h-3.5 w-3.5 text-primary" />
           </span>
         )}
       </div>

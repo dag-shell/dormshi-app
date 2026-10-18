@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/ui/button';
 
 interface PageHeaderProps {
@@ -23,7 +24,7 @@ export function PageHeader({ title, subtitle, backTo, action }: PageHeaderProps)
           aria-label="Go back"
           className="size-9 rounded-full"
         >
-          <ArrowLeft className="size-4" />
+          <FontAwesomeIcon icon={faArrowLeft} className="size-4" />
         </Button>
         <div className="min-w-0 flex-1">
           <h1 className="truncate text-base font-semibold tracking-tight lg:text-lg">{title}</h1>

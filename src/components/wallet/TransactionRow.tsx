@@ -1,16 +1,27 @@
 import React from 'react';
-import { ArrowDownLeft, ArrowUpRight, CheckCircle2, Landmark, Lock, Plus, RotateCcw, Bike } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import {
+  faArrowDown,
+  faArrowUp,
+  faBicycle,
+  faCircleCheck,
+  faLandmark,
+  faLock,
+  faPlus,
+  faRotateLeft
+} from '@fortawesome/free-solid-svg-icons';
 import type { TransactionType } from '@/types/dormshi';
 
-const icons: Record<string, React.ElementType> = {
-  purchase: Plus,
-  sent: ArrowUpRight,
-  received: ArrowDownLeft,
-  reserved: Lock,
-  released: CheckCircle2,
-  earned: Bike,
-  refund: RotateCcw,
-  cash_out: Landmark
+const icons: Record<string, IconDefinition> = {
+  purchase: faPlus,
+  sent: faArrowUp,
+  received: faArrowDown,
+  reserved: faLock,
+  released: faCircleCheck,
+  earned: faBicycle,
+  refund: faRotateLeft,
+  cash_out: faLandmark
 };
 
 const typeLabels: Record<string, string> = {
@@ -44,7 +55,7 @@ export function TransactionRow({ tx }: { tx?: TransactionItemData }) {
   };
 
   const type = item.type ?? 'purchase';
-  const Icon = icons[type] ?? Plus;
+  const icon = icons[type] ?? faPlus;
   const sign = item.direction === 'in' ? '+' : item.direction === 'out' ? '−' : '';
   const timeText = item.timeAgo ?? '2h ago';
   const amountNumber = typeof item.amount === 'number' ? item.amount.toFixed(2) : String(item.amount ?? '25.00');
@@ -58,7 +69,7 @@ export function TransactionRow({ tx }: { tx?: TransactionItemData }) {
             : 'bg-secondary text-muted-foreground'
         }`}
       >
-        <Icon className="size-4" aria-hidden="true" />
+        <FontAwesomeIcon icon={icon} className="size-4" aria-hidden="true" />
       </span>
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium">{item.label}</p>

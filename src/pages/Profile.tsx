@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Star } from 'lucide-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { UserAvatar } from '@common/UserAvatar';
 import { QRCode } from '@common/QRCode';
 
@@ -27,7 +28,7 @@ export function Profile() {
           <div key={s.label} className="flex flex-col-reverse py-4">
             <dt className="text-xs text-muted-foreground">{s.label}</dt>
             <dd className="flex items-center justify-center gap-1 text-lg font-semibold">
-              {s.label === 'Rating' && <Star className="size-4 fill-current" aria-hidden="true" />}
+              {s.label === 'Rating' && <FontAwesomeIcon icon={faStar} className="size-3.5" aria-hidden="true" />}
               {s.value}
             </dd>
           </div>

@@ -1,11 +1,23 @@
 {
   "version": 1,
   "skills": {
+    "add-icon": {
+      "source": "FortAwesome/fontawesome-agent-tools",
+      "sourceType": "github",
+      "skillPath": "plugins/icons/skills/add-icon/SKILL.md",
+      "computedHash": "303d28d273fbe0093905b9838bb000bde0ab11a783088f31530ac671ae1ea26c"
+    },
     "break-ui": {
       "source": "emilkowalski/skills",
       "sourceType": "github",
       "skillPath": "skills/break-ui/SKILL.md",
       "computedHash": "60ada67662925f4df5e3c6ff41cac3ab241b66f8898100a5ffcd7ba7196cb868"
+    },
+    "fa-help": {
+      "source": "FortAwesome/fontawesome-agent-tools",
+      "sourceType": "github",
+      "skillPath": "plugins/icons/skills/fa-help/SKILL.md",
+      "computedHash": "d836a3da615a946e922cf9aaea0b615b1e8cebc4cbbbe79b996f0252e410acaa"
     },
     "impeccable": {
       "source": "pbakaus/impeccable",
@@ -13,11 +25,23 @@
       "skillPath": ".agents/skills/impeccable/SKILL.md",
       "computedHash": "2b16bd26632e294094da7e6d2352dce4c1efec66d3b90c88f0e059b28e2d6e04"
     },
+    "setup-fa": {
+      "source": "FortAwesome/fontawesome-agent-tools",
+      "sourceType": "github",
+      "skillPath": "plugins/icons/skills/setup-fa/SKILL.md",
+      "computedHash": "8fdd94c77411bbfe5ccd459f9aa0251bd35835f63643465a6222ee3884b4ae90"
+    },
     "shadcn": {
       "source": "shadcn-ui/ui",
       "sourceType": "github",
       "skillPath": "skills/shadcn/SKILL.md",
       "computedHash": "b864a958765563321f485a96f4d59c0bb6539f4286ab6d8b8b66895b7ebd302d"
+    },
+    "suggest-icon": {
+      "source": "FortAwesome/fontawesome-agent-tools",
+      "sourceType": "github",
+      "skillPath": "plugins/icons/skills/suggest-icon/SKILL.md",
+      "computedHash": "9ea2bf4321c84e131d8f97978f4d54d59ce68659e22c5e250a6d4c7a195967cb"
     },
     "vibeless-design": {
       "source": "dag-shell/vibeless-design",
