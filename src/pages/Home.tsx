@@ -53,11 +53,11 @@ export function Home() {
   return (
     <div className="mx-auto max-w-4xl space-y-6 px-4 pt-4 pb-20 sm:px-6 lg:px-8 lg:pt-8">
       {/* =========================================================================
-          TOP BAR: Clean Telegram Mini App Header
+          TOP BAR: Clean Telegram Mini App Header (64px per layout spec)
          ========================================================================= */}
-      <header className="flex items-start justify-between gap-3">
+      <header className="flex min-h-16 items-center justify-between gap-3">
         {/* Left Side: Greeting */}
-        <div className="pt-0.5">
+        <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
             Hi, Maya
           </h1>
@@ -71,7 +71,7 @@ export function Home() {
           {/* Wallet Balance Pill */}
           <Link
             to="/wallet"
-            className="flex h-10 items-center gap-2 rounded-full border border-border/80 bg-card px-3.5 shadow-xs transition-all hover:bg-secondary active:scale-95"
+            className="flex h-10 items-center gap-2 rounded-full border border-border bg-card px-3 shadow-none transition-all hover:bg-secondary active:scale-95"
             title="Wallet Balance"
           >
             <div className="flex size-6 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -118,7 +118,7 @@ export function Home() {
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/70 via-black/35 to-transparent z-10" />
 
         {/* Slide Indicator Dots with clear contrast */}
-        <div className="absolute bottom-3.5 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full bg-black/50 px-3.5 py-1.5 backdrop-blur-md ring-1 ring-white/15 shadow-md">
+        <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full bg-black/50 px-3 py-1.5 backdrop-blur-md ring-1 ring-white/15">
           {adImages.map((s, idx) => (
             <button
               key={s.id}
@@ -127,7 +127,7 @@ export function Home() {
               aria-label={`Go to slide ${idx + 1}`}
               className={`h-2 rounded-full transition-all duration-300 ${
                 idx === currentSlide
-                  ? 'w-6 bg-white shadow-xs'
+                  ? 'w-6 bg-white'
                   : 'w-2 bg-white/45 hover:bg-white/80'
               }`}
             />
@@ -141,16 +141,16 @@ export function Home() {
       <section aria-labelledby="requests-title" className="space-y-4">
         <Tabs defaultValue="my-requests" className="w-full">
           {/* 2-Pill Toggle */}
-          <TabsList className="flex h-auto w-full justify-start gap-2.5 bg-transparent p-0 sm:w-auto">
+          <TabsList className="flex h-auto w-full justify-start gap-2 bg-transparent p-0 sm:w-auto">
             <TabsTrigger
               value="my-requests"
-              className="flex items-center gap-2 rounded-full bg-secondary px-5 py-2.5 text-xs font-semibold text-secondary-foreground shadow-none transition-all hover:bg-secondary/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:text-sm"
+              className="flex items-center gap-2 rounded-full bg-secondary px-5 py-2 text-xs font-semibold text-secondary-foreground shadow-none transition-all hover:bg-secondary/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:text-sm"
             >
               <FontAwesomeIcon icon={faListOl} className="size-3.5" /> My Requests
             </TabsTrigger>
             <TabsTrigger
               value="delivery"
-              className="flex items-center gap-2 rounded-full bg-secondary px-5 py-2.5 text-xs font-semibold text-secondary-foreground shadow-none transition-all hover:bg-secondary/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:text-sm"
+              className="flex items-center gap-2 rounded-full bg-secondary px-5 py-2 text-xs font-semibold text-secondary-foreground shadow-none transition-all hover:bg-secondary/80 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground sm:text-sm"
             >
               <FontAwesomeIcon icon={faTruck} className="size-3.5" /> Delivery Requests
             </TabsTrigger>
@@ -164,7 +164,7 @@ export function Home() {
               </div>
               <Link
                 to="/requests/new"
-                className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 active:scale-95 sm:px-4.5 sm:py-2.5 sm:text-sm"
+                className="inline-flex shrink-0 items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-none transition-all hover:bg-primary/90 active:scale-95 sm:text-sm"
               >
                 <FontAwesomeIcon icon={faPlus} className="size-3.5" />
                 <span>New request</span>
