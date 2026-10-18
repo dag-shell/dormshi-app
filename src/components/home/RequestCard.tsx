@@ -54,7 +54,7 @@ export function RequestCard({ request, action, showRole = false }: RequestCardPr
   const timeText = req.timeAgo ?? '11m ago';
 
   return (
-    <Card className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border/70 bg-card p-5 transition-all hover:border-primary/30 hover:shadow-xs">
+    <Card className="group relative flex flex-col justify-between overflow-hidden rounded-lg border border-border bg-card p-5 transition-all hover:border-primary/40">
       <div>
         {/* Top Header line: Status badge + Offer count + Role tag */}
         <div className="flex items-center justify-between gap-3">
@@ -66,7 +66,7 @@ export function RequestCard({ request, action, showRole = false }: RequestCardPr
               </span>
             )}
             {showRole && (isMine || isFulfilling) && (
-              <span className="rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-muted-foreground">
+              <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
                 {isMine ? 'Your request' : 'You’re delivering'}
               </span>
             )}
@@ -79,7 +79,7 @@ export function RequestCard({ request, action, showRole = false }: RequestCardPr
         <h4 className="mt-3 text-base font-semibold text-foreground sm:text-lg">
           <Link
             to={`/requests/${req.id}`}
-            className="after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-ring"
+            className="after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-ring"
           >
             {req.food}
           </Link>
@@ -112,7 +112,7 @@ export function RequestCard({ request, action, showRole = false }: RequestCardPr
         {action ? (
           <div className="relative z-10 shrink-0">{action}</div>
         ) : (
-          <span className="rounded-md bg-primary-soft px-3 py-1 font-mono text-xs font-bold text-primary">
+          <span className="rounded-full bg-primary-soft px-3 py-1 font-mono text-xs font-bold text-primary">
             {req.price || (req.status === 'open' ? `${offersCount} offers` : 'Agreed')}
           </span>
         )}

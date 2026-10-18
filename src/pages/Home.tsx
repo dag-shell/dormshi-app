@@ -99,7 +99,7 @@ export function Home() {
          ========================================================================= */}
       <section
         aria-label="Promotional banner slider"
-        className="relative h-44 w-full overflow-hidden rounded-2xl bg-secondary/50 shadow-xs sm:h-56 md:h-64"
+        className="relative h-44 w-full overflow-hidden rounded-lg bg-secondary/50 sm:h-56 md:h-64"
       >
         <AnimatePresence mode="wait">
           <motion.img
