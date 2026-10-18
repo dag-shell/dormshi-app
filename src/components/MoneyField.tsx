@@ -1,6 +1,6 @@
 import React from 'react';
-import { Input } from './Input';
-import { Label } from './Label';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 interface MoneyFieldProps {
   id: string;

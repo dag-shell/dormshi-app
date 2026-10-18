@@ -1,73 +1,110 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useDormshi } from '../contexts/DormshiContext';
-import { CURRENT_USER_ID } from '../data/users';
 import { StatusBadge } from './StatusBadge';
 import { UserAvatar } from './UserAvatar';
-import { formatDC, timeAgo } from '../utils/format';
-import { requestPath, totalOf } from '../utils/orders';
-import type { FoodRequest } from '../types/dormshi';
+import type { OrderStatus } from '../types/dormshi';
+
+export interface RequestCardData {
+  id: string;
+  food: string;
+  pickup: string;
+  destination: string;
+  status: OrderStatus;
+  createdAt?: string;
+  timeAgo?: string;
+  distanceKm?: number;
+  requesterName?: string;
+  requesterInitials?: string;
+  isMine?: boolean;
+  isFulfilling?: boolean;
+  offerCount?: number;
+  price?: string;
+  offers?: unknown[];
+  agreement?: { fulfillerId?: string };
+  requesterId?: string;
+}
 
 interface RequestCardProps {
-  request: FoodRequest;
+  request?: RequestCardData;
   action?: React.ReactNode;
   showRole?: boolean;
 }
 
 export function RequestCard({ request, action, showRole = false }: RequestCardProps) {
-  const { getUser } = useDormshi();
-  const requester = getUser(request.requesterId);
-  const isMine = request.requesterId === CURRENT_USER_ID;
-  const isFulfilling = request.agreement?.fulfillerId === CURRENT_USER_ID;
-  const offerCount = request.offers.length;
+  const req = request ?? {
+    id: 'r1',
+    food: '2 large taro milk teas, 50% sugar, with boba',
+    pickup: 'Tea Lab, Union Square',
+    destination: 'Hartley Hall, 3rd floor lounge',
+    status: 'open' as OrderStatus,
+    timeAgo: '11m ago',
+    distanceKm: 0,
+    requesterName: 'Maya Okafor',
+    requesterInitials: 'MO',
+    isMine: true,
+    offerCount: 3,
+    price: '15.80 DC'
+  };
+
+  const isMine = req.isMine ?? (req.requesterId === 'u_me');
+  const isFulfilling = req.isFulfilling ?? (req.agreement?.fulfillerId === 'u_me');
+  const requesterName = req.requesterName ?? (isMine ? 'Maya Okafor' : 'Jordan Reyes');
+  const requesterInitials = req.requesterInitials ?? (isMine ? 'MO' : 'JR');
+  const offersCount = req.offerCount ?? (req.offers?.length ?? 0);
+  const timeText = req.timeAgo ?? '11m ago';
 
   return (
     <article className="relative flex flex-col rounded-xl border bg-card p-4 transition-colors hover:border-ring">
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <StatusBadge status={request.status} />
-          {showRole && (isMine || isFulfilling) &&
-          <span className="text-xs text-muted-foreground">{isMine ? 'You requested' : 'You’re delivering'}</span>
-          }
+          <StatusBadge status={req.status} />
+          {showRole && (isMine || isFulfilling) && (
+            <span className="text-xs text-muted-foreground">
+              {isMine ? 'You requested' : 'You’re delivering'}
+            </span>
+          )}
         </div>
-        <span className="text-xs text-muted-foreground">{timeAgo(request.createdAt)}</span>
+        <span className="text-xs text-muted-foreground">{timeText}</span>
       </div>
 
       <h3 className="mt-3 text-base font-medium leading-6">
-        <Link to={requestPath(request)} className="after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-ring">
-          {request.food}
+        <Link
+          to={`/requests/${req.id}`}
+          className="after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-ring"
+        >
+          {req.food}
         </Link>
       </h3>
 
       <dl className="mb-4 mt-2 space-y-1 text-sm">
         <div className="flex gap-2">
           <dt className="w-10 shrink-0 text-muted-foreground">From</dt>
-          <dd className="truncate">{request.pickup}</dd>
+          <dd className="truncate">{req.pickup}</dd>
         </div>
         <div className="flex gap-2">
           <dt className="w-10 shrink-0 text-muted-foreground">To</dt>
-          <dd className="truncate">{request.destination}</dd>
+          <dd className="truncate">{req.destination}</dd>
         </div>
       </dl>
 
       <div className="mt-auto flex items-center justify-between gap-3 border-t pt-3">
         <div className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
-          <UserAvatar user={requester} size="sm" />
+          <UserAvatar initials={requesterInitials} isMe={isMine} size="sm" />
           <span className="truncate">
-            {isMine ? 'You' : requester.name}
-            {!isMine && request.distanceKm > 0 && ` · ${request.distanceKm} km`}
+            {isMine ? 'You' : requesterName}
+            {!isMine && req.distanceKm && req.distanceKm > 0 ? ` · ${req.distanceKm} km` : ''}
           </span>
         </div>
-        {action ?
-        <div className="relative z-10 shrink-0">{action}</div> :
-        request.agreement ?
-        <span className="shrink-0 font-mono text-sm font-medium">{formatDC(totalOf(request.agreement))}</span> :
-
-        <span className="shrink-0 text-xs font-medium text-muted-foreground">
-            {offerCount === 0 ? 'No offers yet' : `${offerCount} offer${offerCount > 1 ? 's' : ''}`}
+        {action ? (
+          <div className="relative z-10 shrink-0">{action}</div>
+        ) : req.price ? (
+          <span className="shrink-0 font-mono text-sm font-medium">{req.price}</span>
+        ) : (
+          <span className="shrink-0 text-xs font-medium text-muted-foreground">
+            {offersCount === 0 ? 'No offers yet' : `${offersCount} offer${offersCount > 1 ? 's' : ''}`}
           </span>
-        }
+        )}
       </div>
-    </article>);
-
+    </article>
+  );
 }

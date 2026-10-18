@@ -1,8 +1,19 @@
 import React from 'react';
 import type { OrderStatus } from '../types/dormshi';
-import { statusLabels } from '../utils/orders';
 
-const styles: Record<OrderStatus, string> = {
+const statusLabels: Record<string, string> = {
+  open: 'Open',
+  accepted: 'Accepted',
+  getting_food: 'Getting food',
+  picked_up: 'Picked up',
+  on_the_way: 'On the way',
+  delivered: 'Delivered',
+  completed: 'Completed',
+  cancelled: 'Cancelled',
+  disputed: 'Disputed'
+};
+
+const styles: Record<string, string> = {
   open: 'border-border bg-card text-foreground',
   accepted: 'border-transparent bg-primary-soft text-primary',
   getting_food: 'border-transparent bg-primary-soft text-primary',
@@ -14,14 +25,17 @@ const styles: Record<OrderStatus, string> = {
   disputed: 'border-transparent bg-destructive-soft text-destructive'
 };
 
-export function StatusBadge({ status }: {status: OrderStatus;}) {
+export function StatusBadge({ status }: { status: OrderStatus | string }) {
   const live = ['getting_food', 'picked_up', 'on_the_way'].includes(status);
-  return (
-    <span className={`inline-flex h-6 items-center gap-2 rounded-md border px-2 text-xs font-medium ${styles[status]}`}>
-      {(status === 'open' || live) &&
-      <span className={`size-1.5 rounded-full bg-primary ${live ? 'animate-pulse' : ''}`} aria-hidden="true" />
-      }
-      {statusLabels[status]}
-    </span>);
+  const label = statusLabels[status] ?? status;
+  const style = styles[status] ?? styles.open;
 
+  return (
+    <span className={`inline-flex h-6 items-center gap-2 rounded-md border px-2 text-xs font-medium ${style}`}>
+      {(status === 'open' || live) && (
+        <span className={`size-1.5 rounded-full bg-primary ${live ? 'animate-pulse' : ''}`} aria-hidden="true" />
+      )}
+      {label}
+    </span>
+  );
 }

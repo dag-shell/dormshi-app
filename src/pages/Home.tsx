@@ -1,38 +1,24 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Check, Plus } from 'lucide-react';
-import { Button } from '../components/Button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/Tabs';
+import { Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RequestCard } from '../components/RequestCard';
 import { OfferSheet } from '../components/OfferSheet';
-import { EmptyState } from '../components/EmptyState';
-import { useDormshi } from '../contexts/DormshiContext';
-import { CURRENT_USER_ID } from '../data/users';
-import { firstName, formatAmount } from '../utils/format';
-import { isActiveStatus, isInvolved } from '../utils/orders';
-import type { FoodRequest } from '../types/dormshi';
 
 export function Home() {
-  const { currentUser, requests, wallet, deliveryRadiusKm } = useDormshi();
-  const [offerFor, setOfferFor] = useState<FoodRequest | null>(null);
-
-  const posted = requests.filter((r) => r.requesterId === CURRENT_USER_ID && isActiveStatus(r.status));
-  const delivering = requests.filter((r) => r.agreement?.fulfillerId === CURRENT_USER_ID && isActiveStatus(r.status));
-  const pendingOffers = requests.filter(
-    (r) => r.status === 'open' && r.requesterId !== CURRENT_USER_ID && r.offers.some((o) => o.fulfillerId === CURRENT_USER_ID)
-  );
-  const nearby = requests.
-  filter((r) => r.status === 'open' && r.requesterId !== CURRENT_USER_ID && r.distanceKm <= deliveryRadiusKm).
-  sort((a, b) => a.distanceKm - b.distanceKm);
-  const history = requests.filter((r) => isInvolved(r, CURRENT_USER_ID) && !isActiveStatus(r.status));
+  const [offerOpen, setOfferOpen] = useState(false);
 
   return (
     <div className="mx-auto max-w-6xl space-y-8 px-5 pt-6 lg:px-10 lg:pt-10">
       <header className="flex items-center justify-between">
         <div>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight lg:text-3xl">Hi, {firstName(currentUser.name)}</h1>
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight lg:text-3xl">Hi, Maya</h1>
         </div>
-        <span className="grid size-8 place-items-center rounded-lg bg-foreground text-sm font-semibold text-background lg:hidden" aria-label="Dormshi">
+        <span
+          className="grid size-8 place-items-center rounded-lg bg-foreground text-sm font-semibold text-background lg:hidden"
+          aria-label="Dormshi"
+        >
           d
         </span>
       </header>
@@ -40,8 +26,8 @@ export function Home() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Link
           to="/requests/new"
-          className="flex items-center gap-4 rounded-xl bg-primary p-5 text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:order-2 lg:col-span-2 lg:p-6">
-          
+          className="flex items-center gap-4 rounded-xl bg-primary p-5 text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:order-2 lg:col-span-2 lg:p-6"
+        >
           <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-primary-foreground text-primary">
             <Plus className="size-5" aria-hidden="true" />
           </span>
@@ -56,74 +42,197 @@ export function Home() {
         <h2 id="requests-title" className="mb-3 text-base font-semibold tracking-tight">Requests</h2>
         <Tabs defaultValue="posted">
           <TabsList className="w-full md:w-auto">
-            <TabsTrigger value="posted">Posted ({posted.length})</TabsTrigger>
-            <TabsTrigger value="delivering">Delivering ({delivering.length + pendingOffers.length})</TabsTrigger>
-            <TabsTrigger value="nearby">Nearby ({nearby.length})</TabsTrigger>
+            <TabsTrigger value="posted">Posted (2)</TabsTrigger>
+            <TabsTrigger value="delivering">Delivering (2)</TabsTrigger>
+            <TabsTrigger value="nearby">Nearby (3)</TabsTrigger>
             <TabsTrigger value="history">History</TabsTrigger>
           </TabsList>
 
           <TabsContent value="posted" className="mt-4">
-            <List items={posted} empty={<EmptyState title="No active requests" description="Post what you’re craving and pick the best offer." />} />
+            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+              <RequestCard
+                request={{
+                  id: 'r1',
+                  food: '2 large taro milk teas, 50% sugar, with boba',
+                  pickup: 'Tea Lab, Union Square',
+                  destination: 'Hartley Hall, 3rd floor lounge',
+                  status: 'open',
+                  timeAgo: '11m ago',
+                  requesterName: 'You',
+                  requesterInitials: 'MO',
+                  isMine: true,
+                  offerCount: 3
+                }}
+                showRole
+              />
+              <RequestCard
+                request={{
+                  id: 'r2',
+                  food: 'Chicken shawarma wrap + garlic fries',
+                  pickup: 'Halal Cart, 5th & Main',
+                  destination: 'Science Library, Room 204',
+                  status: 'on_the_way',
+                  timeAgo: '34m ago',
+                  price: '14.50 DC',
+                  requesterName: 'You',
+                  requesterInitials: 'MO',
+                  isMine: true
+                }}
+                showRole
+              />
+            </div>
           </TabsContent>
 
           <TabsContent value="delivering" className="mt-4 space-y-6">
-            <List items={delivering} empty={<EmptyState title="No deliveries in progress" description="Make an offer on a nearby request to start earning DC." />} />
-            {pendingOffers.length > 0 &&
-            <section aria-labelledby="pending-title">
-                <h3 id="pending-title" className="mb-3 text-sm font-semibold text-muted-foreground">Waiting on requester ({pendingOffers.length})</h3>
-                <List items={pendingOffers} />
-              </section>
-            }
+            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+              <RequestCard
+                request={{
+                  id: 'r3',
+                  food: 'Veggie poke bowl, no avocado',
+                  pickup: 'Poke Republic, Student Center',
+                  destination: 'Larkin House lobby',
+                  status: 'getting_food',
+                  timeAgo: '20m ago',
+                  price: '17.00 DC',
+                  requesterName: 'Priya Nair',
+                  requesterInitials: 'PN',
+                  isFulfilling: true
+                }}
+                showRole
+              />
+              <RequestCard
+                request={{
+                  id: 'r7',
+                  food: '2 pepperoni slices + a Coke',
+                  pickup: "Gino's Pizza",
+                  destination: 'Music Hall, practice room 7',
+                  status: 'open',
+                  timeAgo: '18m ago',
+                  requesterName: 'Dev Mehta',
+                  requesterInitials: 'DM',
+                  offerCount: 2
+                }}
+                showRole
+              />
+            </div>
           </TabsContent>
 
           <TabsContent value="nearby" className="mt-4">
-            <p className="mb-3 text-xs text-muted-foreground">Open requests within {deliveryRadiusKm} km, closest first.</p>
-            {nearby.length === 0 ?
-            <EmptyState title="All quiet nearby" description={`No open requests within ${deliveryRadiusKm} km. Check back soon.`} /> :
-
+            <p className="mb-3 text-xs text-muted-foreground">Open requests within 1.5 km, closest first.</p>
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                {nearby.map((r) => {
-                const offered = r.offers.some((o) => o.fulfillerId === CURRENT_USER_ID);
-                return (
-                  <RequestCard
-                    key={r.id}
-                    request={r}
-                    action={
-                    offered ?
-                    <span className="flex items-center gap-1 text-xs font-medium text-primary">
-                            <Check className="size-4" aria-hidden="true" /> Offer sent
-                          </span> :
-
-                    <Button size="sm" variant="outline" onClick={() => setOfferFor(r)}>
-                            Make offer
-                          </Button>
-
-                    } />);
-
-
-              })}
-              </div>
-            }
+              <RequestCard
+                request={{
+                  id: 'r4',
+                  food: 'Iced oat latte + blueberry muffin',
+                  pickup: 'Bean Counter Café',
+                  destination: 'Engineering Building, Lab 1.12',
+                  status: 'open',
+                  timeAgo: '4m ago',
+                  distanceKm: 0.3,
+                  requesterName: 'Aisha Bello',
+                  requesterInitials: 'AB',
+                  offerCount: 1
+                }}
+                action={
+                  <Button size="sm" variant="outline" onClick={() => setOfferOpen(true)}>
+                    Make offer
+                  </Button>
+                }
+              />
+              <RequestCard
+                request={{
+                  id: 'r5',
+                  food: 'Pad thai, medium spicy, with tofu',
+                  pickup: 'Thai Orchid, Campus Ave',
+                  destination: 'Ellis Hall, Room 410',
+                  status: 'open',
+                  timeAgo: '7m ago',
+                  distanceKm: 0.6,
+                  requesterName: 'Tomás Ruiz',
+                  requesterInitials: 'TR',
+                  offerCount: 0
+                }}
+                action={
+                  <Button size="sm" variant="outline" onClick={() => setOfferOpen(true)}>
+                    Make offer
+                  </Button>
+                }
+              />
+              <RequestCard
+                request={{
+                  id: 'r6',
+                  food: '2 Clif bars (chocolate chip) + sparkling water',
+                  pickup: 'CVS on College St',
+                  destination: 'Rec Center front desk',
+                  status: 'open',
+                  timeAgo: '13m ago',
+                  distanceKm: 0.8,
+                  requesterName: 'Lena Park',
+                  requesterInitials: 'LP',
+                  offerCount: 0
+                }}
+                action={
+                  <Button size="sm" variant="outline" onClick={() => setOfferOpen(true)}>
+                    Make offer
+                  </Button>
+                }
+              />
+            </div>
           </TabsContent>
 
           <TabsContent value="history" className="mt-4">
-            <List items={history} empty={<EmptyState title="No history yet" description="Completed and cancelled requests appear here." />} />
+            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+              <RequestCard
+                request={{
+                  id: 'r8',
+                  food: 'Burrito bowl with chicken, mild salsa',
+                  pickup: 'Chipotle, Main St',
+                  destination: 'Hartley Hall 3B',
+                  status: 'completed',
+                  timeAgo: 'Yesterday',
+                  price: '16.75 DC',
+                  requesterName: 'Jordan Reyes',
+                  requesterInitials: 'JR',
+                  isMine: true
+                }}
+                showRole
+              />
+              <RequestCard
+                request={{
+                  id: 'r9',
+                  food: 'Everything bagel with scallion cream cheese ×2',
+                  pickup: 'Brick Oven Bagels',
+                  destination: 'Okoro Commons, 2nd floor',
+                  status: 'completed',
+                  timeAgo: '2 days ago',
+                  price: '12.00 DC',
+                  requesterName: 'Dev Mehta',
+                  requesterInitials: 'DM',
+                  isFulfilling: true
+                }}
+                showRole
+              />
+              <RequestCard
+                request={{
+                  id: 'r10',
+                  food: 'Mango smoothie, large',
+                  pickup: 'Juice Junction',
+                  destination: 'Hartley Hall 3B',
+                  status: 'cancelled',
+                  timeAgo: '4 days ago',
+                  price: '9.25 DC',
+                  requesterName: 'Tomás Ruiz',
+                  requesterInitials: 'TR',
+                  isMine: true
+                }}
+                showRole
+              />
+            </div>
           </TabsContent>
         </Tabs>
       </section>
 
-      <OfferSheet request={offerFor} onClose={() => setOfferFor(null)} />
-    </div>);
-
-}
-
-function List({ items, empty }: {items: FoodRequest[];empty?: React.ReactNode;}) {
-  if (items.length === 0) return <>{empty ?? null}</>;
-  return (
-    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-      {items.map((r) =>
-      <RequestCard key={r.id} request={r} showRole />
-      )}
-    </div>);
-
+      <OfferSheet request={offerOpen ? { id: 'r4', food: 'Iced oat latte + blueberry muffin' } : null} onClose={() => setOfferOpen(false)} />
+    </div>
+  );
 }

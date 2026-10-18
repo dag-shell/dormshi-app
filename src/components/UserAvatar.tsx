@@ -1,9 +1,9 @@
 import React from 'react';
-import type { User } from '../types/dormshi';
-import { CURRENT_USER_ID } from '../data/users';
 
 interface UserAvatarProps {
-  user: User;
+  initials?: string;
+  isMe?: boolean;
+  user?: { initials?: string; id?: string; name?: string };
   size?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
@@ -14,16 +14,17 @@ const sizes = {
   xl: 'size-20 text-2xl'
 };
 
-export function UserAvatar({ user, size = 'md' }: UserAvatarProps) {
-  const isMe = user.id === CURRENT_USER_ID;
+export function UserAvatar({ user, initials, isMe, size = 'md' }: UserAvatarProps) {
+  const displayInitials = initials ?? user?.initials ?? 'MO';
+  const activeMe = isMe ?? (user?.id === 'u_me');
   return (
     <span
       aria-hidden="true"
       className={`inline-grid shrink-0 place-items-center rounded-full font-medium ${sizes[size]} ${
-      isMe ? 'bg-primary text-primary-foreground' : 'border border-border bg-secondary text-foreground'}`
-      }>
-      
-      {user.initials}
-    </span>);
-
+        activeMe ? 'bg-primary text-primary-foreground' : 'border border-border bg-secondary text-foreground'
+      }`}
+    >
+      {displayInitials}
+    </span>
+  );
 }
