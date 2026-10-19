@@ -63,12 +63,12 @@ export function Wallet() {
                 key={id}
                 type="button"
                 onClick={() => setAction(id)}
-                className="flex flex-col items-center justify-center gap-2 rounded-xl border bg-card py-4 text-xs font-medium transition-colors hover:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:flex-row md:justify-start md:gap-3 md:px-5 md:text-sm"
+                className="flex aspect-square flex-col items-center justify-center gap-1.5 rounded-lg border border-border bg-card p-2 text-xs font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:aspect-auto md:flex-row md:justify-start md:gap-3 md:px-5 md:py-4 md:text-sm"
               >
-                <span className={`grid size-9 place-items-center rounded-lg ${id === 'buy' ? 'bg-primary text-primary-foreground' : 'bg-secondary'}`}>
-                  <FontAwesomeIcon icon={icon} className="size-4" aria-hidden="true" />
+                <span className={`grid size-8 place-items-center rounded-lg md:size-9 ${id === 'buy' ? 'bg-primary text-primary-foreground' : 'bg-secondary'}`}>
+                  <FontAwesomeIcon icon={icon} className="size-3.5 md:size-4" aria-hidden="true" />
                 </span>
-                {label}
+                <span className="truncate">{label}</span>
               </button>
             ))}
           </div>

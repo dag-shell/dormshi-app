@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHandshake, faHouse, faPlus, faUser, faWallet } from '@fortawesome/free-solid-svg-icons';
+import { faBowlRice, faHandshake, faPlus, faUser, faWallet } from '@fortawesome/free-solid-svg-icons';
 
 export function BottomNav() {
   const location = useLocation();
@@ -10,7 +10,7 @@ export function BottomNav() {
   return (
     <nav
       aria-label="Primary"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 backdrop-blur-md"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card"
     >
       <div className="mx-auto flex max-w-md items-center justify-around px-3 pb-[max(env(safe-area-inset-bottom),8px)] pt-1.5">
         {/* 1. Home */}
@@ -22,8 +22,8 @@ export function BottomNav() {
               : 'text-muted-foreground hover:text-foreground'
           }`}
         >
-          <FontAwesomeIcon icon={faHouse} className="size-4" aria-hidden="true" />
-          <span>Home</span>
+          <FontAwesomeIcon icon={faBowlRice} className="size-4" aria-hidden="true" />
+          <span>Orders</span>
         </NavLink>
 
         {/* 2. Offers */}
