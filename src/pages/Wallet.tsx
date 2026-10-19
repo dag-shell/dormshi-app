@@ -22,15 +22,15 @@ const filters: { id: Filter; label: string }[] = [
 ];
 
 const rawTransactions = [
-  { id: 'tx_09', type: 'reserved', direction: 'hold', amount: 17.5, label: 'Reserved · Spicy miso ramen', timeAgo: '9m ago' },
-  { id: 'tx_08', type: 'reserved', direction: 'hold', amount: 14.5, label: 'Reserved · Shawarma wrap + fries', timeAgo: '26m ago' },
-  { id: 'tx_07', type: 'received', direction: 'in', amount: 5.0, label: 'From Jordan Reyes · "for the coffee"', timeAgo: '5h ago' },
-  { id: 'tx_06', type: 'earned', direction: 'in', amount: 12.0, label: 'Delivery for Dev Mehta · Bagel request', timeAgo: '22h ago' },
-  { id: 'tx_05', type: 'released', direction: 'out', amount: 16.75, label: 'Paid Jordan Reyes · Burrito bowl', timeAgo: 'Yesterday' },
-  { id: 'tx_04', type: 'sent', direction: 'out', amount: 4.0, label: 'To Priya Nair · split snacks', timeAgo: '2 days ago' },
-  { id: 'tx_03', type: 'cash_out', direction: 'out', amount: 20.0, label: 'Cash out to Chase •• 0921', timeAgo: '3 days ago' },
-  { id: 'tx_02', type: 'refund', direction: 'in', amount: 9.25, label: 'Refund · Cancelled smoothie request', timeAgo: '4 days ago' },
-  { id: 'tx_01', type: 'purchase', direction: 'in', amount: 100.0, label: 'Bought DC · Visa •• 4242', timeAgo: '5 days ago' }
+  { id: 'tx_09', type: 'ordered', direction: 'hold', amount: 120.0, label: 'Taro milk tea, Boba · In escrow', timeAgo: '9m ago' },
+  { id: 'tx_08', type: 'reward', direction: 'in', amount: 15.0, label: 'Delivery streak reward bonus', timeAgo: '2h ago' },
+  { id: 'tx_07', type: 'earned', direction: 'in', amount: 35.0, label: 'Delivery for Dev Mehta · Hartley Hall', timeAgo: '5h ago' },
+  { id: 'tx_06', type: 'ordered', direction: 'out', amount: 85.0, label: 'Shawarma wrap + fries · Delivered', timeAgo: 'Yesterday' },
+  { id: 'tx_05', type: 'send', direction: 'out', amount: 25.0, label: 'To Jordan Reyes · Split lunch', timeAgo: 'Yesterday' },
+  { id: 'tx_04', type: 'deposit', direction: 'in', amount: 150.0, label: 'Deposit · Telebirr', timeAgo: '2 days ago' },
+  { id: 'tx_03', type: 'cashout', direction: 'out', amount: 80.0, label: 'Cash out to CBE •• 0921', timeAgo: '3 days ago' },
+  { id: 'tx_02', type: 'reward', direction: 'in', amount: 10.0, label: 'Referral welcome reward', timeAgo: '4 days ago' },
+  { id: 'tx_01', type: 'deposit', direction: 'in', amount: 100.0, label: 'Deposit · CBE Birr', timeAgo: '5 days ago' }
 ];
 
 export function Wallet() {

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  faHandshake,
   faListOl,
   faPlus,
   faTruck,
@@ -13,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { UserAvatar } from '@common/UserAvatar';
 import { RequestCard } from '@/components/home/RequestCard';
 import { OfferSheet } from '@/components/home/OfferSheet';
+import { SentOfferCard, type SentOfferData } from '@/components/home/SentOfferCard';
 
 const adImages = [
   {
@@ -34,9 +36,83 @@ const adImages = [
 
 export function Home() {
   const [offerOpen, setOfferOpen] = useState(false);
-  const [activeRequest, setActiveRequest] = useState<{ id?: string; food?: string } | null>(null);
+  const [activeRequest, setActiveRequest] = useState<{
+    id?: string;
+    food?: string;
+    items?: { name: string; quantity: number }[];
+    pickup?: string;
+    destination?: string;
+    requesterName?: string;
+    requesterInitials?: string;
+  } | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [activeTab, setActiveTab] = useState<'my-requests' | 'delivery'>('my-requests');
+  const [activeTab, setActiveTab] = useState<'my-requests' | 'my-offers' | 'delivery'>('my-requests');
+
+  const [myOffers, setMyOffers] = useState<SentOfferData[]>([
+    {
+      id: 'off_sent_1',
+      requestId: 'r4',
+      food: 'Iced oat latte, Blueberry muffin',
+      pickup: 'Bean Counter Café',
+      destination: 'Engineering Building, Lab 1.12',
+      requesterName: 'Aisha Bello',
+      requesterInitials: 'AB',
+      status: 'pending',
+      availableItems: '2 of 2 in stock',
+      foodPrice: 110.0,
+      deliveryFee: 20.0,
+      etaMinutes: 15,
+      timeAgo: '5m ago',
+      note: 'Already at the counter, can deliver right away.'
+    },
+    {
+      id: 'off_sent_2',
+      requestId: 'r5',
+      food: 'Pad thai, Tofu',
+      pickup: 'Thai Orchid, Campus Ave',
+      destination: 'Ellis Hall, Room 410',
+      requesterName: 'Tomás Ruiz',
+      requesterInitials: 'TR',
+      status: 'accepted',
+      availableItems: 'All in stock',
+      foodPrice: 135.0,
+      deliveryFee: 25.0,
+      etaMinutes: 12,
+      timeAgo: '18m ago',
+      note: 'Order confirmed with counter. Walking over now.'
+    },
+    {
+      id: 'off_sent_3',
+      requestId: 'r7',
+      food: 'Pepperoni pizza, Coke',
+      pickup: "Gino's Pizza",
+      destination: 'Music Hall, practice room 7',
+      requesterName: 'Dev Mehta',
+      requesterInitials: 'DM',
+      status: 'pending',
+      availableItems: '1 of 2 in stock',
+      foodPrice: 40.0,
+      deliveryFee: 15.0,
+      etaMinutes: 20,
+      timeAgo: '35m ago',
+      note: 'Coke ready, pizza will be fresh out of the oven.'
+    },
+    {
+      id: 'off_sent_4',
+      requestId: 'r6',
+      food: 'Clif bar, Sparkling water',
+      pickup: 'CVS on College St',
+      destination: 'Rec Center front desk',
+      requesterName: 'Lena Park',
+      requesterInitials: 'LP',
+      status: 'completed',
+      availableItems: 'All (2)',
+      foodPrice: 70.0,
+      deliveryFee: 20.0,
+      etaMinutes: 10,
+      timeAgo: 'Yesterday'
+    }
+  ]);
 
   // Auto-advance ad banner image every 5 seconds
   useEffect(() => {
@@ -46,7 +122,15 @@ export function Home() {
     return () => clearInterval(timer);
   }, []);
 
-  const handleMakeOffer = (req: { id: string; food: string }) => {
+  const handleMakeOffer = (req: {
+    id: string;
+    food: string;
+    items?: { name: string; quantity: number }[];
+    pickup?: string;
+    destination?: string;
+    requesterName?: string;
+    requesterInitials?: string;
+  }) => {
     setActiveRequest(req);
     setOfferOpen(true);
   };
@@ -144,7 +228,7 @@ export function Home() {
       <section aria-labelledby="requests-title" className="space-y-4">
         <Tabs
           value={activeTab}
-          onValueChange={(val) => setActiveTab(val as 'my-requests' | 'delivery')}
+          onValueChange={(val) => setActiveTab(val as 'my-requests' | 'my-offers' | 'delivery')}
           className="w-full"
         >
           {/* Floating Pill Dock: Collapses inactive tab to icon only with smooth animation */}
@@ -169,6 +253,28 @@ export function Home() {
                 )}
               </AnimatePresence>
             </TabsTrigger>
+
+            <TabsTrigger
+              value="my-offers"
+              aria-label="My offers"
+              className="relative flex h-9 items-center justify-center rounded-full px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground data-[state=active]:bg-secondary data-[state=active]:font-semibold data-[state=active]:text-foreground sm:text-sm"
+            >
+              <FontAwesomeIcon icon={faHandshake} className="size-3.5 shrink-0" />
+              <AnimatePresence initial={false}>
+                {activeTab === 'my-offers' && (
+                  <motion.span
+                    initial={{ width: 0, opacity: 0, marginLeft: 0 }}
+                    animate={{ width: 'auto', opacity: 1, marginLeft: 8 }}
+                    exit={{ width: 0, opacity: 0, marginLeft: 0 }}
+                    transition={{ duration: 0.2, ease: [0.4, 0.4, 0, 1] }}
+                    className="overflow-hidden whitespace-nowrap"
+                  >
+                    My offers
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </TabsTrigger>
+
             <TabsTrigger
               value="delivery"
               aria-label="Delivery requests"
@@ -255,7 +361,55 @@ export function Home() {
             </div>
           </TabsContent>
 
-          {/* 2. DELIVERY REQUESTS: Other students' requests where you can make offers */}
+          {/* 2. MY OFFERS: Offers you sent to other students' requests */}
+          <TabsContent value="my-offers" className="mt-6 space-y-4">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <h3 className="font-semibold">My Offers</h3>
+                <p className="text-xs text-muted-foreground">
+                  Offers you sent to other students.
+                </p>
+              </div>
+              <span className="rounded-full bg-secondary px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                {myOffers.filter((o) => o.status !== 'withdrawn').length} active
+              </span>
+            </div>
+
+            <div className="space-y-3">
+              {myOffers.filter((o) => o.status !== 'withdrawn').length === 0 ? (
+                <div className="rounded-lg border border-dashed border-border p-8 text-center">
+                  <p className="text-sm font-medium text-muted-foreground">No active offers sent yet</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Check out open delivery requests and send an offer to earn money.
+                  </p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setActiveTab('delivery')}
+                    className="mt-4 rounded-full text-xs font-medium"
+                  >
+                    Browse delivery requests
+                  </Button>
+                </div>
+              ) : (
+                myOffers
+                  .filter((o) => o.status !== 'withdrawn')
+                  .map((offer) => (
+                    <SentOfferCard
+                      key={offer.id}
+                      offer={offer}
+                      onWithdraw={(id) => {
+                        setMyOffers((prev) =>
+                          prev.map((o) => (o.id === id ? { ...o, status: 'withdrawn' } : o))
+                        );
+                      }}
+                    />
+                  ))
+              )}
+            </div>
+          </TabsContent>
+
+          {/* 3. DELIVERY REQUESTS: Other students' requests where you can make offers */}
           <TabsContent value="delivery" className="mt-6 space-y-4">
             <div className="flex items-center justify-between gap-3">
               <div>
@@ -284,7 +438,20 @@ export function Home() {
                 action={
                   <Button
                     size="sm"
-                    onClick={() => handleMakeOffer({ id: 'r4', food: 'Iced oat latte, Blueberry muffin' })}
+                    onClick={() =>
+                      handleMakeOffer({
+                        id: 'r4',
+                        food: 'Iced oat latte, Blueberry muffin',
+                        pickup: 'Bean Counter Café',
+                        destination: 'Engineering Building, Lab 1.12',
+                        requesterName: 'Aisha Bello',
+                        requesterInitials: 'AB',
+                        items: [
+                          { name: 'Iced oat latte', quantity: 1 },
+                          { name: 'Blueberry muffin', quantity: 1 }
+                        ]
+                      })
+                    }
                     className="rounded-full px-4 font-semibold"
                   >
                     Make offer
@@ -308,7 +475,20 @@ export function Home() {
                 action={
                   <Button
                     size="sm"
-                    onClick={() => handleMakeOffer({ id: 'r5', food: 'Pad thai, Tofu' })}
+                    onClick={() =>
+                      handleMakeOffer({
+                        id: 'r5',
+                        food: 'Pad thai, Tofu',
+                        pickup: 'Thai Orchid, Campus Ave',
+                        destination: 'Ellis Hall, Room 410',
+                        requesterName: 'Tomás Ruiz',
+                        requesterInitials: 'TR',
+                        items: [
+                          { name: 'Pad thai', quantity: 1 },
+                          { name: 'Tofu', quantity: 1 }
+                        ]
+                      })
+                    }
                     className="rounded-full px-4 font-semibold"
                   >
                     Make offer
@@ -332,7 +512,20 @@ export function Home() {
                 action={
                   <Button
                     size="sm"
-                    onClick={() => handleMakeOffer({ id: 'r6', food: 'Clif bar, Sparkling water' })}
+                    onClick={() =>
+                      handleMakeOffer({
+                        id: 'r6',
+                        food: 'Clif bar, Sparkling water',
+                        pickup: 'CVS on College St',
+                        destination: 'Rec Center front desk',
+                        requesterName: 'Lena Park',
+                        requesterInitials: 'LP',
+                        items: [
+                          { name: 'Clif bar', quantity: 2 },
+                          { name: 'Sparkling water', quantity: 1 }
+                        ]
+                      })
+                    }
                     className="rounded-full px-4 font-semibold"
                   >
                     Make offer
@@ -355,7 +548,20 @@ export function Home() {
                 action={
                   <Button
                     size="sm"
-                    onClick={() => handleMakeOffer({ id: 'r7', food: 'Pepperoni pizza, Coke' })}
+                    onClick={() =>
+                      handleMakeOffer({
+                        id: 'r7',
+                        food: 'Pepperoni pizza, Coke',
+                        pickup: "Gino's Pizza",
+                        destination: 'Music Hall, practice room 7',
+                        requesterName: 'Dev Mehta',
+                        requesterInitials: 'DM',
+                        items: [
+                          { name: 'Pepperoni pizza', quantity: 1 },
+                          { name: 'Coke', quantity: 2 }
+                        ]
+                      })
+                    }
                     className="rounded-full px-4 font-semibold"
                   >
                     Make offer
@@ -373,6 +579,10 @@ export function Home() {
         onClose={() => {
           setOfferOpen(false);
           setActiveRequest(null);
+        }}
+        onSubmitOffer={(newOffer) => {
+          setMyOffers((prev) => [newOffer, ...prev]);
+          setActiveTab('my-offers');
         }}
       />
     </div>

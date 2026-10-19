@@ -79,14 +79,20 @@ export interface FoodRequest {
 }
 
 export type TransactionType =
-'purchase' |
-'sent' |
-'received' |
-'reserved' |
-'released' |
-'earned' |
-'refund' |
-'cash_out';
+  | 'cashout'
+  | 'deposit'
+  | 'earned'
+  | 'reward'
+  | 'send'
+  | 'bought'
+  | 'ordered'
+  | 'purchase'
+  | 'sent'
+  | 'received'
+  | 'reserved'
+  | 'released'
+  | 'refund'
+  | 'cash_out';
 
 export interface Transaction {
   id: string;

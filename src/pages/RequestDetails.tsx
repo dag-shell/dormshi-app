@@ -205,7 +205,7 @@ export function RequestDetails() {
               </p>
             )}
 
-            <Button variant="ghost" className="mt-4 w-full rounded-full text-destructive" onClick={() => setCancelOpen(true)}>
+            <Button variant="secondary"  className="mt-4 w-full rounded-full text-destructive" onClick={() => setCancelOpen(true)}>
               Cancel request
             </Button>
           </div>

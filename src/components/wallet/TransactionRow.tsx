@@ -4,8 +4,10 @@ import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import {
   faArrowDown,
   faArrowUp,
+  faBagShopping,
   faBicycle,
   faCircleCheck,
+  faGift,
   faLandmark,
   faLock,
   faPlus,
@@ -14,25 +16,37 @@ import {
 import type { TransactionType } from '@/types/dormshi';
 
 const icons: Record<string, IconDefinition> = {
-  purchase: faPlus,
+  cashout: faLandmark,
+  cash_out: faLandmark,
+  deposit: faPlus,
+  earned: faBicycle,
+  reward: faGift,
+  send: faArrowUp,
   sent: faArrowUp,
+  bought: faBagShopping,
+  ordered: faBagShopping,
+  purchase: faPlus,
   received: faArrowDown,
   reserved: faLock,
-  released: faCircleCheck,
-  earned: faBicycle,
-  refund: faRotateLeft,
-  cash_out: faLandmark
+  released: faBagShopping,
+  refund: faRotateLeft
 };
 
 const typeLabels: Record<string, string> = {
-  purchase: 'Bought',
+  cashout: 'Cash out',
+  cash_out: 'Cash out',
+  deposit: 'Deposit',
+  earned: 'Earned',
+  reward: 'Reward',
+  send: 'Sent',
   sent: 'Sent',
+  bought: 'Ordered',
+  ordered: 'Ordered',
+  purchase: 'Deposit',
   received: 'Received',
   reserved: 'Reserved',
-  released: 'Paid',
-  earned: 'Earned',
-  refund: 'Refund',
-  cash_out: 'Cash out'
+  released: 'Ordered',
+  refund: 'Refund'
 };
 
 export interface TransactionItemData {
@@ -62,13 +76,7 @@ export function TransactionRow({ tx }: { tx?: TransactionItemData }) {
 
   return (
     <li className="flex items-center gap-3 py-3">
-      <span
-        className={`grid size-10 shrink-0 place-items-center rounded-full ${
-          item.direction === 'in'
-            ? 'bg-primary-soft text-primary'
-            : 'bg-secondary text-muted-foreground'
-        }`}
-      >
+      <span className="grid size-10 shrink-0 place-items-center rounded-full bg-secondary text-muted-foreground">
         <FontAwesomeIcon icon={icon} className="size-4" aria-hidden="true" />
       </span>
       <div className="min-w-0 flex-1">
@@ -80,11 +88,11 @@ export function TransactionRow({ tx }: { tx?: TransactionItemData }) {
       <div className="text-right">
         <p
           className={`font-mono text-sm font-medium ${
-            item.direction === 'in'
+            item.direction === 'out'
               ? 'text-primary'
               : item.direction === 'hold'
               ? 'text-muted-foreground'
-              : ''
+              : 'text-foreground'
           }`}
         >
           {sign}
