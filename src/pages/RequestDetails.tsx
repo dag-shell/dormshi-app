@@ -257,55 +257,7 @@ export function RequestDetails() {
 
   return (
     <div className="min-h-screen bg-background pb-32">
-      {/* 1. NATIVE TOP NAVIGATION BAR */}
-      <header className="sticky top-0 z-30 border-b border-border bg-card/95 px-4 py-3 backdrop-blur-md">
-        <div className="mx-auto flex max-w-2xl items-center justify-between">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="flex size-9 items-center justify-center rounded-full text-foreground hover:bg-secondary transition-colors active:scale-95"
-            aria-label="Go back"
-          >
-            <FontAwesomeIcon icon={faArrowLeft} className="size-4" />
-          </button>
-
-          <div className="text-center">
-            <h1 className="text-sm font-semibold text-foreground">
-              {isMine ? 'Your order' : `Order #${id ? id.toUpperCase() : 'DMS-R1'}`}
-            </h1>
-            <p className="text-[11px] text-muted-foreground">
-              Posted {mockOrder?.timeAgo || '11m ago'}
-            </p>
-          </div>
-
-          <StatusBadge status={status} />
-        </div>
-      </header>
-
       <main className="mx-auto max-w-2xl px-4 pt-4 sm:px-6 space-y-5">
-        {/* 2. COURIER QUICK GLANCE CHIPS (Distance, Items, Walking ETA) */}
-        <div className="flex items-center gap-2 overflow-x-auto py-1 text-xs font-medium scrollbar-none [scrollbar-width:none]">
-          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5 text-foreground">
-            <FontAwesomeIcon icon={faBagShopping} className="size-3 text-muted-foreground" />
-            <span>{totalItemsCount} {totalItemsCount === 1 ? 'item' : 'items'}</span>
-          </span>
-          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5 text-foreground">
-            <FontAwesomeIcon icon={faLocationArrow} className="size-3 text-primary" />
-            <span>0.6 km distance</span>
-          </span>
-          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5 text-foreground">
-            <FontAwesomeIcon icon={faClock} className="size-3 text-muted-foreground" />
-            <span>~12 min walk</span>
-          </span>
-          {!isMine && (
-            <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1.5 font-semibold text-primary">
-              <FontAwesomeIcon icon={faTag} className="size-3 text-primary" />
-              <span>Est. fee 20–35 ETB</span>
-            </span>
-          )}
-        </div>
-
-        {/* 3. REQUESTER PROFILE STRIP */}
         <div className="flex items-center justify-between border-y border-border/70 py-3">
           <div className="flex items-center gap-3">
             <UserAvatar initials={requesterInitials} size="md" />
@@ -344,8 +296,6 @@ export function RequestDetails() {
 
             {/* Connecting transit route */}
             <div className="-mt-3 mb-1 ml-3.5 flex items-center gap-2 border-l-2 border-dashed border-border pl-6 py-2 text-xs text-muted-foreground font-medium">
-              <FontAwesomeIcon icon={faPersonWalking} className="size-3 text-muted-foreground" />
-              <span>0.6 km · approx. 12 mins on campus</span>
             </div>
 
             {/* Destination Dropoff Node */}
@@ -369,9 +319,6 @@ export function RequestDetails() {
             <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Order items ({totalItemsCount})
             </h2>
-            <span className="text-xs font-medium text-muted-foreground">
-              Store price confirmed upon offer
-            </span>
           </div>
 
           <div className="divide-y divide-border/60">
@@ -384,7 +331,7 @@ export function RequestDetails() {
                   <span className="text-sm font-medium text-foreground">{item.name}</span>
                 </div>
                 <span className="font-mono text-xs text-muted-foreground">
-                  {isFinalized && item.price ? `ETB ${(item.price * item.quantity).toFixed(2)}` : 'Est. price'}
+                  {isFinalized && item.price ? `ETB ${(item.price * item.quantity).toFixed(2)}` : '-- --'}
                 </span>
               </div>
             ))}
