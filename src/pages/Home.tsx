@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWallet } from '@fortawesome/free-solid-svg-icons';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { UserAvatar } from '@common/UserAvatar';
+import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { RequestCard } from '@/components/home/RequestCard';
+import { CampusPickerSheet } from '@/components/home/CampusPickerSheet';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { defaultCampuses, type Campus } from '@/types/campus';
 
 const adImages = [
   {
@@ -123,8 +122,18 @@ const campusOrdersData = [
 
 export function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [showMyOrders, setShowMyOrders] = useState(false);
+  const [activeTab, setActiveTab] = useState<'deliver' | 'my_orders'>('deliver');
   const [myOrdersFilter, setMyOrdersFilter] = useState<'all' | 'open' | 'on_the_way' | 'completed'>('all');
+  const [selectedCampus, setSelectedCampus] = useState<Campus>(() => {
+    try {
+      const saved = localStorage.getItem('dormshi_selected_campus');
+      if (saved) return JSON.parse(saved);
+    } catch {
+      // fallback
+    }
+    return defaultCampuses[0];
+  });
+  const [isCampusPickerOpen, setIsCampusPickerOpen] = useState(false);
 
   const filteredMyOrders = myOrdersFilter === 'all'
     ? myOrdersData
@@ -152,31 +161,23 @@ export function Home() {
             </h1>
           </div>
 
-          {/* Right Side: Wallet Balance pill and User Avatar */}
-          <div className="flex shrink-0 items-center gap-2">
-            {/* Wallet Balance Pill */}
-            <Link
-              to="/wallet"
+          {/* Right Side: Location Selector Pill */}
+          <div className="flex shrink-0 items-center">
+            <button
+              type="button"
+              onClick={() => setIsCampusPickerOpen(true)}
               className="flex h-10 items-center gap-2 rounded-full border border-border bg-card px-3 shadow-none transition-all hover:bg-secondary active:scale-95"
-              title="Wallet Balance"
+              title="Select campus location"
             >
               <div className="flex size-6 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <FontAwesomeIcon icon={faWallet} className="size-3.5" />
+                <FontAwesomeIcon icon={faLocationDot} className="size-3.5" />
               </div>
               <div className="flex items-baseline gap-1">
-                <span className="font-semibold text-sm text-foreground">152.50</span>
-                <span className="text-[11px] font-semibold text-muted-foreground">ETB</span>
+                <span className="font-semibold text-sm text-foreground">
+                  {selectedCampus.name}, {selectedCampus.univCode}
+                </span>
               </div>
-            </Link>
-
-            {/* User Avatar */}
-            <Link
-              to="/profile"
-              className="flex shrink-0 rounded-full transition-transform active:scale-95"
-              title="Profile"
-            >
-              <UserAvatar initials="MO" isMe size="md" />
-            </Link>
+            </button>
           </div>
         </div>
         <p className="mt-3 text-xs text-muted-foreground sm:text-sm italic text-left">
@@ -226,95 +227,117 @@ export function Home() {
       </section>
 
       {/* =========================================================================
-          ORDERS MAIN SECTION: Header with Switcher to toggle own orders on/off
+          ORDERS MAIN SECTION: [ Deliver orders ] [ My orders ] (shadcn Tabs)
          ========================================================================= */}
-      <section aria-labelledby="orders-heading" className="space-y-4">
-        <div className="flex items-center justify-between gap-3">
-          <h2 id="orders-heading" className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
-            Orders
-          </h2>
-
-          <div className="flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 shadow-none">
-            <Label
-              htmlFor="my-orders-switch"
-              className="cursor-pointer text-xs font-medium text-foreground select-none"
+      <section aria-labelledby="orders-heading">
+        <Tabs
+          value={activeTab}
+          onValueChange={(val) => setActiveTab(val as 'deliver' | 'my_orders')}
+          className="w-full space-y-4"
+        >
+          {/* Segmented Pill Tabs List */}
+          <TabsList className="grid w-full grid-cols-2 h-11 rounded-full p-1 bg-card border border-border shadow-none">
+            <TabsTrigger
+              value="deliver"
+              className="rounded-full py-2 text-xs sm:text-sm font-medium transition-all text-muted-foreground hover:text-foreground data-[state=active]:bg-secondary data-[state=active]:text-foreground data-[state=active]:font-semibold data-[state=active]:shadow-none"
+            >
+              Deliver orders
+            </TabsTrigger>
+            <TabsTrigger
+              value="my_orders"
+              className="rounded-full py-2 text-xs sm:text-sm font-medium transition-all text-muted-foreground hover:text-foreground data-[state=active]:bg-secondary data-[state=active]:text-foreground data-[state=active]:font-semibold data-[state=active]:shadow-none"
             >
               My orders
-            </Label>
-            <Switch
-              id="my-orders-switch"
-              checked={showMyOrders}
-              onCheckedChange={setShowMyOrders}
-              aria-label="Turn on and off my orders"
-            />
-          </div>
-        </div>
+            </TabsTrigger>
+          </TabsList>
 
-        <p className="text-xs text-muted-foreground">
-          {showMyOrders
-            ? 'Orders you placed on campus.'
-            : 'Campus delivery orders waiting for pickup.'}
-        </p>
+          {/* Deliver Orders Content */}
+          <TabsContent value="deliver" className="space-y-4 focus-visible:outline-none">
+            <p className="text-xs text-muted-foreground">
+              Campus delivery orders waiting for pickup at {selectedCampus.title || selectedCampus.name}.
+            </p>
 
-        {/* Status filters for My Orders (horizontally scrollable) */}
-        {showMyOrders && (
-          <div
-            className="flex items-center gap-2 overflow-x-auto py-1 -mx-4 px-4 sm:mx-0 sm:px-0 flex-nowrap scrollbar-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-            role="tablist"
-          >
-            {(['all', 'open', 'on_the_way', 'completed'] as const).map((tab) => {
-              const label = tab === 'all'
-                ? 'All'
-                : tab === 'open'
-                ? 'Open'
-                : tab === 'on_the_way'
-                ? 'On the way'
-                : 'Completed';
-
-              return (
-                <button
-                  key={tab}
-                  type="button"
-                  role="tab"
-                  aria-selected={myOrdersFilter === tab}
-                  onClick={() => setMyOrdersFilter(tab)}
-                  className={`shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-semibold capitalize transition-colors ${
-                    myOrdersFilter === tab
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-secondary text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  {label}
-                </button>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Orders list */}
-        <div className="space-y-3">
-          {showMyOrders ? (
-            filteredMyOrders.length === 0 ? (
-              <div className="rounded-lg border border-dashed border-border p-8 text-center">
-                <p className="text-sm font-semibold text-foreground">
-                  No {myOrdersFilter === 'on_the_way' ? 'orders on the way' : `${myOrdersFilter} orders`}
-                </p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  Orders you place will appear here as they progress.
-                </p>
-              </div>
-            ) : (
-              filteredMyOrders.map((order) => (
+            <div className="space-y-3">
+              {campusOrdersData.map((order) => (
                 <RequestCard key={order.id} request={order} />
-              ))
-            )
-          ) : (
-            campusOrdersData.map((order) => (
-              <RequestCard key={order.id} request={order} />
-            ))
-          )}
-        </div>
+              ))}
+            </div>
+          </TabsContent>
+
+          {/* My Orders Content */}
+          <TabsContent value="my_orders" className="space-y-4 focus-visible:outline-none">
+            <p className="text-xs text-muted-foreground">
+              Orders you placed on campus.
+            </p>
+
+            {/* Status filters for My Orders (horizontally scrollable) */}
+            <div
+              className="flex items-center gap-2 overflow-x-auto py-1 -mx-4 px-4 sm:mx-0 sm:px-0 flex-nowrap scrollbar-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+              role="tablist"
+            >
+              {(['all', 'open', 'on_the_way', 'completed'] as const).map((tab) => {
+                const label = tab === 'all'
+                  ? 'All'
+                  : tab === 'open'
+                  ? 'Open'
+                  : tab === 'on_the_way'
+                  ? 'On the way'
+                  : 'Completed';
+
+                return (
+                  <button
+                    key={tab}
+                    type="button"
+                    role="tab"
+                    aria-selected={myOrdersFilter === tab}
+                    onClick={() => setMyOrdersFilter(tab)}
+                    className={`shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-semibold capitalize transition-colors ${
+                      myOrdersFilter === tab
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-secondary text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Orders list */}
+            <div className="space-y-3">
+              {filteredMyOrders.length === 0 ? (
+                <div className="rounded-lg border border-dashed border-border p-8 text-center">
+                  <p className="text-sm font-semibold text-foreground">
+                    No {myOrdersFilter === 'on_the_way' ? 'orders on the way' : `${myOrdersFilter} orders`}
+                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Orders you place will appear here as they progress.
+                  </p>
+                </div>
+              ) : (
+                filteredMyOrders.map((order) => (
+                  <RequestCard key={order.id} request={order} />
+                ))
+              )}
+            </div>
+          </TabsContent>
+        </Tabs>
       </section>
+
+      {/* Campus Picker BottomSheet */}
+      <CampusPickerSheet
+        open={isCampusPickerOpen}
+        onClose={() => setIsCampusPickerOpen(false)}
+        selectedCampus={selectedCampus}
+        onSelectCampus={(campus) => {
+          setSelectedCampus(campus);
+          try {
+            localStorage.setItem('dormshi_selected_campus', JSON.stringify(campus));
+          } catch {
+            // ignore
+          }
+        }}
+      />
     </div>
   );
 }

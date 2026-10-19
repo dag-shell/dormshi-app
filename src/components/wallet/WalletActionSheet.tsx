@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -40,10 +40,7 @@ export function WalletActionSheet({ action, onChange }: WalletActionSheetProps) 
 
   const close = () => onChange(null);
 
-  const optionClass = (active: boolean) =>
-    `rounded-lg border text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
-      active ? 'border-primary bg-primary-soft text-primary' : 'bg-card hover:bg-secondary'
-    }`;
+  const optionClass = "rounded-lg text-sm font-medium transition-colors";
 
   return (
     <BottomSheet
@@ -61,7 +58,7 @@ export function WalletActionSheet({ action, onChange }: WalletActionSheetProps) 
                 type="button"
                 aria-pressed={amount === String(p)}
                 onClick={() => setAmount(String(p))}
-                className={`h-11 font-mono ${optionClass(amount === String(p))}`}
+                className={`h-11 font-mono ${optionClass}`}
               >
                 {p}
               </button>
@@ -78,7 +75,7 @@ export function WalletActionSheet({ action, onChange }: WalletActionSheetProps) 
                   role="radio"
                   aria-checked={method === m}
                   onClick={() => setMethod(m)}
-                  className={`h-11 px-4 ${optionClass(method === m)}`}
+                  className={`h-11 px-4 ${optionClass}`}
                 >
                   {m}
                 </button>

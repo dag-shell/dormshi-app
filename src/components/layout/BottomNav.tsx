@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHandshake, faHouse, faPlus, faUser, faWallet } from '@fortawesome/free-solid-svg-icons';
@@ -49,9 +48,6 @@ export function BottomNav() {
           <div className="flex size-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md shadow-primary/30 transition-transform group-hover:scale-105 group-active:scale-95">
             <FontAwesomeIcon icon={faPlus} className="size-4.5" aria-hidden="true" />
           </div>
-          <span className="mt-1 text-[11px] font-medium text-muted-foreground group-hover:text-foreground">
-            Order
-          </span>
         </NavLink>
 
         {/* 4. Wallet */}
@@ -81,7 +77,7 @@ export function BottomNav() {
           }
         >
           <FontAwesomeIcon icon={faUser} className="size-4" aria-hidden="true" />
-          <span>Profile</span>
+          <span>Account</span>
         </NavLink>
       </div>
     </nav>
