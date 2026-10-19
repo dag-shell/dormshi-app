@@ -1,17 +1,20 @@
 import React from 'react';
+import { BackButton } from '@/components/common/telegram';
 
 export interface HeaderProps {
   title?: React.ReactNode;
   position?: 'left' | 'center' | 'right';
   children?: React.ReactNode;
   className?: string;
+  showBackButton?: Boolean
 }
 
 export function Header({
   title,
   position = 'right',
   children,
-  className = ''
+  className = '',
+  showBackButton = true
 }: HeaderProps) {
   const contentPaddingClasses = {
     left: 'pl-20',
@@ -21,6 +24,7 @@ export function Header({
 
   return (
     <header className={`w-full ${className}`}>
+      {showBackButton && (<BackButton />)}
       <div className="relative h-12 w-full bg-secondary overflow-visible flex items-center px-4 sm:px-6 border-b border-border/50">
         {/* Subtle decorative trail line matching the sketch doodle */}
         <svg

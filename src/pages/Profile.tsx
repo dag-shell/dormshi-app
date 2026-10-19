@@ -74,7 +74,7 @@ export function Profile() {
 
   return (
     <div className="pb-28">
-      <Header title="Account" />
+      <Header title="Account" showBackButton={false} />
       <div className="mx-auto max-w-3xl space-y-6 px-4 pt-4 sm:px-6 lg:px-8">
         {/* Profile Details Card with Corner Edit Button */}
       <section className="relative rounded-lg border border-border bg-card p-5">

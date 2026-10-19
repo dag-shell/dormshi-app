@@ -11,4 +11,7 @@ export default defineConfig({
       '@common': path.resolve(__dirname, './src/components/common'),
     },
   },
+  server: {
+    allowedHosts: ['app.local', '.local'],
+  },
 });

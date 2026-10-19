@@ -42,7 +42,7 @@ export function Wallet() {
 
   return (
     <div className="pb-24">
-      <Header title="Wallet" />
+      <Header title="Wallet" showBackButton={false}/>
       <div className="mx-auto max-w-6xl px-5 pt-4 lg:px-10">
         <div className="space-y-8">
           <div className="grid gap-4 md:grid-cols-2">

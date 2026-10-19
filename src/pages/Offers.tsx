@@ -110,7 +110,7 @@ export function Offers() {
 
   return (
     <div className="pb-28">
-      <Header title="My Offers" />
+      <Header title="My Offers" showBackButton={false} />
       <div className="mx-auto max-w-4xl space-y-6 px-4 pt-4 sm:px-6 lg:px-8">
 
       {/* Filter Tabs (horizontally scrollable) */}
