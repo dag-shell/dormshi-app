@@ -2,7 +2,12 @@ import React, { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { BottomNav } from './BottomNav';
 
-const hideNavPatterns = [/^\/requests\/new$/, /^\/requests\/[^/]+\/confirm$/];
+const hideNavPatterns = [
+  /^\/requests\/new$/,
+  /^\/requests\/[^/]+$/,
+  /^\/requests\/[^/]+\/track$/,
+  /^\/requests\/[^/]+\/confirm$/
+];
 
 const titles: [RegExp, string][] = [
   [/^\/$/, 'Home'],
