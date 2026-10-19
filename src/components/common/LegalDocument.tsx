@@ -1,4 +1,4 @@
-import { PageHeader } from '@/components/layout/PageHeader';
+import { Header } from '@/components/layout/Header';
 
 export interface LegalSection {
   id: string;
@@ -15,7 +15,7 @@ interface LegalDocumentProps {
 export function LegalDocument({ title, sections, lastUpdated = 'October 9, 2026' }: LegalDocumentProps) {
   return (
     <div>
-      <PageHeader title={title} subtitle={`Last updated ${lastUpdated}`} />
+      <Header title={title} />
       <div className="mx-auto grid max-w-6xl gap-8 px-5 py-6 lg:grid-cols-[200px_minmax(0,1fr)] lg:px-10 lg:py-10">
         <nav aria-label="Sections" className="hidden lg:block">
           <ul className="sticky top-24 space-y-2 text-sm">

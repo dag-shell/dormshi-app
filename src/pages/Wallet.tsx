@@ -4,6 +4,7 @@ import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faArrowUp, faLandmark, faPlus, faQrcode } from '@fortawesome/free-solid-svg-icons';
 import { TransactionRow } from '../components/wallet/TransactionRow';
 import { WalletActionSheet, type WalletAction } from '../components/wallet/WalletActionSheet';
+import { Header } from '@/components/layout/Header';
 
 type Filter = 'all' | 'in' | 'out' | 'hold';
 
@@ -40,11 +41,11 @@ export function Wallet() {
   const shown = filter === 'all' ? rawTransactions : rawTransactions.filter((t) => t.direction === filter);
 
   return (
-    <div className="mx-auto max-w-6xl px-5 pt-6 lg:px-10 lg:pt-10">
-      <h1 className="text-2xl font-semibold tracking-tight lg:text-3xl">Wallet</h1>
-
-      <div className="mt-5 space-y-8 lg:mt-6">
-        <div className="grid gap-4 md:grid-cols-2">
+    <div className="pb-24">
+      <Header title="Wallet" />
+      <div className="mx-auto max-w-6xl px-5 pt-4 lg:px-10">
+        <div className="space-y-8">
+          <div className="grid gap-4 md:grid-cols-2">
           <section aria-label="Balance" className="flex flex-col justify-between rounded-xl bg-foreground p-5 text-background lg:p-6">
             <p className="text-xs opacity-70">Available balance</p>
             <p className="mt-1 font-mono text-4xl font-semibold tracking-tight">
@@ -100,6 +101,7 @@ export function Wallet() {
             ))}
           </ul>
         </section>
+        </div>
       </div>
 
       <WalletActionSheet action={action} onChange={setAction} />

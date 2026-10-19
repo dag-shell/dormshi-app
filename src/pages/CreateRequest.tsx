@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { PageHeader } from '@/components/layout/PageHeader';
+import { Header } from '@/components/layout/Header';
 import { MultiSelect } from '@common/MultiSelect';
 import { SingleSelect } from '@common/SingleSelect';
 
@@ -72,7 +72,7 @@ export function CreateRequest() {
 
   return (
     <div>
-      <PageHeader title="New request" backTo="/" />
+      <Header title="New request" />
       <div className="mx-auto grid max-w-6xl gap-8 px-5 py-5 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-10 lg:px-10 lg:py-8">
         <form onSubmit={onSubmit} className="space-y-6 lg:rounded-xl lg:border lg:bg-card lg:p-8">
           <div className="space-y-2">

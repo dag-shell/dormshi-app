@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { UserAvatar } from '@common/UserAvatar';
 import { QRCode } from '@common/QRCode';
 import { BottomSheet } from '@common/BottomSheet';
+import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -72,8 +73,10 @@ export function Profile() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 px-4 pt-6 pb-28 sm:px-6 lg:px-8 lg:pt-8">
-      {/* Profile Details Card with Corner Edit Button */}
+    <div className="pb-28">
+      <Header title="Account" />
+      <div className="mx-auto max-w-3xl space-y-6 px-4 pt-4 sm:px-6 lg:px-8">
+        {/* Profile Details Card with Corner Edit Button */}
       <section className="relative rounded-lg border border-border bg-card p-5">
         <button
           type="button"
@@ -191,6 +194,7 @@ export function Profile() {
         <Link to="/privacy" className="hover:text-foreground">Privacy</Link>
         <span>© 2026 Dormshi</span>
       </p>
+      </div>
     </div>
   );
 }

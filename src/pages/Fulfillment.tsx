@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQrcode, faStar } from '@fortawesome/free-solid-svg-icons';
-import { PageHeader } from '@/components/layout/PageHeader';
+import { Header } from '@/components/layout/Header';
 import { StatusBadge } from '@common/StatusBadge';
 import { UserAvatar } from '@common/UserAvatar';
 import { StatusTimeline } from '@/components/order/StatusTimeline';
@@ -18,7 +18,7 @@ export function Fulfillment() {
 
   return (
     <div>
-      <PageHeader title="Request #DMS-4H" subtitle="Chicken shawarma wrap + garlic fries" backTo="/" />
+      <Header title="Request #DMS-4H" />
 
       <div className="mx-auto grid max-w-6xl gap-4 px-5 py-5 lg:grid-cols-2 lg:items-start lg:gap-8 lg:px-10 lg:py-8">
         <div className="space-y-4">

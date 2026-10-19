@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleCheck, faCheck, faQrcode, faStar } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/components/ui/button';
-import { PageHeader } from '@/components/layout/PageHeader';
+import { Header } from '@/components/layout/Header';
 import { QRScanner } from '@common/QRScanner';
 import { TermsBreakdown } from '@common/TermsBreakdown';
 import { UserAvatar } from '@common/UserAvatar';
@@ -17,10 +17,8 @@ export function DeliveryConfirmation() {
 
   return (
     <div>
-      <PageHeader
+      <Header
         title={step === 'receipt' ? 'Receipt' : 'Confirm delivery'}
-        subtitle="Chicken shawarma wrap + garlic fries"
-        backTo="/requests/r2/track"
       />
 
       <AnimatePresence mode="wait">

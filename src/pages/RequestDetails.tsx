@@ -1,27 +1,20 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faArrowLeft,
-  faBagShopping,
-  faChevronRight,
-  faClock,
   faCommentDots,
   faHandshake,
-  faLocationArrow,
   faLocationDot,
-  faPersonWalking,
   faStar,
-  faStore,
-  faTag
+  faStore
 } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'sonner';
-import { StatusBadge } from '@common/StatusBadge';
 import { UserAvatar } from '@common/UserAvatar';
 import { OfferCard, type OfferData } from '@/components/request-details/OfferCard';
 import { OfferDetailsSheet } from '@common/OfferDetailsSheet';
 import { ReasonSheet } from '@/components/order/ReasonSheet';
 import { OfferSheet } from '@/components/home/OfferSheet';
+import { Header } from '@/components/layout/Header';
 import { Button } from '@/components/ui/button';
 import type { OrderStatus } from '@/types/dormshi';
 
@@ -257,7 +250,11 @@ export function RequestDetails() {
 
   return (
     <div className="min-h-screen bg-background pb-32">
-      <main className="mx-auto max-w-2xl px-4 pt-4 sm:px-6 space-y-5">
+      <Header
+        title={isMine ? 'Your order' : `Order #${id ? id.toUpperCase() : 'DMS-R1'}`}
+      />
+
+      <main className="mx-auto max-w-2xl px-4 sm:px-6 space-y-5">
         <div className="flex items-center justify-between border-y border-border/70 py-3">
           <div className="flex items-center gap-3">
             <UserAvatar initials={requesterInitials} size="md" />

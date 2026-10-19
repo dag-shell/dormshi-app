@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { RequestCard } from '@/components/home/RequestCard';
 import { OfferDetailsSheet } from '@common/OfferDetailsSheet';
+import { Header } from '@/components/layout/Header';
 import type { SentOfferData } from '@/components/home/SentOfferCard';
 
 const initialOffers: SentOfferData[] = [
@@ -108,16 +109,9 @@ export function Offers() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl space-y-6 px-4 pt-4 pb-28 sm:px-6 lg:px-8 lg:pt-8">
-      {/* Header */}
-      <header className="flex flex-col gap-1">
-        <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-          My Offers
-        </h1>
-        <p className="text-xs text-muted-foreground sm:text-sm">
-          Offers you sent to deliver other students' orders. Tap any card to view your offer details.
-        </p>
-      </header>
+    <div className="pb-28">
+      <Header title="My Offers" />
+      <div className="mx-auto max-w-4xl space-y-6 px-4 pt-4 sm:px-6 lg:px-8">
 
       {/* Filter Tabs (horizontally scrollable) */}
       <div
@@ -223,6 +217,7 @@ export function Offers() {
           toast.success('Offer withdrawn.');
         }}
       />
+      </div>
     </div>
   );
 }
