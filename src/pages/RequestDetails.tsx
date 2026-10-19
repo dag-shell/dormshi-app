@@ -1,10 +1,23 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHandshake } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowLeft,
+  faBagShopping,
+  faChevronRight,
+  faClock,
+  faCommentDots,
+  faHandshake,
+  faLocationArrow,
+  faLocationDot,
+  faPersonWalking,
+  faStar,
+  faStore,
+  faTag
+} from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'sonner';
-import { PageHeader } from '@/components/layout/PageHeader';
 import { StatusBadge } from '@common/StatusBadge';
+import { UserAvatar } from '@common/UserAvatar';
 import { OfferCard, type OfferData } from '@/components/request-details/OfferCard';
 import { OfferDetailsSheet } from '@common/OfferDetailsSheet';
 import { ReasonSheet } from '@/components/order/ReasonSheet';
@@ -228,6 +241,7 @@ export function RequestDetails() {
   const requesterInitials = mockOrder?.requesterInitials || 'MO';
   const food = mockOrder?.food || items.map((i) => `${i.quantity}x ${i.name}`).join(', ');
 
+  const totalItemsCount = items.reduce((acc, i) => acc + i.quantity, 0);
   const foodTotal = isFinalized ? (agreement?.foodPrice ?? 120) : null;
   const deliveryFee = isFinalized ? (agreement?.deliveryFee ?? 20) : null;
   const grandTotal = isFinalized && foodTotal && deliveryFee ? foodTotal + deliveryFee : null;
@@ -242,168 +256,234 @@ export function RequestDetails() {
   });
 
   return (
-    <div>
-      <PageHeader
-        title={isMine ? "Your order" : `Order from ${requesterName}`}
-        subtitle={`Posted ${mockOrder?.timeAgo || '11m ago'}`}
-      />
+    <div className="min-h-screen bg-background pb-32">
+      {/* 1. NATIVE TOP NAVIGATION BAR */}
+      <header className="sticky top-0 z-30 border-b border-border bg-card/95 px-4 py-3 backdrop-blur-md">
+        <div className="mx-auto flex max-w-2xl items-center justify-between">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="flex size-9 items-center justify-center rounded-full text-foreground hover:bg-secondary transition-colors active:scale-95"
+            aria-label="Go back"
+          >
+            <FontAwesomeIcon icon={faArrowLeft} className="size-4" />
+          </button>
 
-      <div className="mx-auto grid max-w-6xl gap-6 px-5 py-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start lg:gap-8 lg:px-10 lg:py-8">
-        <section className="overflow-hidden rounded-lg border border-border bg-card p-5 lg:sticky lg:top-24">
-          <div>
-            <div className="flex items-center justify-between">
-              <StatusBadge status={status} />
-              <span className="font-mono text-xs text-muted-foreground">
-                #{id ? id.toUpperCase() : 'DMS-R1'}
-              </span>
-            </div>
+          <div className="text-center">
+            <h1 className="text-sm font-semibold text-foreground">
+              {isMine ? 'Your order' : `Order #${id ? id.toUpperCase() : 'DMS-R1'}`}
+            </h1>
+            <p className="text-[11px] text-muted-foreground">
+              Posted {mockOrder?.timeAgo || '11m ago'}
+            </p>
+          </div>
 
-            {/* Items Breakdown with Quantity and Price */}
-            <div className="mt-5 border-t border-border/70 pt-4">
-              <h3 className="text-xs font-semibold text-muted-foreground">
-                Items ({items.reduce((acc, i) => acc + i.quantity, 0)})
-              </h3>
-              <ul className="mt-2 divide-y divide-border/50 text-sm">
-                {items.map((item, idx) => (
-                  <li key={idx} className="flex items-center justify-between py-2">
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs font-semibold text-muted-foreground">
-                        {item.quantity}x
-                      </span>
-                      <span className="font-medium text-foreground">{item.name}</span>
-                    </div>
-                    <span className="font-mono text-xs font-medium text-foreground">
-                      {isFinalized && item.price ? `ETB ${(item.price * item.quantity).toFixed(2)}` : '---'}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+          <StatusBadge status={status} />
+        </div>
+      </header>
 
-              {/* Price Breakdown: --- until offer accepted and finalized */}
-              <div className="mt-3 space-y-1.5 border-t border-border/50 pt-3 text-xs">
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Food total</span>
-                  <span className="font-mono font-medium text-foreground">
-                    {isFinalized && foodTotal ? `ETB ${foodTotal.toFixed(2)}` : '---'}
-                  </span>
-                </div>
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Delivery fee</span>
-                  <span className="font-mono font-medium text-foreground">
-                    {isFinalized && deliveryFee ? `ETB ${deliveryFee.toFixed(2)}` : '---'}
-                  </span>
-                </div>
-                <div className="flex justify-between border-t border-border/40 pt-2 text-sm font-semibold text-foreground">
-                  <span>Total</span>
-                  <span className="font-mono">
-                    {isFinalized && grandTotal ? `ETB ${grandTotal.toFixed(2)}` : '---'}
-                  </span>
-                </div>
-              </div>
-            </div>
+      <main className="mx-auto max-w-2xl px-4 pt-4 sm:px-6 space-y-5">
+        {/* 2. COURIER QUICK GLANCE CHIPS (Distance, Items, Walking ETA) */}
+        <div className="flex items-center gap-2 overflow-x-auto py-1 text-xs font-medium scrollbar-none [scrollbar-width:none]">
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5 text-foreground">
+            <FontAwesomeIcon icon={faBagShopping} className="size-3 text-muted-foreground" />
+            <span>{totalItemsCount} {totalItemsCount === 1 ? 'item' : 'items'}</span>
+          </span>
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5 text-foreground">
+            <FontAwesomeIcon icon={faLocationArrow} className="size-3 text-primary" />
+            <span>0.6 km distance</span>
+          </span>
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-secondary px-3 py-1.5 text-foreground">
+            <FontAwesomeIcon icon={faClock} className="size-3 text-muted-foreground" />
+            <span>~12 min walk</span>
+          </span>
+          {!isMine && (
+            <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1.5 font-semibold text-primary">
+              <FontAwesomeIcon icon={faTag} className="size-3 text-primary" />
+              <span>Est. fee 20–35 ETB</span>
+            </span>
+          )}
+        </div>
 
-            {/* Pickup & Destination */}
-            <dl className="mt-5 space-y-3 border-t border-border/70 pt-4 text-sm">
-              <div>
-                <dt className="text-xs text-muted-foreground">Pickup</dt>
-                <dd className="mt-1 font-medium">{pickup}</dd>
-              </div>
-              <div>
-                <dt className="text-xs text-muted-foreground">Deliver to</dt>
-                <dd className="mt-1 font-medium">{destination}</dd>
-              </div>
-            </dl>
-
-            {instructions && (
-              <p className="mt-4 rounded-lg bg-secondary px-3 py-2 text-sm leading-6 text-muted-foreground">
-                {instructions}
+        {/* 3. REQUESTER PROFILE STRIP */}
+        <div className="flex items-center justify-between border-y border-border/70 py-3">
+          <div className="flex items-center gap-3">
+            <UserAvatar initials={requesterInitials} size="md" />
+            <div>
+              <p className="text-sm font-semibold text-foreground">{requesterName}</p>
+              <p className="text-xs text-muted-foreground">
+                Requester · Hartley Hall 3B
               </p>
-            )}
+            </div>
+          </div>
+          <div className="flex items-center gap-1 text-xs font-semibold text-foreground">
+            <FontAwesomeIcon icon={faStar} className="size-3 text-amber-500" />
+            <span>4.9</span>
+          </div>
+        </div>
 
+        {/* 4. VISUAL ROUTE TIMELINE (From Store -> To Dorm Room) */}
+        <section aria-label="Delivery Route" className="space-y-1">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            Delivery route
+          </h2>
+
+          <div className="pt-2">
+            {/* Origin Store Node */}
+            <div className="flex items-start gap-3">
+              <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-foreground">
+                <FontAwesomeIcon icon={faStore} className="size-3.5" />
+              </div>
+              <div className="flex-1 pb-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Pickup</span>
+                </div>
+                <p className="text-sm font-semibold text-foreground">{pickup}</p>
+              </div>
+            </div>
+
+            {/* Connecting transit route */}
+            <div className="-mt-3 mb-1 ml-3.5 flex items-center gap-2 border-l-2 border-dashed border-border pl-6 py-2 text-xs text-muted-foreground font-medium">
+              <FontAwesomeIcon icon={faPersonWalking} className="size-3 text-muted-foreground" />
+              <span>0.6 km · approx. 12 mins on campus</span>
+            </div>
+
+            {/* Destination Dropoff Node */}
+            <div className="flex items-start gap-3">
+              <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <FontAwesomeIcon icon={faLocationDot} className="size-3.5" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-primary">Deliver to</span>
+                </div>
+                <p className="text-sm font-semibold text-foreground">{destination}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. ORDER MANIFEST / CHECKLIST */}
+        <section aria-label="Order Items" className="border-t border-border/70 pt-4 space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Order items ({totalItemsCount})
+            </h2>
+            <span className="text-xs font-medium text-muted-foreground">
+              Store price confirmed upon offer
+            </span>
+          </div>
+
+          <div className="divide-y divide-border/60">
+            {items.map((item, idx) => (
+              <div key={idx} className="flex items-center justify-between py-2.5">
+                <div className="flex items-center gap-3">
+                  <span className="flex size-6 items-center justify-center rounded-md bg-secondary text-xs font-bold font-mono text-foreground">
+                    {item.quantity}x
+                  </span>
+                  <span className="text-sm font-medium text-foreground">{item.name}</span>
+                </div>
+                <span className="font-mono text-xs text-muted-foreground">
+                  {isFinalized && item.price ? `ETB ${(item.price * item.quantity).toFixed(2)}` : 'Est. price'}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Delivery Note / Special Instructions */}
+          {instructions && (
+            <div className="flex items-start gap-3 rounded-lg bg-secondary/80 p-3.5 text-xs text-foreground">
+              <FontAwesomeIcon icon={faCommentDots} className="size-4 shrink-0 text-muted-foreground mt-0.5" />
+              <div className="space-y-0.5">
+                <p className="font-semibold text-foreground">Requester note:</p>
+                <p className="text-muted-foreground leading-relaxed">{instructions}</p>
+              </div>
+            </div>
+          )}
+        </section>
+
+        {/* 6. OFFERS SECTION (When viewed by order owner) */}
+        {isMine && (
+          <section aria-labelledby="offers-title" className="border-t border-border/70 pt-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <h2 id="offers-title" className="text-sm font-semibold tracking-tight text-foreground">
+                Delivery offers ({offers.length})
+              </h2>
+              <div className="flex rounded-full bg-secondary p-0.5 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setSort('total')}
+                  className={`rounded-full px-3 py-1 font-semibold transition-colors ${
+                    sort === 'total' ? 'bg-card text-foreground shadow-xs' : 'text-muted-foreground'
+                  }`}
+                >
+                  Lowest total
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSort('eta')}
+                  className={`rounded-full px-3 py-1 font-semibold transition-colors ${
+                    sort === 'eta' ? 'bg-card text-foreground shadow-xs' : 'text-muted-foreground'
+                  }`}
+                >
+                  Fastest
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {sortedOffers.map((offer) => (
+                <OfferCard
+                  key={offer.id}
+                  offer={offer}
+                  onClick={() => setSelectedOffer(offer)}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+      </main>
+
+      {/* 7. PINNED NATIVE BOTTOM ACTION BAR */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card p-4 pb-[max(env(safe-area-inset-bottom),16px)] shadow-lg">
+        <div className="mx-auto flex max-w-2xl items-center justify-between gap-4">
+          <div className="min-w-0">
+            <p className="text-xs font-medium text-muted-foreground">
+              {isMine ? 'Order status' : 'Delivery payout'}
+            </p>
+            <p className="text-base font-bold text-foreground">
+              {isMine ? (
+                status === 'open' ? 'Waiting for offers' : 'In progress'
+              ) : (
+                '20 – 35 ETB fee'
+              )}
+            </p>
+          </div>
+
+          <div className="shrink-0">
             {isMine ? (
               <Button
-                variant="secondary"
-                className="mt-4 w-full rounded-full text-destructive"
+                variant="outline"
+                className="h-11 rounded-full px-6 font-semibold text-destructive hover:bg-destructive/10"
                 onClick={() => setCancelOpen(true)}
               >
                 Cancel order
               </Button>
             ) : (
               <Button
-                className="mt-4 w-full rounded-full font-semibold"
+                size="lg"
+                className="h-11 rounded-full px-6 font-semibold gap-2"
                 onClick={() => setOfferSheetOpen(true)}
               >
+                <FontAwesomeIcon icon={faHandshake} className="size-4" />
                 Make delivery offer
               </Button>
             )}
           </div>
-        </section>
-
-        <section aria-labelledby="offers-title">
-          {!isMine ? (
-            <div className="rounded-lg border border-border bg-card p-6 text-center space-y-4">
-              <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <FontAwesomeIcon icon={faHandshake} className="size-5" />
-              </div>
-              <div>
-                <h2 id="offers-title" className="font-semibold text-foreground text-base">Deliver this order</h2>
-                <p className="mt-1 text-xs text-muted-foreground max-w-sm mx-auto">
-                  Set your store price, item availability, and delivery fee. The requester chooses which offer to accept.
-                </p>
-              </div>
-              <Button
-                className="rounded-full px-6 font-semibold"
-                onClick={() => setOfferSheetOpen(true)}
-              >
-                Make delivery offer
-              </Button>
-            </div>
-          ) : (
-            <>
-              <div className="mb-3 flex items-center justify-between">
-                <h2 id="offers-title" className="text-base font-semibold tracking-tight">
-                  Offers <span className="text-muted-foreground">({offers.length})</span>
-                </h2>
-                <div className="flex rounded-full border bg-card p-1 text-xs" role="group" aria-label="Sort offers">
-                  <button
-                    type="button"
-                    onClick={() => setSort('total')}
-                    aria-pressed={sort === 'total'}
-                    className={`rounded-full px-3 py-1 font-medium transition-colors ${sort === 'total' ? 'bg-secondary text-foreground' : 'text-muted-foreground'
-                      }`}
-                  >
-                    Lowest total
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setSort('eta')}
-                    aria-pressed={sort === 'eta'}
-                    className={`rounded-full px-3 py-1 font-medium transition-colors ${sort === 'eta' ? 'bg-secondary text-foreground' : 'text-muted-foreground'
-                      }`}
-                  >
-                    Fastest
-                  </button>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <p className="mt-4 text-xs text-muted-foreground">
-                  You choose who delivers. Accepting locks the price, fee, and time.
-                </p>
-                {sortedOffers.map((offer) => (
-                  <OfferCard
-                    key={offer.id}
-                    offer={offer}
-                    onClick={() => setSelectedOffer(offer)}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-        </section>
+        </div>
       </div>
 
-      {/* Offer Details Sheet: Shows confirmed item availability and itemized pricing */}
+      {/* Sheets & Dialogs */}
       <OfferDetailsSheet
         open={Boolean(selectedOffer)}
         onClose={() => setSelectedOffer(null)}
