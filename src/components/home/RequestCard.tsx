@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faChevronRight, faClock, faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { StatusBadge } from '@common/StatusBadge';
 import { Card } from '@/components/ui/card';
 import type { OrderStatus } from '@/types/dormshi';
@@ -37,16 +37,16 @@ export interface RequestCardData {
   price?: string;
   offers?: unknown[];
   agreement?: { fulfillerId?: string };
-  requesterId?: string;
+  statusBadge?: React.ReactNode;
+  footerLeft?: React.ReactNode;
 }
 
 interface RequestCardProps {
   request?: RequestCardData;
-  action?: React.ReactNode;
-  showRole?: boolean;
+  onClick?: () => void;
 }
 
-export function RequestCard({ request, action, showRole = false }: RequestCardProps) {
+export function RequestCard({ request, onClick }: RequestCardProps) {
   const req = request ?? {
     id: 'r1',
     food: '2 large taro milk teas, 50% sugar, with boba',
@@ -62,116 +62,39 @@ export function RequestCard({ request, action, showRole = false }: RequestCardPr
     price: 'ETB 120'
   };
 
-  const isMine = req.isMine ?? (req.requesterId === 'u_me');
-  const isFulfilling = req.isFulfilling ?? (req.agreement?.fulfillerId === 'u_me');
   const offersCount = req.offerCount ?? (req.offers?.length ?? 0);
   const timeText = req.timeAgo ?? '11m ago';
 
-  // "My requests" card layout:
-  // Top: [status] and opp direction [time]
-  // Bottom: [offers count] in place of time, and [chevron icon] on opposite direction in place of price (no price at all)
-  if (isMine) {
-    return (
-      <Card className="group relative flex flex-col justify-between overflow-hidden rounded-lg border border-border bg-card p-5 transition-all hover:border-primary/40">
-        <div>
-          {/* Top Header: [Status] on left, [Time] on opposite right */}
-          <div className="flex items-center justify-between gap-3">
-            <StatusBadge status={req.status} />
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <span>{timeText}</span>
-            </div>
+  // Single uniform card layout for all orders (my orders and campus delivery orders)
+  return (
+    <Card className="group relative flex flex-col justify-between overflow-hidden rounded-lg border border-border bg-card p-5 transition-all hover:border-primary/40">
+      <div>
+        {/* Top Header: [Status] on left, [Time] on opposite right */}
+        <div className="flex items-center justify-between gap-3">
+          {req.statusBadge ?? <StatusBadge status={req.status} />}
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <span>{timeText}</span>
           </div>
+        </div>
 
-          {/* Food Title with Link */}
-          <h4 className="mt-3 text-base font-semibold text-foreground sm:text-lg">
+        {/* Food Title with Link or Button */}
+        <h4 className="mt-3 text-base font-semibold text-foreground sm:text-lg">
+          {onClick ? (
+            <button
+              type="button"
+              onClick={onClick}
+              className="text-left font-semibold text-foreground after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-ring"
+            >
+              {req.food}
+            </button>
+          ) : (
             <Link
               to={`/requests/${req.id}`}
               className="after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-ring"
             >
               {req.food}
             </Link>
-          </h4>
-
-          {/* Pickup & Destination Transit Route */}
-          <div className="mt-2.5 space-y-2 text-xs sm:text-sm">
-            {/* From (Pickup) */}
-            <div className="flex items-center gap-2.5">
-              <div className="relative flex items-center justify-center size-3.5 shrink-0">
-                <FontAwesomeIcon
-                  icon={faLocationDotOutline}
-                  className="size-3.5 text-muted-foreground"
-                />
-                {/* Connecting Line running directly down into destination icon */}
-                <span className="absolute top-full left-1/2 -translate-x-1/2 w-0.5 h-3.5 bg-neutral-300 dark:bg-neutral-600" />
-              </div>
-              <p className="truncate">
-                <span className="text-muted-foreground">From </span>
-                <span className="font-semibold text-foreground">{req.pickup}</span>
-              </p>
-            </div>
-
-            {/* To (Destination) */}
-            <div className="flex items-center gap-2.5">
-              <div className="flex items-center justify-center size-3.5 shrink-0">
-                <FontAwesomeIcon
-                  icon={faLocationDot}
-                  className="size-3.5 text-primary"
-                />
-              </div>
-              <p className="truncate">
-                <span className="text-muted-foreground">To </span>
-                <span className="font-semibold text-foreground">{req.destination}</span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Card Footer: [Offers count] on left, [Chevron icon] on opposite right (no price) */}
-        <div className="mt-4 flex items-center justify-between border-t border-border/50 pt-3">
-          <span className="text-xs font-medium text-muted-foreground">
-            {offersCount} {offersCount === 1 ? 'offer' : 'offers'}
-          </span>
-
-          <FontAwesomeIcon
-            icon={faChevronRight}
-            className="size-3.5 shrink-0 text-muted-foreground/60 transition-transform group-hover:translate-x-0.5 group-hover:text-foreground"
-          />
-        </div>
-      </Card>
-    );
-  }
-
-  // Original card structure for other requests (e.g. Delivery Requests)
-  return (
-    <Card className="group relative flex flex-col justify-between overflow-hidden rounded-lg border border-border bg-card p-5 transition-all hover:border-primary/40">
-      <div>
-        {/* Top Header line: Status badge + Offer count + Role tag */}
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <StatusBadge status={req.status} />
-            {offersCount > 0 && (
-              <span className="text-xs text-muted-foreground">
-                · {offersCount} {offersCount === 1 ? 'offer' : 'offers'}
-              </span>
-            )}
-            {showRole && isFulfilling && (
-              <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-                You’re delivering
-              </span>
-            )}
-          </div>
-
-          <FontAwesomeIcon icon={faChevronRight} className="size-3.5 shrink-0 text-muted-foreground/60 transition-colors group-hover:text-foreground" />
-        </div>
-
-        {/* Food Title with Link */}
-        <h4 className="mt-3 text-base font-semibold text-foreground sm:text-lg">
-          <Link
-            to={`/requests/${req.id}`}
-            className="after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-ring"
-          >
-            {req.food}
-          </Link>
+          )}
         </h4>
 
         {/* Pickup & Destination Transit Route */}
@@ -208,20 +131,18 @@ export function RequestCard({ request, action, showRole = false }: RequestCardPr
         </div>
       </div>
 
-      {/* Card Footer: Time Ago & Price badge / Action */}
+      {/* Card Footer: [Offers count / custom footer] on left, [Chevron icon] on opposite right */}
       <div className="mt-4 flex items-center justify-between border-t border-border/50 pt-3">
-        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          <FontAwesomeIcon icon={faClock} className="size-3.5 shrink-0" />
-          <span>{timeText}</span>
-        </div>
-
-        {action ? (
-          <div className="relative z-10 shrink-0">{action}</div>
-        ) : (
-          <span className="rounded-full bg-primary-soft px-3 py-1 font-mono text-xs font-bold text-primary">
-            {req.price || (req.status === 'open' ? `${offersCount} offers` : 'Agreed')}
+        {req.footerLeft ?? (
+          <span className="text-xs font-medium text-muted-foreground">
+            {offersCount} {offersCount === 1 ? 'offer' : 'offers'}
           </span>
         )}
+
+        <FontAwesomeIcon
+          icon={faChevronRight}
+          className="size-3.5 shrink-0 text-muted-foreground/60 transition-transform group-hover:translate-x-0.5 group-hover:text-foreground"
+        />
       </div>
     </Card>
   );

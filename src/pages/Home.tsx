@@ -2,19 +2,11 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faHandshake,
-  faListOl,
-  faPlus,
-  faTruck,
-  faWallet
-} from '@fortawesome/free-solid-svg-icons';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { faWallet } from '@fortawesome/free-solid-svg-icons';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { UserAvatar } from '@common/UserAvatar';
 import { RequestCard } from '@/components/home/RequestCard';
-import { OfferSheet } from '@/components/home/OfferSheet';
-import { SentOfferCard, type SentOfferData } from '@/components/home/SentOfferCard';
 
 const adImages = [
   {
@@ -34,85 +26,109 @@ const adImages = [
   }
 ];
 
-export function Home() {
-  const [offerOpen, setOfferOpen] = useState(false);
-  const [activeRequest, setActiveRequest] = useState<{
-    id?: string;
-    food?: string;
-    items?: { name: string; quantity: number }[];
-    pickup?: string;
-    destination?: string;
-    requesterName?: string;
-    requesterInitials?: string;
-  } | null>(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [activeTab, setActiveTab] = useState<'my-requests' | 'my-offers' | 'delivery'>('my-requests');
+const myOrdersData = [
+  {
+    id: 'r1',
+    food: 'Taro milk tea, Boba',
+    pickup: 'Tea Lab, Union Square',
+    destination: 'Hartley Hall, 3rd floor lounge',
+    status: 'open' as const,
+    timeAgo: '11m ago',
+    requesterName: 'You',
+    requesterInitials: 'MO',
+    isMine: true,
+    offerCount: 2,
+    price: 'ETB 120'
+  },
+  {
+    id: 'r2',
+    food: 'Chicken shawarma wrap, Garlic fries',
+    pickup: 'Halal Cart, 5th & Main',
+    destination: 'Science Library, Room 204',
+    status: 'on_the_way' as const,
+    timeAgo: '34m ago',
+    price: 'ETB 140',
+    requesterName: 'You',
+    requesterInitials: 'MO',
+    isMine: true,
+    offerCount: 1
+  },
+  {
+    id: 'r8',
+    food: 'Burrito bowl, Chicken',
+    pickup: 'Chipotle, Main St',
+    destination: 'Hartley Hall 3B',
+    status: 'completed' as const,
+    timeAgo: 'Yesterday',
+    price: 'ETB 150',
+    requesterName: 'You',
+    requesterInitials: 'MO',
+    isMine: true
+  }
+];
 
-  const [myOffers, setMyOffers] = useState<SentOfferData[]>([
-    {
-      id: 'off_sent_1',
-      requestId: 'r4',
-      food: 'Iced oat latte, Blueberry muffin',
-      pickup: 'Bean Counter Café',
-      destination: 'Engineering Building, Lab 1.12',
-      requesterName: 'Aisha Bello',
-      requesterInitials: 'AB',
-      status: 'pending',
-      availableItems: '2 of 2 in stock',
-      foodPrice: 110.0,
-      deliveryFee: 20.0,
-      etaMinutes: 15,
-      timeAgo: '5m ago',
-      note: 'Already at the counter, can deliver right away.'
-    },
-    {
-      id: 'off_sent_2',
-      requestId: 'r5',
-      food: 'Pad thai, Tofu',
-      pickup: 'Thai Orchid, Campus Ave',
-      destination: 'Ellis Hall, Room 410',
-      requesterName: 'Tomás Ruiz',
-      requesterInitials: 'TR',
-      status: 'accepted',
-      availableItems: 'All in stock',
-      foodPrice: 135.0,
-      deliveryFee: 25.0,
-      etaMinutes: 12,
-      timeAgo: '18m ago',
-      note: 'Order confirmed with counter. Walking over now.'
-    },
-    {
-      id: 'off_sent_3',
-      requestId: 'r7',
-      food: 'Pepperoni pizza, Coke',
-      pickup: "Gino's Pizza",
-      destination: 'Music Hall, practice room 7',
-      requesterName: 'Dev Mehta',
-      requesterInitials: 'DM',
-      status: 'pending',
-      availableItems: '1 of 2 in stock',
-      foodPrice: 40.0,
-      deliveryFee: 15.0,
-      etaMinutes: 20,
-      timeAgo: '35m ago',
-      note: 'Coke ready, pizza will be fresh out of the oven.'
-    },
-    {
-      id: 'off_sent_4',
-      requestId: 'r6',
-      food: 'Clif bar, Sparkling water',
-      pickup: 'CVS on College St',
-      destination: 'Rec Center front desk',
-      requesterName: 'Lena Park',
-      requesterInitials: 'LP',
-      status: 'completed',
-      availableItems: 'All (2)',
-      foodPrice: 70.0,
-      deliveryFee: 20.0,
-      etaMinutes: 10,
-      timeAgo: 'Yesterday'
-    }
-  ]);
+const campusOrdersData = [
+  {
+    id: 'r4',
+    food: 'Iced oat latte, Blueberry muffin',
+    pickup: 'Bean Counter Café',
+    destination: 'Engineering Building, Lab 1.12',
+    status: 'open' as const,
+    timeAgo: '4m ago',
+    distanceKm: 0.3,
+    requesterName: 'Aisha Bello',
+    requesterInitials: 'AB',
+    offerCount: 1,
+    price: 'ETB 110'
+  },
+  {
+    id: 'r5',
+    food: 'Pad thai, Tofu',
+    pickup: 'Thai Orchid, Campus Ave',
+    destination: 'Ellis Hall, Room 410',
+    status: 'open' as const,
+    timeAgo: '7m ago',
+    distanceKm: 0.6,
+    requesterName: 'Tomás Ruiz',
+    requesterInitials: 'TR',
+    offerCount: 0,
+    price: 'ETB 160'
+  },
+  {
+    id: 'r6',
+    food: 'Clif bar, Sparkling water',
+    pickup: 'CVS on College St',
+    destination: 'Rec Center front desk',
+    status: 'open' as const,
+    timeAgo: '13m ago',
+    distanceKm: 0.8,
+    requesterName: 'Lena Park',
+    requesterInitials: 'LP',
+    offerCount: 0,
+    price: 'ETB 90'
+  },
+  {
+    id: 'r7',
+    food: 'Pepperoni pizza, Coke',
+    pickup: "Gino's Pizza",
+    destination: 'Music Hall, practice room 7',
+    status: 'open' as const,
+    timeAgo: '18m ago',
+    requesterName: 'Dev Mehta',
+    requesterInitials: 'DM',
+    offerCount: 2,
+    price: 'ETB 130'
+  }
+];
+
+export function Home() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [showMyOrders, setShowMyOrders] = useState(false);
+  const [myOrdersFilter, setMyOrdersFilter] = useState<'all' | 'open' | 'on_the_way' | 'completed'>('all');
+
+  const filteredMyOrders = myOrdersFilter === 'all'
+    ? myOrdersData
+    : myOrdersData.filter((o) => o.status === myOrdersFilter);
 
   // Auto-advance ad banner image every 5 seconds
   useEffect(() => {
@@ -122,21 +138,8 @@ export function Home() {
     return () => clearInterval(timer);
   }, []);
 
-  const handleMakeOffer = (req: {
-    id: string;
-    food: string;
-    items?: { name: string; quantity: number }[];
-    pickup?: string;
-    destination?: string;
-    requesterName?: string;
-    requesterInitials?: string;
-  }) => {
-    setActiveRequest(req);
-    setOfferOpen(true);
-  };
-
   return (
-    <div className="mx-auto max-w-4xl space-y-6 px-4 pt-4 pb-28 sm:px-6 lg:px-8 lg:pt-8">
+    <div className="mx-auto max-w-4xl space-y-6 px-4 pt-4 pb-36 sm:px-6 lg:px-8 lg:pt-8">
       {/* =========================================================================
           TOP BAR: Clean Telegram Mini App Header (64px per layout spec)
          ========================================================================= */}
@@ -214,8 +217,8 @@ export function Home() {
               onClick={() => setCurrentSlide(idx)}
               aria-label={`Go to slide ${idx + 1}`}
               className={`h-2 rounded-full transition-all duration-200 ${idx === currentSlide
-                  ? 'w-6 bg-white'
-                  : 'w-2 bg-white/45 hover:bg-white/80'
+                ? 'w-6 bg-white'
+                : 'w-2 bg-white/45 hover:bg-white/80'
                 }`}
             />
           ))}
@@ -223,368 +226,95 @@ export function Home() {
       </section>
 
       {/* =========================================================================
-          TABS: Single Toggle between Delivery Requests & My Requests
+          ORDERS MAIN SECTION: Header with Switcher to toggle own orders on/off
          ========================================================================= */}
-      <section aria-labelledby="requests-title" className="space-y-4">
-        <Tabs
-          value={activeTab}
-          onValueChange={(val) => setActiveTab(val as 'my-requests' | 'my-offers' | 'delivery')}
-          className="w-full"
-        >
-          {/* Floating Pill Dock: Collapses inactive tab to icon only with smooth animation */}
-          <TabsList className="fixed bottom-6 left-1/2 z-30 inline-flex h-11 -translate-x-1/2 items-center gap-1 rounded-full border border-border/80 bg-card/95 p-1 shadow-[0_8px_30px_rgba(0,0,0,0.14)] backdrop-blur-md dark:border-border dark:shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
-            <TabsTrigger
-              value="my-requests"
-              aria-label="My requests"
-              className="relative flex h-9 items-center justify-center rounded-full px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground data-[state=active]:bg-secondary data-[state=active]:font-semibold data-[state=active]:text-foreground sm:text-sm"
+      <section aria-labelledby="orders-heading" className="space-y-4">
+        <div className="flex items-center justify-between gap-3">
+          <h2 id="orders-heading" className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+            Orders
+          </h2>
+
+          <div className="flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 shadow-none">
+            <Label
+              htmlFor="my-orders-switch"
+              className="cursor-pointer text-xs font-medium text-foreground select-none"
             >
-              <FontAwesomeIcon icon={faListOl} className="size-3.5 shrink-0" />
-              <AnimatePresence initial={false}>
-                {activeTab === 'my-requests' && (
-                  <motion.span
-                    initial={{ width: 0, opacity: 0, marginLeft: 0 }}
-                    animate={{ width: 'auto', opacity: 1, marginLeft: 8 }}
-                    exit={{ width: 0, opacity: 0, marginLeft: 0 }}
-                    transition={{ duration: 0.2, ease: [0.4, 0.4, 0, 1] }}
-                    className="overflow-hidden whitespace-nowrap"
-                  >
-                    My requests
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </TabsTrigger>
+              My orders
+            </Label>
+            <Switch
+              id="my-orders-switch"
+              checked={showMyOrders}
+              onCheckedChange={setShowMyOrders}
+              aria-label="Turn on and off my orders"
+            />
+          </div>
+        </div>
 
-            <TabsTrigger
-              value="my-offers"
-              aria-label="My offers"
-              className="relative flex h-9 items-center justify-center rounded-full px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground data-[state=active]:bg-secondary data-[state=active]:font-semibold data-[state=active]:text-foreground sm:text-sm"
-            >
-              <FontAwesomeIcon icon={faHandshake} className="size-3.5 shrink-0" />
-              <AnimatePresence initial={false}>
-                {activeTab === 'my-offers' && (
-                  <motion.span
-                    initial={{ width: 0, opacity: 0, marginLeft: 0 }}
-                    animate={{ width: 'auto', opacity: 1, marginLeft: 8 }}
-                    exit={{ width: 0, opacity: 0, marginLeft: 0 }}
-                    transition={{ duration: 0.2, ease: [0.4, 0.4, 0, 1] }}
-                    className="overflow-hidden whitespace-nowrap"
-                  >
-                    My offers
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </TabsTrigger>
+        <p className="text-xs text-muted-foreground">
+          {showMyOrders
+            ? 'Orders you placed on campus.'
+            : 'Campus delivery orders waiting for pickup.'}
+        </p>
 
-            <TabsTrigger
-              value="delivery"
-              aria-label="Delivery requests"
-              className="relative flex h-9 items-center justify-center rounded-full px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground data-[state=active]:bg-secondary data-[state=active]:font-semibold data-[state=active]:text-foreground sm:text-sm"
-            >
-              <FontAwesomeIcon icon={faTruck} className="size-3.5 shrink-0" />
-              <AnimatePresence initial={false}>
-                {activeTab === 'delivery' && (
-                  <motion.span
-                    initial={{ width: 0, opacity: 0, marginLeft: 0 }}
-                    animate={{ width: 'auto', opacity: 1, marginLeft: 8 }}
-                    exit={{ width: 0, opacity: 0, marginLeft: 0 }}
-                    transition={{ duration: 0.2, ease: [0.4, 0.4, 0, 1] }}
-                    className="overflow-hidden whitespace-nowrap"
-                  >
-                    Delivery requests
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </TabsTrigger>
-          </TabsList>
+        {/* Status filters for My Orders (horizontally scrollable) */}
+        {showMyOrders && (
+          <div
+            className="flex items-center gap-2 overflow-x-auto py-1 -mx-4 px-4 sm:mx-0 sm:px-0 flex-nowrap scrollbar-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+            role="tablist"
+          >
+            {(['all', 'open', 'on_the_way', 'completed'] as const).map((tab) => {
+              const label = tab === 'all'
+                ? 'All'
+                : tab === 'open'
+                ? 'Open'
+                : tab === 'on_the_way'
+                ? 'On the way'
+                : 'Completed';
 
-          {/* 1. MY REQUESTS: Requests sent by the user */}
-          <TabsContent value="my-requests" className="mt-6 space-y-4">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <h3 className="font-semibold">My Requests</h3>
-                <p className="text-xs text-muted-foreground">Orders you placed.</p>
-              </div>
-              <Link
-                to="/requests/new"
-                className="inline-flex shrink-0 items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-none transition-all hover:bg-primary/90 active:scale-95 sm:text-sm"
-              >
-                <FontAwesomeIcon icon={faPlus} className="size-3.5" />
-                <span>New request</span>
-              </Link>
-            </div>
+              return (
+                <button
+                  key={tab}
+                  type="button"
+                  role="tab"
+                  aria-selected={myOrdersFilter === tab}
+                  onClick={() => setMyOrdersFilter(tab)}
+                  className={`shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-semibold capitalize transition-colors ${
+                    myOrdersFilter === tab
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-secondary text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            })}
+          </div>
+        )}
 
-            <div className="space-y-3">
-              <RequestCard
-                request={{
-                  id: 'r1',
-                  food: 'Taro milk tea, Boba',
-                  pickup: 'Tea Lab, Union Square',
-                  destination: 'Hartley Hall, 3rd floor lounge',
-                  status: 'open',
-                  timeAgo: '11m ago',
-                  requesterName: 'You',
-                  requesterInitials: 'MO',
-                  isMine: true,
-                  offerCount: 2,
-                  price: 'ETB 120'
-                }}
-              />
-              <RequestCard
-                request={{
-                  id: 'r2',
-                  food: 'Chicken shawarma wrap, Garlic fries',
-                  pickup: 'Halal Cart, 5th & Main',
-                  destination: 'Science Library, Room 204',
-                  status: 'on_the_way',
-                  timeAgo: '34m ago',
-                  price: 'ETB 140',
-                  requesterName: 'You',
-                  requesterInitials: 'MO',
-                  isMine: true,
-                  offerCount: 1
-                }}
-              />
-              <RequestCard
-                request={{
-                  id: 'r8',
-                  food: 'Burrito bowl, Chicken',
-                  pickup: 'Chipotle, Main St',
-                  destination: 'Hartley Hall 3B',
-                  status: 'completed',
-                  timeAgo: 'Yesterday',
-                  price: 'ETB 150',
-                  requesterName: 'You',
-                  requesterInitials: 'MO',
-                  isMine: true
-                }}
-              />
-            </div>
-          </TabsContent>
-
-          {/* 2. MY OFFERS: Offers you sent to other students' requests */}
-          <TabsContent value="my-offers" className="mt-6 space-y-4">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <h3 className="font-semibold">My Offers</h3>
-                <p className="text-xs text-muted-foreground">
-                  Offers you sent to other students.
+        {/* Orders list */}
+        <div className="space-y-3">
+          {showMyOrders ? (
+            filteredMyOrders.length === 0 ? (
+              <div className="rounded-lg border border-dashed border-border p-8 text-center">
+                <p className="text-sm font-semibold text-foreground">
+                  No {myOrdersFilter === 'on_the_way' ? 'orders on the way' : `${myOrdersFilter} orders`}
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Orders you place will appear here as they progress.
                 </p>
               </div>
-              <span className="rounded-full bg-secondary px-2.5 py-1 text-xs font-medium text-muted-foreground">
-                {myOffers.filter((o) => o.status !== 'withdrawn').length} active
-              </span>
-            </div>
-
-            <div className="space-y-3">
-              {myOffers.filter((o) => o.status !== 'withdrawn').length === 0 ? (
-                <div className="rounded-lg border border-dashed border-border p-8 text-center">
-                  <p className="text-sm font-medium text-muted-foreground">No active offers sent yet</p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    Check out open delivery requests and send an offer to earn money.
-                  </p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setActiveTab('delivery')}
-                    className="mt-4 rounded-full text-xs font-medium"
-                  >
-                    Browse delivery requests
-                  </Button>
-                </div>
-              ) : (
-                myOffers
-                  .filter((o) => o.status !== 'withdrawn')
-                  .map((offer) => (
-                    <SentOfferCard
-                      key={offer.id}
-                      offer={offer}
-                      onWithdraw={(id) => {
-                        setMyOffers((prev) =>
-                          prev.map((o) => (o.id === id ? { ...o, status: 'withdrawn' } : o))
-                        );
-                      }}
-                    />
-                  ))
-              )}
-            </div>
-          </TabsContent>
-
-          {/* 3. DELIVERY REQUESTS: Other students' requests where you can make offers */}
-          <TabsContent value="delivery" className="mt-6 space-y-4">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <h3 className="font-semibold">Delivery Requests</h3>
-                <p className="text-xs text-muted-foreground">
-                  Requests waiting for delivery. Send an offer to earn.
-                </p>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <RequestCard
-                request={{
-                  id: 'r4',
-                  food: 'Iced oat latte, Blueberry muffin',
-                  pickup: 'Bean Counter Café',
-                  destination: 'Engineering Building, Lab 1.12',
-                  status: 'open',
-                  timeAgo: '4m ago',
-                  distanceKm: 0.3,
-                  requesterName: 'Aisha Bello',
-                  requesterInitials: 'AB',
-                  offerCount: 1,
-                  price: 'ETB 110'
-                }}
-                action={
-                  <Button
-                    size="sm"
-                    onClick={() =>
-                      handleMakeOffer({
-                        id: 'r4',
-                        food: 'Iced oat latte, Blueberry muffin',
-                        pickup: 'Bean Counter Café',
-                        destination: 'Engineering Building, Lab 1.12',
-                        requesterName: 'Aisha Bello',
-                        requesterInitials: 'AB',
-                        items: [
-                          { name: 'Iced oat latte', quantity: 1 },
-                          { name: 'Blueberry muffin', quantity: 1 }
-                        ]
-                      })
-                    }
-                    className="rounded-full px-4 font-semibold"
-                  >
-                    Make offer
-                  </Button>
-                }
-              />
-              <RequestCard
-                request={{
-                  id: 'r5',
-                  food: 'Pad thai, Tofu',
-                  pickup: 'Thai Orchid, Campus Ave',
-                  destination: 'Ellis Hall, Room 410',
-                  status: 'open',
-                  timeAgo: '7m ago',
-                  distanceKm: 0.6,
-                  requesterName: 'Tomás Ruiz',
-                  requesterInitials: 'TR',
-                  offerCount: 0,
-                  price: 'ETB 160'
-                }}
-                action={
-                  <Button
-                    size="sm"
-                    onClick={() =>
-                      handleMakeOffer({
-                        id: 'r5',
-                        food: 'Pad thai, Tofu',
-                        pickup: 'Thai Orchid, Campus Ave',
-                        destination: 'Ellis Hall, Room 410',
-                        requesterName: 'Tomás Ruiz',
-                        requesterInitials: 'TR',
-                        items: [
-                          { name: 'Pad thai', quantity: 1 },
-                          { name: 'Tofu', quantity: 1 }
-                        ]
-                      })
-                    }
-                    className="rounded-full px-4 font-semibold"
-                  >
-                    Make offer
-                  </Button>
-                }
-              />
-              <RequestCard
-                request={{
-                  id: 'r6',
-                  food: 'Clif bar, Sparkling water',
-                  pickup: 'CVS on College St',
-                  destination: 'Rec Center front desk',
-                  status: 'open',
-                  timeAgo: '13m ago',
-                  distanceKm: 0.8,
-                  requesterName: 'Lena Park',
-                  requesterInitials: 'LP',
-                  offerCount: 0,
-                  price: 'ETB 90'
-                }}
-                action={
-                  <Button
-                    size="sm"
-                    onClick={() =>
-                      handleMakeOffer({
-                        id: 'r6',
-                        food: 'Clif bar, Sparkling water',
-                        pickup: 'CVS on College St',
-                        destination: 'Rec Center front desk',
-                        requesterName: 'Lena Park',
-                        requesterInitials: 'LP',
-                        items: [
-                          { name: 'Clif bar', quantity: 2 },
-                          { name: 'Sparkling water', quantity: 1 }
-                        ]
-                      })
-                    }
-                    className="rounded-full px-4 font-semibold"
-                  >
-                    Make offer
-                  </Button>
-                }
-              />
-              <RequestCard
-                request={{
-                  id: 'r7',
-                  food: 'Pepperoni pizza, Coke',
-                  pickup: "Gino's Pizza",
-                  destination: 'Music Hall, practice room 7',
-                  status: 'open',
-                  timeAgo: '18m ago',
-                  requesterName: 'Dev Mehta',
-                  requesterInitials: 'DM',
-                  offerCount: 2,
-                  price: 'ETB 130'
-                }}
-                action={
-                  <Button
-                    size="sm"
-                    onClick={() =>
-                      handleMakeOffer({
-                        id: 'r7',
-                        food: 'Pepperoni pizza, Coke',
-                        pickup: "Gino's Pizza",
-                        destination: 'Music Hall, practice room 7',
-                        requesterName: 'Dev Mehta',
-                        requesterInitials: 'DM',
-                        items: [
-                          { name: 'Pepperoni pizza', quantity: 1 },
-                          { name: 'Coke', quantity: 2 }
-                        ]
-                      })
-                    }
-                    className="rounded-full px-4 font-semibold"
-                  >
-                    Make offer
-                  </Button>
-                }
-              />
-            </div>
-          </TabsContent>
-        </Tabs>
+            ) : (
+              filteredMyOrders.map((order) => (
+                <RequestCard key={order.id} request={order} />
+              ))
+            )
+          ) : (
+            campusOrdersData.map((order) => (
+              <RequestCard key={order.id} request={order} />
+            ))
+          )}
+        </div>
       </section>
-
-      {/* Offer Sheet Modal */}
-      <OfferSheet
-        request={offerOpen ? activeRequest : null}
-        onClose={() => {
-          setOfferOpen(false);
-          setActiveRequest(null);
-        }}
-        onSubmitOffer={(newOffer) => {
-          setMyOffers((prev) => [newOffer, ...prev]);
-          setActiveTab('my-offers');
-        }}
-      />
     </div>
   );
 }

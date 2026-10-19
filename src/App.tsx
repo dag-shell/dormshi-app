@@ -1,8 +1,8 @@
-import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Toaster } from '@/components/ui/sonner';
 import { AppShell } from '@/components/layout/AppShell';
 import { Home } from './pages/Home';
+import { Offers } from './pages/Offers';
 import { CreateRequest } from './pages/CreateRequest';
 import { RequestDetails } from './pages/RequestDetails';
 import { Fulfillment } from './pages/Fulfillment';
@@ -18,6 +18,7 @@ export function App() {
       <Routes>
         <Route element={<AppShell />}>
           <Route path="/" element={<Home />} />
+          <Route path="/offers" element={<Offers />} />
           <Route path="/requests/new" element={<CreateRequest />} />
           <Route path="/requests/:id" element={<RequestDetails />} />
           <Route path="/requests/:id/track" element={<Fulfillment />} />

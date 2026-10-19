@@ -35,6 +35,13 @@ export interface SentOfferData {
   etaMinutes: number;
   timeAgo: string;
   note?: string;
+  itemsAvailability?: {
+    name: string;
+    quantity: number;
+    unitPrice?: number;
+    price?: number;
+    available?: boolean;
+  }[];
 }
 
 interface SentOfferCardProps {
@@ -44,11 +51,11 @@ interface SentOfferCardProps {
 
 const statusBadgeStyles: Record<SentOfferData['status'], { label: string; className: string }> = {
   pending: {
-    label: 'Pending review',
+    label: 'Pending',
     className: 'bg-secondary text-muted-foreground'
   },
   accepted: {
-    label: 'Accepted · Ready to deliver',
+    label: 'Accepted',
     className: 'bg-primary-soft text-primary font-semibold'
   },
   completed: {

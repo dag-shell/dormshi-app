@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+import { BottomNav } from './BottomNav';
+
+const hideNavPatterns = [/^\/requests\/new$/, /^\/requests\/[^/]+\/confirm$/];
 
 const titles: [RegExp, string][] = [
   [/^\/$/, 'Home'],
@@ -18,6 +21,7 @@ const DESCRIPTION =
 
 export function AppShell() {
   const { pathname } = useLocation();
+  const showBottomNav = !hideNavPatterns.some((p) => p.test(pathname));
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -37,9 +41,10 @@ export function AppShell() {
 
   return (
     <div className="min-h-screen w-full bg-background">
-      <main className="mx-auto w-full pb-16">
+      <main className={`mx-auto w-full ${showBottomNav ? 'pb-20' : 'pb-16'}`}>
         <Outlet />
       </main>
+      {showBottomNav && <BottomNav />}
     </div>
   );
 }

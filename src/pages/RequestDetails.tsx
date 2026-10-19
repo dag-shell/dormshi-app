@@ -1,19 +1,141 @@
 import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faHandshake } from '@fortawesome/free-solid-svg-icons';
+import { toast } from 'sonner';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { StatusBadge } from '@common/StatusBadge';
-import { UserAvatar } from '@common/UserAvatar';
 import { OfferCard, type OfferData } from '@/components/request-details/OfferCard';
-import { BottomSheet } from '@common/BottomSheet';
+import { OfferDetailsSheet } from '@common/OfferDetailsSheet';
 import { ReasonSheet } from '@/components/order/ReasonSheet';
+import { OfferSheet } from '@/components/home/OfferSheet';
 import { Button } from '@/components/ui/button';
 import type { OrderStatus } from '@/types/dormshi';
+
+const mockOrders: Record<string, {
+  food: string;
+  items: { name: string; quantity: number; price?: number }[];
+  pickup: string;
+  destination: string;
+  instructions?: string;
+  requesterName: string;
+  requesterInitials: string;
+  isMine: boolean;
+  timeAgo: string;
+  status: OrderStatus;
+}> = {
+  r1: {
+    food: 'Taro milk tea, Boba',
+    items: [
+      { name: 'Taro milk tea', quantity: 2, price: 50 },
+      { name: 'Boba topping', quantity: 2, price: 10 }
+    ],
+    pickup: 'Tea Lab, Union Square',
+    destination: 'Hartley Hall, 3rd floor lounge',
+    instructions: 'Less ice on both please. Text me when downstairs.',
+    requesterName: 'Maya Okafor',
+    requesterInitials: 'MO',
+    isMine: true,
+    timeAgo: '11m ago',
+    status: 'open'
+  },
+  r2: {
+    food: 'Chicken shawarma wrap, Garlic fries',
+    items: [
+      { name: 'Chicken shawarma wrap', quantity: 1, price: 100 },
+      { name: 'Garlic fries', quantity: 1, price: 40 }
+    ],
+    pickup: 'Halal Cart, 5th & Main',
+    destination: 'Science Library, Room 204',
+    instructions: 'Extra white sauce, please.',
+    requesterName: 'Maya Okafor',
+    requesterInitials: 'MO',
+    isMine: true,
+    timeAgo: '34m ago',
+    status: 'on_the_way'
+  },
+  r4: {
+    food: 'Iced oat latte, Blueberry muffin',
+    items: [
+      { name: 'Iced oat latte', quantity: 1 },
+      { name: 'Blueberry muffin', quantity: 1 }
+    ],
+    pickup: 'Bean Counter Café',
+    destination: 'Engineering Building, Lab 1.12',
+    instructions: 'Please call when arriving at the lab door.',
+    requesterName: 'Aisha Bello',
+    requesterInitials: 'AB',
+    isMine: false,
+    timeAgo: '4m ago',
+    status: 'open'
+  },
+  r5: {
+    food: 'Pad thai, Tofu',
+    items: [
+      { name: 'Pad thai', quantity: 1 },
+      { name: 'Tofu', quantity: 1 }
+    ],
+    pickup: 'Thai Orchid, Campus Ave',
+    destination: 'Ellis Hall, Room 410',
+    instructions: 'Medium spice. Leave at door if room locked.',
+    requesterName: 'Tomás Ruiz',
+    requesterInitials: 'TR',
+    isMine: false,
+    timeAgo: '7m ago',
+    status: 'open'
+  },
+  r6: {
+    food: 'Clif bar, Sparkling water',
+    items: [
+      { name: 'Clif bar', quantity: 2 },
+      { name: 'Sparkling water', quantity: 1 }
+    ],
+    pickup: 'CVS on College St',
+    destination: 'Rec Center front desk',
+    instructions: 'Any flavor Clif bar is fine.',
+    requesterName: 'Lena Park',
+    requesterInitials: 'LP',
+    isMine: false,
+    timeAgo: '13m ago',
+    status: 'open'
+  },
+  r7: {
+    food: 'Pepperoni pizza, Coke',
+    items: [
+      { name: 'Pepperoni pizza', quantity: 1 },
+      { name: 'Coke', quantity: 2 }
+    ],
+    pickup: "Gino's Pizza",
+    destination: 'Music Hall, practice room 7',
+    instructions: 'Practice room is down the hall on the left.',
+    requesterName: 'Dev Mehta',
+    requesterInitials: 'DM',
+    isMine: false,
+    timeAgo: '18m ago',
+    status: 'open'
+  },
+  r8: {
+    food: 'Burrito bowl, Chicken',
+    items: [
+      { name: 'Burrito bowl', quantity: 1, price: 150 }
+    ],
+    pickup: 'Chipotle, Main St',
+    destination: 'Hartley Hall 3B',
+    requesterName: 'Maya Okafor',
+    requesterInitials: 'MO',
+    isMine: true,
+    timeAgo: 'Yesterday',
+    status: 'completed'
+  }
+};
 
 export function RequestDetails() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { id } = useParams<{ id: string }>();
+  const mockOrder = (id && mockOrders[id]) || null;
+  const isMine = mockOrder ? mockOrder.isMine : (id === 'r1' || id === 'r2' || id === 'r8');
+  const [offerSheetOpen, setOfferSheetOpen] = useState(false);
   const [sort, setSort] = useState<'total' | 'eta'>('total');
   const [selectedOffer, setSelectedOffer] = useState<OfferData | null>(null);
   const [cancelOpen, setCancelOpen] = useState(false);
@@ -90,18 +212,21 @@ export function RequestDetails() {
     agreement?: { foodPrice: number; deliveryFee: number };
   }) || {};
 
-  const pickup = state.pickup || 'Tea Lab, Union Square';
-  const destination = state.destination || 'Hartley Hall, 3rd floor lounge';
-  const instructions = state.instructions || 'Less ice on both please. Text me when downstairs.';
-  const status: OrderStatus = state.status || 'open';
+  const pickup = state.pickup || mockOrder?.pickup || 'Tea Lab, Union Square';
+  const destination = state.destination || mockOrder?.destination || 'Hartley Hall, 3rd floor lounge';
+  const instructions = state.instructions || mockOrder?.instructions || 'Less ice on both please. Text me when downstairs.';
+  const status: OrderStatus = state.status || mockOrder?.status || 'open';
   const agreement = state.agreement;
 
   const isFinalized = Boolean(agreement || status !== 'open');
 
-  const items = state.items || [
+  const items = state.items || mockOrder?.items || [
     { name: 'Taro milk tea', quantity: 2, price: isFinalized ? 50 : undefined },
     { name: 'Boba topping', quantity: 2, price: isFinalized ? 10 : undefined },
   ];
+  const requesterName = mockOrder?.requesterName || 'Maya Okafor';
+  const requesterInitials = mockOrder?.requesterInitials || 'MO';
+  const food = mockOrder?.food || items.map((i) => `${i.quantity}x ${i.name}`).join(', ');
 
   const foodTotal = isFinalized ? (agreement?.foodPrice ?? 120) : null;
   const deliveryFee = isFinalized ? (agreement?.deliveryFee ?? 20) : null;
@@ -116,31 +241,21 @@ export function RequestDetails() {
     return Number(a.etaMinutes || 0) - Number(b.etaMinutes || 0);
   });
 
-  const isItemAvailable = (item: { price?: number; unitPrice?: number; available?: boolean }) => {
-    if (item.available !== undefined) return item.available;
-    const p = item.price ?? item.unitPrice;
-    return typeof p === 'number' && p > 0;
-  };
-
-  const offerItems = selectedOffer?.itemsAvailability || items.map((i) => ({
-    name: i.name,
-    quantity: i.quantity,
-    unitPrice: 50,
-    price: 50 * i.quantity
-  }));
-  const allAvailable = offerItems.every(isItemAvailable);
-  const availableCount = offerItems.filter(isItemAvailable).length;
-
   return (
     <div>
-      <PageHeader title="Your request" subtitle="Posted 11m ago" />
+      <PageHeader
+        title={isMine ? "Your order" : `Order from ${requesterName}`}
+        subtitle={`Posted ${mockOrder?.timeAgo || '11m ago'}`}
+      />
 
       <div className="mx-auto grid max-w-6xl gap-6 px-5 py-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start lg:gap-8 lg:px-10 lg:py-8">
         <section className="overflow-hidden rounded-lg border border-border bg-card p-5 lg:sticky lg:top-24">
           <div>
             <div className="flex items-center justify-between">
               <StatusBadge status={status} />
-              <span className="font-mono text-xs text-muted-foreground">#DMS-R1</span>
+              <span className="font-mono text-xs text-muted-foreground">
+                #{id ? id.toUpperCase() : 'DMS-R1'}
+              </span>
             </div>
 
             {/* Items Breakdown with Quantity and Price */}
@@ -205,216 +320,107 @@ export function RequestDetails() {
               </p>
             )}
 
-            <Button variant="secondary"  className="mt-4 w-full rounded-full text-destructive" onClick={() => setCancelOpen(true)}>
-              Cancel request
-            </Button>
+            {isMine ? (
+              <Button
+                variant="secondary"
+                className="mt-4 w-full rounded-full text-destructive"
+                onClick={() => setCancelOpen(true)}
+              >
+                Cancel order
+              </Button>
+            ) : (
+              <Button
+                className="mt-4 w-full rounded-full font-semibold"
+                onClick={() => setOfferSheetOpen(true)}
+              >
+                Make delivery offer
+              </Button>
+            )}
           </div>
         </section>
 
         <section aria-labelledby="offers-title">
-          <div className="mb-3 flex items-center justify-between">
-            <h2 id="offers-title" className="text-base font-semibold tracking-tight">
-              Offers <span className="text-muted-foreground">({offers.length})</span>
-            </h2>
-            <div className="flex rounded-full border bg-card p-1 text-xs" role="group" aria-label="Sort offers">
-              <button
-                type="button"
-                onClick={() => setSort('total')}
-                aria-pressed={sort === 'total'}
-                className={`rounded-full px-3 py-1 font-medium transition-colors ${sort === 'total' ? 'bg-secondary text-foreground' : 'text-muted-foreground'
-                  }`}
+          {!isMine ? (
+            <div className="rounded-lg border border-border bg-card p-6 text-center space-y-4">
+              <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <FontAwesomeIcon icon={faHandshake} className="size-5" />
+              </div>
+              <div>
+                <h2 id="offers-title" className="font-semibold text-foreground text-base">Deliver this order</h2>
+                <p className="mt-1 text-xs text-muted-foreground max-w-sm mx-auto">
+                  Set your store price, item availability, and delivery fee. The requester chooses which offer to accept.
+                </p>
+              </div>
+              <Button
+                className="rounded-full px-6 font-semibold"
+                onClick={() => setOfferSheetOpen(true)}
               >
-                Lowest total
-              </button>
-              <button
-                type="button"
-                onClick={() => setSort('eta')}
-                aria-pressed={sort === 'eta'}
-                className={`rounded-full px-3 py-1 font-medium transition-colors ${sort === 'eta' ? 'bg-secondary text-foreground' : 'text-muted-foreground'
-                  }`}
-              >
-                Fastest
-              </button>
+                Make delivery offer
+              </Button>
             </div>
-          </div>
+          ) : (
+            <>
+              <div className="mb-3 flex items-center justify-between">
+                <h2 id="offers-title" className="text-base font-semibold tracking-tight">
+                  Offers <span className="text-muted-foreground">({offers.length})</span>
+                </h2>
+                <div className="flex rounded-full border bg-card p-1 text-xs" role="group" aria-label="Sort offers">
+                  <button
+                    type="button"
+                    onClick={() => setSort('total')}
+                    aria-pressed={sort === 'total'}
+                    className={`rounded-full px-3 py-1 font-medium transition-colors ${sort === 'total' ? 'bg-secondary text-foreground' : 'text-muted-foreground'
+                      }`}
+                  >
+                    Lowest total
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSort('eta')}
+                    aria-pressed={sort === 'eta'}
+                    className={`rounded-full px-3 py-1 font-medium transition-colors ${sort === 'eta' ? 'bg-secondary text-foreground' : 'text-muted-foreground'
+                      }`}
+                  >
+                    Fastest
+                  </button>
+                </div>
+              </div>
 
-          <div className="space-y-3">
-            <p className="mt-4 text-xs text-muted-foreground">
-              You choose who delivers. Accepting locks the price, fee, and time.
-            </p>
-            {sortedOffers.map((offer) => (
-              <OfferCard
-                key={offer.id}
-                offer={offer}
-                onClick={() => setSelectedOffer(offer)}
-              />
-            ))}
-          </div>
+              <div className="space-y-3">
+                <p className="mt-4 text-xs text-muted-foreground">
+                  You choose who delivers. Accepting locks the price, fee, and time.
+                </p>
+                {sortedOffers.map((offer) => (
+                  <OfferCard
+                    key={offer.id}
+                    offer={offer}
+                    onClick={() => setSelectedOffer(offer)}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </section>
       </div>
 
       {/* Offer Details Sheet: Shows confirmed item availability and itemized pricing */}
-      <BottomSheet
+      <OfferDetailsSheet
         open={Boolean(selectedOffer)}
         onClose={() => setSelectedOffer(null)}
-        title="Offer details"
-        description={selectedOffer ? `From ${selectedOffer.name}` : undefined}
-      >
-        {selectedOffer && (
-          <div className="space-y-4">
-            {/* Deliverer Profile Snippet */}
-            <div className="flex items-center gap-3 rounded-lg border border-border bg-card p-3">
-              <UserAvatar initials={selectedOffer.initials || 'MO'} />
-              <div className="min-w-0 flex-1">
-                <p className="font-semibold text-foreground">{selectedOffer.name}</p>
-                <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                  <FontAwesomeIcon icon={faStar} className="size-3 text-foreground" />
-                  <span className="font-medium text-foreground">{selectedOffer.rating}</span>
-                  <span>· {selectedOffer.deliveries} deliveries</span>
-                </p>
-              </div>
-            </div>
-
-            {/* Items & Cafe Prices Section */}
-            <div className="rounded-lg border border-border bg-card p-3.5">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xs font-semibold text-muted-foreground">
-                  Items ({offerItems.reduce((acc, i) => acc + i.quantity, 0)})
-                </h3>
-                {availableCount < offerItems.length && (
-                  <span className="rounded-full bg-destructive/10 px-2.5 py-0.5 text-[11px] font-medium text-destructive">
-                    {offerItems.length - availableCount} out of stock
-                  </span>
-                )}
-              </div>
-
-              <ul className="mt-2 divide-y divide-border/50 text-xs">
-                {offerItems.map((item, idx) => {
-                  const available = isItemAvailable(item);
-                  const itemTotal = available
-                    ? (item.price ?? (item.unitPrice ? item.unitPrice * item.quantity : undefined))
-                    : undefined;
-                  const unitPrice = item.unitPrice ?? (item.price && item.quantity ? item.price / item.quantity : undefined);
-
-                  return (
-                    <li key={idx} className="py-2.5">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="min-w-0">
-                          <p className="font-medium text-foreground">
-                            {item.quantity}x {item.name}
-                          </p>
-                          {available && unitPrice !== undefined && (
-                            <p className="text-[11px] text-muted-foreground">
-                              ({unitPrice} ETB/item)
-                            </p>
-                          )}
-                        </div>
-                        <div>
-                          {available ? (
-                            <span className="font-mono text-xs font-semibold text-foreground">
-                              {itemTotal !== undefined ? `ETB ${itemTotal.toFixed(2)}` : '---'}
-                            </span>
-                          ) : (
-                            <span className="rounded-full bg-destructive/10 px-2.5 py-0.5 text-[11px] font-medium text-destructive">
-                              Out of stock
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-
-            {/* Note from deliverer if any */}
-            {selectedOffer.note && (
-              <div className="space-y-1">
-                <span className="text-xs text-muted-foreground">Note from deliverer</span>
-                <p className="rounded-lg bg-secondary px-3 py-2 text-xs italic text-foreground">
-                  “{selectedOffer.note}”
-                </p>
-              </div>
-            )}
-
-            {/* Itemized Pricing & Delivery Fee */}
-            {(() => {
-              const foodCost = offerItems.reduce((sum, item) => {
-                if (!isItemAvailable(item)) return sum;
-                const cost = item.price ?? (item.unitPrice ? item.unitPrice * item.quantity : 0);
-                return sum + cost;
-              }, 0) || Number(selectedOffer.foodPrice || 0);
-
-              const fee = Number(selectedOffer.deliveryFee || 0);
-              const totalToPay = foodCost + fee;
-
-              return (
-                <>
-                  <div className="space-y-2 rounded-lg border border-border bg-card p-3.5 text-xs">
-                    <div className="flex justify-between text-muted-foreground">
-                      <span>Food cost (from cafe)</span>
-                      <span className="font-mono font-medium text-foreground">
-                        ETB {foodCost.toFixed(2)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-muted-foreground">
-                      <span>Delivery fee</span>
-                      <span className="font-mono font-medium text-foreground">
-                        ETB {fee.toFixed(2)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-muted-foreground">
-                      <span>Estimated arrival</span>
-                      <span className="font-mono font-medium text-foreground">
-                        ~{selectedOffer.etaMinutes} min
-                      </span>
-                    </div>
-                    <div className="flex justify-between border-t border-border/60 pt-2 text-sm font-semibold text-foreground">
-                      <span>Total to pay</span>
-                      <span className="font-mono font-bold text-primary">
-                        ETB {totalToPay.toFixed(2)}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Escrow and Protection Terms */}
-                  <dl className="divide-y rounded-lg border border-border bg-secondary/30 text-xs">
-                    <div className="flex gap-3 px-3 py-2.5">
-                      <dt className="w-16 shrink-0 font-medium text-foreground">Escrow</dt>
-                      <dd className="text-muted-foreground">
-                        Held safely. Released only after you scan QR code at delivery.
-                      </dd>
-                    </div>
-                    <div className="flex gap-3 px-3 py-2.5">
-                      <dt className="w-16 shrink-0 font-medium text-foreground">Refund</dt>
-                      <dd className="text-muted-foreground">
-                        Full instant refund if cancelled before store pickup.
-                      </dd>
-                    </div>
-                  </dl>
-
-                  <Button
-                    size="lg"
-                    className="h-11 w-full rounded-full text-sm font-semibold"
-                    onClick={() => {
-                      setSelectedOffer(null);
-                      navigate('/requests/r2/track', {
-                        state: {
-                          acceptedOffer: selectedOffer,
-                          total: totalToPay.toFixed(2),
-                          items: offerItems
-                        }
-                      });
-                    }}
-                  >
-                    Accept offer
-                  </Button>
-                </>
-              );
-            })()}
-          </div>
-        )}
-      </BottomSheet>
+        offer={selectedOffer}
+        viewMode="order_owner"
+        fallbackItems={items}
+        onAccept={(offer, total, acceptedItems) => {
+          setSelectedOffer(null);
+          navigate('/requests/r2/track', {
+            state: {
+              acceptedOffer: offer,
+              total: total.toFixed(2),
+              items: acceptedItems
+            }
+          });
+        }}
+      />
 
       <ReasonSheet
         open={cancelOpen}
@@ -428,6 +434,24 @@ export function RequestDetails() {
         onConfirm={() => {
           setCancelOpen(false);
           navigate('/');
+        }}
+      />
+
+      <OfferSheet
+        request={offerSheetOpen ? {
+          id: id || 'r4',
+          food,
+          items,
+          pickup,
+          destination,
+          requesterName,
+          requesterInitials
+        } : null}
+        onClose={() => setOfferSheetOpen(false)}
+        onSubmitOffer={() => {
+          setOfferSheetOpen(false);
+          toast.success(`Offer sent to ${requesterName}!`);
+          navigate('/offers');
         }}
       />
     </div>
