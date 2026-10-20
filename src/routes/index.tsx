@@ -3,126 +3,14 @@ import { createFileRoute } from '@tanstack/react-router';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
-import { OrderCard, CampusPickerSheet } from '@/components/order';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { OrderCard, CampusPickerSheet } from './orders/_components';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/ui/tabs';
 import { defaultCampuses, type Campus } from '@/types/campus';
+import { adImages, myOrdersData, campusOrdersData } from '@/data';
 
 export const Route = createFileRoute('/')({
   component: OrderPage,
 });
-
-const adImages = [
-  {
-    id: 1,
-    url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1400&q=80',
-    alt: 'Campus food delivery promo banner'
-  },
-  {
-    id: 2,
-    url: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1400&q=80',
-    alt: 'Dining deals and student deliveries'
-  },
-  {
-    id: 3,
-    url: 'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?auto=format&fit=crop&w=1400&q=80',
-    alt: 'Coffee and afternoon campus snacks'
-  }
-];
-
-const myOrdersData = [
-  {
-    id: 'r1',
-    food: 'Taro milk tea, Boba',
-    pickup: 'Tea Lab, Union Square',
-    destination: 'Hartley Hall, 3rd floor lounge',
-    status: 'open' as const,
-    timeAgo: '11m ago',
-    requesterName: 'You',
-    requesterInitials: 'MO',
-    isMine: true,
-    offerCount: 2,
-    price: 'ETB 120'
-  },
-  {
-    id: 'r2',
-    food: 'Chicken shawarma wrap, Garlic fries',
-    pickup: 'Halal Cart, 5th & Main',
-    destination: 'Science Library, Room 204',
-    status: 'on_the_way' as const,
-    timeAgo: '34m ago',
-    price: 'ETB 140',
-    requesterName: 'You',
-    requesterInitials: 'MO',
-    isMine: true,
-    offerCount: 1
-  },
-  {
-    id: 'r8',
-    food: 'Burrito bowl, Chicken',
-    pickup: 'Chipotle, Main St',
-    destination: 'Hartley Hall 3B',
-    status: 'completed' as const,
-    timeAgo: 'Yesterday',
-    price: 'ETB 150',
-    requesterName: 'You',
-    requesterInitials: 'MO',
-    isMine: true
-  }
-];
-
-const campusOrdersData = [
-  {
-    id: 'r4',
-    food: 'Iced oat latte, Blueberry muffin',
-    pickup: 'Bean Counter Café',
-    destination: 'Engineering Building, Lab 1.12',
-    status: 'open' as const,
-    timeAgo: '4m ago',
-    distanceKm: 0.3,
-    requesterName: 'Aisha Bello',
-    requesterInitials: 'AB',
-    offerCount: 1,
-    price: 'ETB 110'
-  },
-  {
-    id: 'r5',
-    food: 'Pad thai, Tofu',
-    pickup: 'Thai Orchid, Campus Ave',
-    destination: 'Ellis Hall, Room 410',
-    status: 'open' as const,
-    timeAgo: '7m ago',
-    distanceKm: 0.6,
-    requesterName: 'Tomás Ruiz',
-    requesterInitials: 'TR',
-    offerCount: 0,
-    price: 'ETB 160'
-  },
-  {
-    id: 'r6',
-    food: 'Clif bar, Sparkling water',
-    pickup: 'CVS on College St',
-    destination: 'Rec Center front desk',
-    status: 'open' as const,
-    timeAgo: '13m ago',
-    distanceKm: 0.8,
-    requesterName: 'Lena Park',
-    requesterInitials: 'LP',
-    offerCount: 0,
-    price: 'ETB 90'
-  },
-  {
-    id: 'r7',
-    food: 'Pepperoni pizza, Coke',
-    pickup: "Gino's Pizza",
-    destination: 'Music Hall, practice room 7',
-    status: 'open' as const,
-    timeAgo: '18m ago',
-    requesterName: 'Dev Mehta',
-    requesterInitials: 'DM',
-    offerCount: 2,
-    price: 'ETB 130'
-  }
-];
 
 export function OrderPage() {
   const [currentSlide, setCurrentSlide] = useState(0);

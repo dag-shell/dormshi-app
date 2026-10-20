@@ -1,6 +1,6 @@
 import { createRootRoute } from '@tanstack/react-router';
-import { AppShell } from '@/components/layout/AppShell';
-import { Toaster } from '@/components/ui/sonner';
+import { AppShell } from '@/ui/layout/AppShell';
+import { Toaster } from '@/ui/sonner';
 
 export const Route = createRootRoute({
   component: () => (

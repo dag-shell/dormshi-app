@@ -10,49 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as OffersRouteImport } from './routes/offers'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as WalletRouteImport } from './routes/wallet'
+import { Route as OffersIndexRouteImport } from './routes/offers/index'
 import { Route as OrdersIndexRouteImport } from './routes/orders/index'
-import { Route as OrdersNewRouteImport } from './routes/orders/new'
-import { Route as RequestsNewRouteImport } from './routes/requests/new'
+import { Route as PrivacyIndexRouteImport } from './routes/privacy/index'
+import { Route as ProfileIndexRouteImport } from './routes/profile/index'
+import { Route as TermsIndexRouteImport } from './routes/terms/index'
+import { Route as WalletIndexRouteImport } from './routes/wallet/index'
 import { Route as OrdersIdIndexRouteImport } from './routes/orders/$id/index'
-import { Route as OrdersIdConfirmRouteImport } from './routes/orders/$id/confirm'
-import { Route as OrdersIdTrackRouteImport } from './routes/orders/$id/track'
-import { Route as RequestsIdIndexRouteImport } from './routes/requests/$id/index'
-import { Route as RequestsIdConfirmRouteImport } from './routes/requests/$id/confirm'
-import { Route as RequestsIdTrackRouteImport } from './routes/requests/$id/track'
+import { Route as OrdersNewIndexRouteImport } from './routes/orders/new/index'
+import { Route as OrdersIdConfirmIndexRouteImport } from './routes/orders/$id/confirm/index'
+import { Route as OrdersIdTrackIndexRouteImport } from './routes/orders/$id/track/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OffersRoute = OffersRouteImport.update({
-  id: '/offers',
-  path: '/offers',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const WalletRoute = WalletRouteImport.update({
-  id: '/wallet',
-  path: '/wallet',
+const OffersIndexRoute = OffersIndexRouteImport.update({
+  id: '/offers/',
+  path: '/offers/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OrdersIndexRoute = OrdersIndexRouteImport.update({
@@ -60,14 +36,24 @@ const OrdersIndexRoute = OrdersIndexRouteImport.update({
   path: '/orders/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OrdersNewRoute = OrdersNewRouteImport.update({
-  id: '/orders/new',
-  path: '/orders/new',
+const PrivacyIndexRoute = PrivacyIndexRouteImport.update({
+  id: '/privacy/',
+  path: '/privacy/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RequestsNewRoute = RequestsNewRouteImport.update({
-  id: '/requests/new',
-  path: '/requests/new',
+const ProfileIndexRoute = ProfileIndexRouteImport.update({
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsIndexRoute = TermsIndexRouteImport.update({
+  id: '/terms/',
+  path: '/terms/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WalletIndexRoute = WalletIndexRouteImport.update({
+  id: '/wallet/',
+  path: '/wallet/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OrdersIdIndexRoute = OrdersIdIndexRouteImport.update({
@@ -75,154 +61,116 @@ const OrdersIdIndexRoute = OrdersIdIndexRouteImport.update({
   path: '/orders/$id/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OrdersIdConfirmRoute = OrdersIdConfirmRouteImport.update({
-  id: '/orders/$id/confirm',
-  path: '/orders/$id/confirm',
+const OrdersNewIndexRoute = OrdersNewIndexRouteImport.update({
+  id: '/orders/new/',
+  path: '/orders/new/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OrdersIdTrackRoute = OrdersIdTrackRouteImport.update({
-  id: '/orders/$id/track',
-  path: '/orders/$id/track',
+const OrdersIdConfirmIndexRoute = OrdersIdConfirmIndexRouteImport.update({
+  id: '/orders/$id/confirm/',
+  path: '/orders/$id/confirm/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RequestsIdIndexRoute = RequestsIdIndexRouteImport.update({
-  id: '/requests/$id/',
-  path: '/requests/$id/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RequestsIdConfirmRoute = RequestsIdConfirmRouteImport.update({
-  id: '/requests/$id/confirm',
-  path: '/requests/$id/confirm',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RequestsIdTrackRoute = RequestsIdTrackRouteImport.update({
-  id: '/requests/$id/track',
-  path: '/requests/$id/track',
+const OrdersIdTrackIndexRoute = OrdersIdTrackIndexRouteImport.update({
+  id: '/orders/$id/track/',
+  path: '/orders/$id/track/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/offers': typeof OffersRoute
-  '/privacy': typeof PrivacyRoute
-  '/profile': typeof ProfileRoute
-  '/terms': typeof TermsRoute
-  '/wallet': typeof WalletRoute
-  '/orders/new': typeof OrdersNewRoute
-  '/requests/new': typeof RequestsNewRoute
+  '/offers/': typeof OffersIndexRoute
   '/orders/': typeof OrdersIndexRoute
-  '/orders/$id/confirm': typeof OrdersIdConfirmRoute
-  '/orders/$id/track': typeof OrdersIdTrackRoute
-  '/requests/$id/confirm': typeof RequestsIdConfirmRoute
-  '/requests/$id/track': typeof RequestsIdTrackRoute
+  '/privacy/': typeof PrivacyIndexRoute
+  '/profile/': typeof ProfileIndexRoute
+  '/terms/': typeof TermsIndexRoute
+  '/wallet/': typeof WalletIndexRoute
   '/orders/$id/': typeof OrdersIdIndexRoute
-  '/requests/$id/': typeof RequestsIdIndexRoute
+  '/orders/new/': typeof OrdersNewIndexRoute
+  '/orders/$id/confirm/': typeof OrdersIdConfirmIndexRoute
+  '/orders/$id/track/': typeof OrdersIdTrackIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/offers': typeof OffersRoute
-  '/privacy': typeof PrivacyRoute
-  '/profile': typeof ProfileRoute
-  '/terms': typeof TermsRoute
-  '/wallet': typeof WalletRoute
-  '/orders/new': typeof OrdersNewRoute
-  '/requests/new': typeof RequestsNewRoute
+  '/offers': typeof OffersIndexRoute
   '/orders': typeof OrdersIndexRoute
-  '/orders/$id/confirm': typeof OrdersIdConfirmRoute
-  '/orders/$id/track': typeof OrdersIdTrackRoute
-  '/requests/$id/confirm': typeof RequestsIdConfirmRoute
-  '/requests/$id/track': typeof RequestsIdTrackRoute
+  '/privacy': typeof PrivacyIndexRoute
+  '/profile': typeof ProfileIndexRoute
+  '/terms': typeof TermsIndexRoute
+  '/wallet': typeof WalletIndexRoute
   '/orders/$id': typeof OrdersIdIndexRoute
-  '/requests/$id': typeof RequestsIdIndexRoute
+  '/orders/new': typeof OrdersNewIndexRoute
+  '/orders/$id/confirm': typeof OrdersIdConfirmIndexRoute
+  '/orders/$id/track': typeof OrdersIdTrackIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/offers': typeof OffersRoute
-  '/privacy': typeof PrivacyRoute
-  '/profile': typeof ProfileRoute
-  '/terms': typeof TermsRoute
-  '/wallet': typeof WalletRoute
-  '/orders/new': typeof OrdersNewRoute
-  '/requests/new': typeof RequestsNewRoute
+  '/offers/': typeof OffersIndexRoute
   '/orders/': typeof OrdersIndexRoute
-  '/orders/$id/confirm': typeof OrdersIdConfirmRoute
-  '/orders/$id/track': typeof OrdersIdTrackRoute
-  '/requests/$id/confirm': typeof RequestsIdConfirmRoute
-  '/requests/$id/track': typeof RequestsIdTrackRoute
+  '/privacy/': typeof PrivacyIndexRoute
+  '/profile/': typeof ProfileIndexRoute
+  '/terms/': typeof TermsIndexRoute
+  '/wallet/': typeof WalletIndexRoute
   '/orders/$id/': typeof OrdersIdIndexRoute
-  '/requests/$id/': typeof RequestsIdIndexRoute
+  '/orders/new/': typeof OrdersNewIndexRoute
+  '/orders/$id/confirm/': typeof OrdersIdConfirmIndexRoute
+  '/orders/$id/track/': typeof OrdersIdTrackIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/offers'
-    | '/privacy'
-    | '/profile'
-    | '/terms'
-    | '/wallet'
-    | '/orders/new'
-    | '/requests/new'
+    | '/offers/'
     | '/orders/'
-    | '/orders/$id/confirm'
-    | '/orders/$id/track'
-    | '/requests/$id/confirm'
-    | '/requests/$id/track'
+    | '/privacy/'
+    | '/profile/'
+    | '/terms/'
+    | '/wallet/'
     | '/orders/$id/'
-    | '/requests/$id/'
+    | '/orders/new/'
+    | '/orders/$id/confirm/'
+    | '/orders/$id/track/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/offers'
+    | '/orders'
     | '/privacy'
     | '/profile'
     | '/terms'
     | '/wallet'
+    | '/orders/$id'
     | '/orders/new'
-    | '/requests/new'
-    | '/orders'
     | '/orders/$id/confirm'
     | '/orders/$id/track'
-    | '/requests/$id/confirm'
-    | '/requests/$id/track'
-    | '/orders/$id'
-    | '/requests/$id'
   id:
     | '__root__'
     | '/'
-    | '/offers'
-    | '/privacy'
-    | '/profile'
-    | '/terms'
-    | '/wallet'
-    | '/orders/new'
-    | '/requests/new'
+    | '/offers/'
     | '/orders/'
-    | '/orders/$id/confirm'
-    | '/orders/$id/track'
-    | '/requests/$id/confirm'
-    | '/requests/$id/track'
+    | '/privacy/'
+    | '/profile/'
+    | '/terms/'
+    | '/wallet/'
     | '/orders/$id/'
-    | '/requests/$id/'
+    | '/orders/new/'
+    | '/orders/$id/confirm/'
+    | '/orders/$id/track/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  OffersRoute: typeof OffersRoute
-  PrivacyRoute: typeof PrivacyRoute
-  ProfileRoute: typeof ProfileRoute
-  TermsRoute: typeof TermsRoute
-  WalletRoute: typeof WalletRoute
-  OrdersNewRoute: typeof OrdersNewRoute
-  RequestsNewRoute: typeof RequestsNewRoute
+  OffersIndexRoute: typeof OffersIndexRoute
   OrdersIndexRoute: typeof OrdersIndexRoute
-  OrdersIdConfirmRoute: typeof OrdersIdConfirmRoute
-  OrdersIdTrackRoute: typeof OrdersIdTrackRoute
-  RequestsIdConfirmRoute: typeof RequestsIdConfirmRoute
-  RequestsIdTrackRoute: typeof RequestsIdTrackRoute
+  PrivacyIndexRoute: typeof PrivacyIndexRoute
+  ProfileIndexRoute: typeof ProfileIndexRoute
+  TermsIndexRoute: typeof TermsIndexRoute
+  WalletIndexRoute: typeof WalletIndexRoute
   OrdersIdIndexRoute: typeof OrdersIdIndexRoute
-  RequestsIdIndexRoute: typeof RequestsIdIndexRoute
+  OrdersNewIndexRoute: typeof OrdersNewIndexRoute
+  OrdersIdConfirmIndexRoute: typeof OrdersIdConfirmIndexRoute
+  OrdersIdTrackIndexRoute: typeof OrdersIdTrackIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -234,39 +182,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/offers': {
-      id: '/offers'
+    '/offers/': {
+      id: '/offers/'
       path: '/offers'
-      fullPath: '/offers'
-      preLoaderRoute: typeof OffersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/wallet': {
-      id: '/wallet'
-      path: '/wallet'
-      fullPath: '/wallet'
-      preLoaderRoute: typeof WalletRouteImport
+      fullPath: '/offers/'
+      preLoaderRoute: typeof OffersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/orders/': {
@@ -276,18 +196,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrdersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/orders/new': {
-      id: '/orders/new'
-      path: '/orders/new'
-      fullPath: '/orders/new'
-      preLoaderRoute: typeof OrdersNewRouteImport
+    '/privacy/': {
+      id: '/privacy/'
+      path: '/privacy'
+      fullPath: '/privacy/'
+      preLoaderRoute: typeof PrivacyIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/requests/new': {
-      id: '/requests/new'
-      path: '/requests/new'
-      fullPath: '/requests/new'
-      preLoaderRoute: typeof RequestsNewRouteImport
+    '/profile/': {
+      id: '/profile/'
+      path: '/profile'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof ProfileIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms/': {
+      id: '/terms/'
+      path: '/terms'
+      fullPath: '/terms/'
+      preLoaderRoute: typeof TermsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wallet/': {
+      id: '/wallet/'
+      path: '/wallet'
+      fullPath: '/wallet/'
+      preLoaderRoute: typeof WalletIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/orders/$id/': {
@@ -297,39 +231,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OrdersIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/orders/$id/confirm': {
-      id: '/orders/$id/confirm'
+    '/orders/new/': {
+      id: '/orders/new/'
+      path: '/orders/new'
+      fullPath: '/orders/new/'
+      preLoaderRoute: typeof OrdersNewIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/orders/$id/confirm/': {
+      id: '/orders/$id/confirm/'
       path: '/orders/$id/confirm'
-      fullPath: '/orders/$id/confirm'
-      preLoaderRoute: typeof OrdersIdConfirmRouteImport
+      fullPath: '/orders/$id/confirm/'
+      preLoaderRoute: typeof OrdersIdConfirmIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/orders/$id/track': {
-      id: '/orders/$id/track'
+    '/orders/$id/track/': {
+      id: '/orders/$id/track/'
       path: '/orders/$id/track'
-      fullPath: '/orders/$id/track'
-      preLoaderRoute: typeof OrdersIdTrackRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/requests/$id/': {
-      id: '/requests/$id/'
-      path: '/requests/$id'
-      fullPath: '/requests/$id/'
-      preLoaderRoute: typeof RequestsIdIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/requests/$id/confirm': {
-      id: '/requests/$id/confirm'
-      path: '/requests/$id/confirm'
-      fullPath: '/requests/$id/confirm'
-      preLoaderRoute: typeof RequestsIdConfirmRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/requests/$id/track': {
-      id: '/requests/$id/track'
-      path: '/requests/$id/track'
-      fullPath: '/requests/$id/track'
-      preLoaderRoute: typeof RequestsIdTrackRouteImport
+      fullPath: '/orders/$id/track/'
+      preLoaderRoute: typeof OrdersIdTrackIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -337,20 +257,16 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  OffersRoute: OffersRoute,
-  PrivacyRoute: PrivacyRoute,
-  ProfileRoute: ProfileRoute,
-  TermsRoute: TermsRoute,
-  WalletRoute: WalletRoute,
-  OrdersNewRoute: OrdersNewRoute,
-  RequestsNewRoute: RequestsNewRoute,
+  OffersIndexRoute: OffersIndexRoute,
   OrdersIndexRoute: OrdersIndexRoute,
-  OrdersIdConfirmRoute: OrdersIdConfirmRoute,
-  OrdersIdTrackRoute: OrdersIdTrackRoute,
-  RequestsIdConfirmRoute: RequestsIdConfirmRoute,
-  RequestsIdTrackRoute: RequestsIdTrackRoute,
+  PrivacyIndexRoute: PrivacyIndexRoute,
+  ProfileIndexRoute: ProfileIndexRoute,
+  TermsIndexRoute: TermsIndexRoute,
+  WalletIndexRoute: WalletIndexRoute,
   OrdersIdIndexRoute: OrdersIdIndexRoute,
-  RequestsIdIndexRoute: RequestsIdIndexRoute,
+  OrdersNewIndexRoute: OrdersNewIndexRoute,
+  OrdersIdConfirmIndexRoute: OrdersIdConfirmIndexRoute,
+  OrdersIdTrackIndexRoute: OrdersIdTrackIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

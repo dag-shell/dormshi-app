@@ -6,133 +6,17 @@ import {
   OffersSection,
   OrderActionBar,
   type OfferData
-} from '@/components/order-details';
-import { OfferDetailsSheet } from '@/components/common/OfferDetailsSheet';
-import { ReasonSheet } from '@/components/common/ReasonSheet';
-import { OfferSheet } from '@/components/order/OfferSheet';
-import { Header } from '@/components/layout/Header';
+} from './_components';
+import { OfferDetailsSheet } from '@/ui/custom/OfferDetailsSheet';
+import { ReasonSheet } from '@/ui/custom/ReasonSheet';
+import { OfferSheet } from '../_components/OfferSheet';
+import { Header } from '@/ui/layout/Header';
 import type { OrderStatus } from '@/types/dormshi';
+import { mockOrders } from '@/data';
 
 export const Route = createFileRoute('/orders/$id/')({
   component: OrderDetailPage,
 });
-
-const mockOrders: Record<string, {
-  food: string;
-  items: { name: string; quantity: number; price?: number }[];
-  pickup: string;
-  destination: string;
-  instructions?: string;
-  requesterName: string;
-  requesterInitials: string;
-  isMine: boolean;
-  timeAgo: string;
-  status: OrderStatus;
-}> = {
-  r1: {
-    food: 'Taro milk tea, Boba',
-    items: [
-      { name: 'Taro milk tea', quantity: 2, price: 50 },
-      { name: 'Boba topping', quantity: 2, price: 10 }
-    ],
-    pickup: 'Tea Lab, Union Square',
-    destination: 'Hartley Hall, 3rd floor lounge',
-    instructions: 'Less ice on both please. Text me when downstairs.',
-    requesterName: 'Maya Okafor',
-    requesterInitials: 'MO',
-    isMine: true,
-    timeAgo: '11m ago',
-    status: 'open'
-  },
-  r2: {
-    food: 'Chicken shawarma wrap, Garlic fries',
-    items: [
-      { name: 'Chicken shawarma wrap', quantity: 1, price: 100 },
-      { name: 'Garlic fries', quantity: 1, price: 40 }
-    ],
-    pickup: 'Halal Cart, 5th & Main',
-    destination: 'Science Library, Room 204',
-    instructions: 'Extra white sauce, please.',
-    requesterName: 'Maya Okafor',
-    requesterInitials: 'MO',
-    isMine: true,
-    timeAgo: '34m ago',
-    status: 'on_the_way'
-  },
-  r4: {
-    food: 'Iced oat latte, Blueberry muffin',
-    items: [
-      { name: 'Iced oat latte', quantity: 1 },
-      { name: 'Blueberry muffin', quantity: 1 }
-    ],
-    pickup: 'Bean Counter Café',
-    destination: 'Engineering Building, Lab 1.12',
-    instructions: 'Please call when arriving at the lab door.',
-    requesterName: 'Aisha Bello',
-    requesterInitials: 'AB',
-    isMine: false,
-    timeAgo: '4m ago',
-    status: 'open'
-  },
-  r5: {
-    food: 'Pad thai, Tofu',
-    items: [
-      { name: 'Pad thai', quantity: 1 },
-      { name: 'Tofu', quantity: 1 }
-    ],
-    pickup: 'Thai Orchid, Campus Ave',
-    destination: 'Ellis Hall, Room 410',
-    instructions: 'Medium spice. Leave at door if room locked.',
-    requesterName: 'Tomás Ruiz',
-    requesterInitials: 'TR',
-    isMine: false,
-    timeAgo: '7m ago',
-    status: 'open'
-  },
-  r6: {
-    food: 'Clif bar, Sparkling water',
-    items: [
-      { name: 'Clif bar', quantity: 2 },
-      { name: 'Sparkling water', quantity: 1 }
-    ],
-    pickup: 'CVS on College St',
-    destination: 'Rec Center front desk',
-    instructions: 'Any flavor Clif bar is fine.',
-    requesterName: 'Lena Park',
-    requesterInitials: 'LP',
-    isMine: false,
-    timeAgo: '13m ago',
-    status: 'open'
-  },
-  r7: {
-    food: 'Pepperoni pizza, Coke',
-    items: [
-      { name: 'Pepperoni pizza', quantity: 1 },
-      { name: 'Coke', quantity: 2 }
-    ],
-    pickup: "Gino's Pizza",
-    destination: 'Music Hall, practice room 7',
-    instructions: 'Practice room is down the hall on the left.',
-    requesterName: 'Dev Mehta',
-    requesterInitials: 'DM',
-    isMine: false,
-    timeAgo: '18m ago',
-    status: 'open'
-  },
-  r8: {
-    food: 'Burrito bowl, Chicken',
-    items: [
-      { name: 'Burrito bowl', quantity: 1, price: 150 }
-    ],
-    pickup: 'Chipotle, Main St',
-    destination: 'Hartley Hall 3B',
-    requesterName: 'Maya Okafor',
-    requesterInitials: 'MO',
-    isMine: true,
-    timeAgo: 'Yesterday',
-    status: 'completed'
-  }
-};
 
 export function OrderDetailPage() {
   const navigate = useNavigate();
