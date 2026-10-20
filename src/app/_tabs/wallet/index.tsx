@@ -40,7 +40,12 @@ export function WalletPage() {
         </div>
       </div>
 
-      <WalletActionSheet action={action} onChange={setAction} />
+      <WalletActionSheet
+        action={action}
+        onChange={setAction}
+        availableBalance="42.75"
+        currency="ETB"
+      />
     </div>
   );
 }

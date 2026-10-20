@@ -6,7 +6,6 @@ import {
   faArrowUp,
   faBagShopping,
   faBicycle,
-  faCircleCheck,
   faGift,
   faLandmark,
   faLock,

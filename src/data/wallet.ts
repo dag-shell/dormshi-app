@@ -34,5 +34,5 @@ export const sampleRecipients: WalletRecipient[] = [
   { id: 'u_dev', name: 'Dev Mehta', initials: 'DM', dorm: 'Okoro Commons' }
 ];
 
-export const buyPresets = [10, 25, 50, 100];
-export const payMethods = ['Visa •• 4242', 'Apple Pay'];
+export const buyPresets = [50, 100, 250, 500];
+export const payMethods = ['Telebirr', 'CBE Birr', 'Bank Card'];
