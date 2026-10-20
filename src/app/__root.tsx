@@ -1,11 +1,13 @@
 import { createRootRoute, Link } from '@tanstack/react-router';
 import { AppShell } from '@/ui/layout/AppShell';
 import { Toaster } from '@/ui/sonner';
+import { DevTool } from '@/devtool';
 
 export const Route = createRootRoute({
   component: () => (
     <>
       <AppShell />
+      <DevTool />
       <Toaster position="top-center" />
     </>
   ),
