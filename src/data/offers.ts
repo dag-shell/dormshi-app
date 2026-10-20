@@ -1,4 +1,4 @@
-import type { SentOfferData } from '@/routes/orders/_components';
+import type { SentOfferData } from '@/app/_tabs/orders/_components';
 
 export const initialOffers: SentOfferData[] = [
   {

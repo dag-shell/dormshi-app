@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { faArrowUp, faLandmark, faPlus, faQrcode } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp, faLandmark, faPlus } from '@fortawesome/free-solid-svg-icons';
 import type { WalletAction } from './WalletActionSheet';
 
 export interface WalletSummarySectionProps {
@@ -14,7 +14,6 @@ export interface WalletSummarySectionProps {
 const actions: { id: WalletAction; label: string; icon: IconDefinition }[] = [
   { id: 'buy', label: 'Buy', icon: faPlus },
   { id: 'send', label: 'Send', icon: faArrowUp },
-  { id: 'scan', label: 'Scan', icon: faQrcode },
   { id: 'cashout', label: 'Cash out', icon: faLandmark }
 ];
 
@@ -40,7 +39,7 @@ export function WalletSummarySection({
       </section>
 
       {/* Quick Action Buttons */}
-      <div className="grid grid-cols-4 gap-2 md:auto-rows-fr md:grid-cols-2 md:gap-4">
+      <div className="grid grid-cols-3 gap-2 md:auto-rows-fr md:grid-cols-3 md:gap-3">
         {actions.map(({ id, label, icon }) => (
           <button
             key={id}

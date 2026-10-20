@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQrcode } from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/ui/button';
 import { TermsBreakdown } from '@/ui/custom/TermsBreakdown';
 
@@ -10,7 +10,7 @@ export interface DeliverySummaryStepProps {
   foodPrice?: number;
   deliveryFee?: number;
   courierName?: string;
-  onStartScan: () => void;
+  onProceed: () => void;
 }
 
 export function DeliverySummaryStep({
@@ -19,7 +19,7 @@ export function DeliverySummaryStep({
   foodPrice = 11.5,
   deliveryFee = 3.0,
   courierName = 'Sam Whitaker',
-  onStartScan
+  onProceed
 }: DeliverySummaryStepProps) {
   return (
     <div className="space-y-4">
@@ -32,10 +32,10 @@ export function DeliverySummaryStep({
         </div>
       </section>
       <p className="rounded-lg bg-primary-soft px-3 py-2 text-sm leading-6 text-primary">
-        Agreed total is held in escrow. Scan {courierName}’s QR code to release it.
+        Agreed total is held in escrow. Confirm delivery receipt to release funds to {courierName}.
       </p>
-      <Button size="lg" className="h-12 w-full" onClick={onStartScan}>
-        <FontAwesomeIcon icon={faQrcode} className="mr-2 size-4" aria-hidden="true" /> Scan {courierName}’s QR code
+      <Button size="lg" className="h-12 w-full" onClick={onProceed}>
+        <FontAwesomeIcon icon={faCheckCircle} className="mr-2 size-4" aria-hidden="true" /> Verify delivery receipt
       </Button>
       <p className="text-center text-xs text-muted-foreground">
         Only confirm once you have your food in hand.

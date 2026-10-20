@@ -7,7 +7,7 @@ import { Header } from '@/ui/layout/Header';
 import type { SentOfferData } from '../orders/_components';
 import { initialOffers } from '@/data';
 
-export const Route = createFileRoute('/offers/')({
+export const Route = createFileRoute('/_tabs/offers/')({
   component: OffersPage,
 });
 

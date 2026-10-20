@@ -9,7 +9,7 @@ import {
 } from './_components';
 import { OfferDetailsSheet } from '@/ui/custom/OfferDetailsSheet';
 import { ReasonSheet } from '@/ui/custom/ReasonSheet';
-import { OfferSheet } from '../_components/OfferSheet';
+import { OfferSheet } from '@/app/_tabs/orders/_components/OfferSheet';
 import { Header } from '@/ui/layout/Header';
 import type { OrderStatus } from '@/types/dormshi';
 import { mockOrders } from '@/data';

@@ -9,7 +9,8 @@ export default defineConfig({
     tanstackRouter({
       target: 'react',
       autoCodeSplitting: true,
-      routeFileIgnorePattern: '^(?!__root)_',
+      routesDirectory: './src/app',
+      routeFileIgnorePattern: '.*_comp.*',
     }),
     react(),
   ],

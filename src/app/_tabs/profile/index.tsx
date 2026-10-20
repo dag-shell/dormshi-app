@@ -3,12 +3,12 @@ import { createFileRoute } from '@tanstack/react-router';
 import { Header } from '@/ui/layout/Header';
 import {
   ProfileOverviewSection,
-  ProfileIdentitySection,
+  ProfileLinksSection,
   type UserProfileData
 } from './_components';
 import { defaultProfile, profileStats as stats } from '@/data';
 
-export const Route = createFileRoute('/profile/')({
+export const Route = createFileRoute('/_tabs/profile/')({
   component: ProfilePage,
 });
 
@@ -43,11 +43,8 @@ export function ProfilePage() {
           onSaveProfile={handleSaveProfile}
         />
 
-        {/* Section 2: QR code identity & footer links */}
-        <ProfileIdentitySection
-          value="dormshi:user:u_me"
-          userId="#DRM-8291"
-        />
+        {/* Section 2: App and community links */}
+        <ProfileLinksSection />
       </div>
     </div>
   );

@@ -1,2 +1,2 @@
 export * from './ProfileOverviewSection';
-export * from './ProfileIdentitySection';
+export * from './ProfileLinksSection';

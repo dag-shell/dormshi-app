@@ -8,7 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/ui/tabs';
 import { defaultCampuses, type Campus } from '@/types/campus';
 import { adImages, myOrdersData, campusOrdersData } from '@/data';
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute('/_tabs/')({
   component: OrderPage,
 });
 

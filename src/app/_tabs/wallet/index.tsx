@@ -10,7 +10,7 @@ import {
 import { Header } from '@/ui/layout/Header';
 import { rawTransactions } from '@/data';
 
-export const Route = createFileRoute('/wallet/')({
+export const Route = createFileRoute('/_tabs/wallet/')({
   component: WalletPage,
 });
 

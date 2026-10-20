@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHandshake } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '@/ui/button';
-import { OrderCard, type SentOfferData } from '@/routes/orders/_components';
+import { OrderCard, type SentOfferData } from '../../orders/_components';
 
 export type OfferFilterType = 'all' | 'pending' | 'accepted' | 'completed';
 

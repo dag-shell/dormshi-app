@@ -4,10 +4,9 @@ import { Input } from '@/ui/input';
 import { Label } from '@/ui/label';
 import { BottomSheet } from '@/ui/custom/BottomSheet';
 import { MoneyField } from '@/ui/custom/MoneyField';
-import { QRScanner } from '@/ui/custom/QRScanner';
 import { UserAvatar } from '@/ui/custom/UserAvatar';
 
-export type WalletAction = 'buy' | 'send' | 'scan' | 'cashout';
+export type WalletAction = 'buy' | 'send' | 'cashout';
 
 interface WalletActionSheetProps {
   action: WalletAction | null;
@@ -19,7 +18,6 @@ import { buyPresets, payMethods, sampleRecipients } from '@/data';
 const titles: Record<WalletAction, { title: string; description: string }> = {
   buy: { title: 'Buy DC', description: '1 DC costs $1.00. No fees.' },
   send: { title: 'Send DC', description: 'Instant transfer to any Dormshi user.' },
-  scan: { title: 'Scan to pay', description: 'Scan someone’s personal QR code.' },
   cashout: { title: 'Cash out', description: 'Move available DC to your linked bank.' }
 };
 
@@ -76,19 +74,6 @@ export function WalletActionSheet({ action, onChange }: WalletActionSheetProps) 
           <Button size="lg" className="h-11 w-full" onClick={close}>
             Buy {amount || '25'} DC for ${amount || '25.00'}
           </Button>
-        </div>
-      )}
-
-      {action === 'scan' && (
-        <div className="pt-2">
-          <QRScanner
-            targetValue="dormshi:user:u_jordan"
-            hint="Looking for a Dormshi QR code…"
-            onDetected={() => {
-              setRecipient(sampleRecipients[0]);
-              onChange('send');
-            }}
-          />
         </div>
       )}
 

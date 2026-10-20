@@ -14,7 +14,7 @@ export interface DeliveryVerifyStepProps {
   foodPrice?: number;
   deliveryFee?: number;
   onConfirmRelease: () => void;
-  onScanAgain: () => void;
+  onBack: () => void;
 }
 
 export function DeliveryVerifyStep({
@@ -26,7 +26,7 @@ export function DeliveryVerifyStep({
   foodPrice = 11.5,
   deliveryFee = 3.0,
   onConfirmRelease,
-  onScanAgain
+  onBack
 }: DeliveryVerifyStepProps) {
   return (
     <div className="space-y-4">
@@ -51,8 +51,8 @@ export function DeliveryVerifyStep({
       <Button size="lg" className="h-12 w-full" onClick={onConfirmRelease}>
         I have my food. Release {totalAmount}
       </Button>
-      <Button variant="ghost" className="w-full" onClick={onScanAgain}>
-        Scan again
+      <Button variant="ghost" className="w-full" onClick={onBack}>
+        Back
       </Button>
     </div>
   );

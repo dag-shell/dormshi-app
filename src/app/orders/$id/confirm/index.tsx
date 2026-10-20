@@ -1,16 +1,14 @@
 import { useState } from 'react';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Button } from '@/ui/button';
 import { Header } from '@/ui/layout/Header';
-import { QRScanner } from '@/ui/custom/QRScanner';
 import {
   DeliverySummaryStep,
   DeliveryVerifyStep,
   DeliveryReceiptStep
 } from './_components';
 
-type Step = 'summary' | 'scanning' | 'verify' | 'receipt';
+type Step = 'summary' | 'verify' | 'receipt';
 
 export const Route = createFileRoute('/orders/$id/confirm/')({
   component: DeliveryConfirmationPage,
@@ -42,21 +40,8 @@ export function DeliveryConfirmationPage() {
               foodPrice={11.5}
               deliveryFee={3.0}
               courierName="Sam Whitaker"
-              onStartScan={() => setStep('scanning')}
+              onProceed={() => setStep('verify')}
             />
-          )}
-
-          {step === 'scanning' && (
-            <div className="space-y-5 pt-4">
-              <QRScanner
-                targetValue="dormshi:user:u_sam"
-                hint="Point your camera at Sam Whitaker’s Dormshi QR"
-                onDetected={() => setStep('verify')}
-              />
-              <Button variant="outline" className="w-full" onClick={() => setStep('summary')}>
-                Cancel
-              </Button>
-            </div>
           )}
 
           {step === 'verify' && (
@@ -69,7 +54,7 @@ export function DeliveryConfirmationPage() {
               foodPrice={11.5}
               deliveryFee={3.0}
               onConfirmRelease={() => setStep('receipt')}
-              onScanAgain={() => setStep('scanning')}
+              onBack={() => setStep('summary')}
             />
           )}
 
