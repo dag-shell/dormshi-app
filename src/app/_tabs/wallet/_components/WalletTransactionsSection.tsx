@@ -7,6 +7,7 @@ export interface WalletTransactionsSectionProps {
   transactions: Transaction[];
   filter: TransactionFilter;
   onFilterChange: (filter: TransactionFilter) => void;
+  onSelectTransaction?: (tx: Transaction) => void;
 }
 
 const filters: { id: TransactionFilter; label: string }[] = [
@@ -19,7 +20,8 @@ const filters: { id: TransactionFilter; label: string }[] = [
 export function WalletTransactionsSection({
   transactions,
   filter,
-  onFilterChange
+  onFilterChange,
+  onSelectTransaction
 }: WalletTransactionsSectionProps) {
   const shown = filter === 'all'
     ? transactions
@@ -46,9 +48,13 @@ export function WalletTransactionsSection({
         </div>
       </div>
 
-      <ul className="mt-1 divide-y">
+      <ul className="mt-1 divide-y divide-border">
         {shown.map((tx) => (
-          <TransactionRow key={tx.id} tx={tx} />
+          <TransactionRow
+            key={tx.id}
+            tx={tx}
+            onClick={() => onSelectTransaction?.(tx)}
+          />
         ))}
       </ul>
     </section>

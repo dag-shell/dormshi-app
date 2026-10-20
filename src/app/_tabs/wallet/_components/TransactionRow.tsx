@@ -58,7 +58,12 @@ export interface TransactionItemData {
   createdAt?: string;
 }
 
-export function TransactionRow({ tx }: { tx?: TransactionItemData }) {
+export interface TransactionRowProps {
+  tx?: TransactionItemData;
+  onClick?: () => void;
+}
+
+export function TransactionRow({ tx, onClick }: TransactionRowProps) {
   const item = tx ?? {
     type: 'purchase',
     direction: 'in',
@@ -74,7 +79,22 @@ export function TransactionRow({ tx }: { tx?: TransactionItemData }) {
   const amountNumber = typeof item.amount === 'number' ? item.amount.toFixed(2) : String(item.amount ?? '25.00');
 
   return (
-    <li className="flex items-center gap-3 py-3">
+    <li
+      onClick={onClick}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={(e) => {
+        if (onClick && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+      className={`flex items-center gap-3 py-3 transition-colors ${
+        onClick
+          ? 'cursor-pointer rounded-lg px-2 -mx-2 hover:bg-secondary/60 active:bg-secondary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring'
+          : ''
+      }`}
+    >
       <span className="grid size-10 shrink-0 place-items-center rounded-full bg-secondary text-muted-foreground">
         <FontAwesomeIcon icon={icon} className="size-4" aria-hidden="true" />
       </span>

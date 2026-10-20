@@ -4,11 +4,12 @@ import {
   WalletSummarySection,
   WalletTransactionsSection,
   WalletActionSheet,
+  TransactionDetailsSheet,
   type WalletAction,
   type TransactionFilter
 } from './_components';
 import { Header } from '@/ui/layout/Header';
-import { rawTransactions } from '@/data';
+import { rawTransactions, type Transaction } from '@/data';
 
 export const Route = createFileRoute('/_tabs/wallet/')({
   component: WalletPage,
@@ -17,6 +18,7 @@ export const Route = createFileRoute('/_tabs/wallet/')({
 export function WalletPage() {
   const [action, setAction] = useState<WalletAction | null>(null);
   const [filter, setFilter] = useState<TransactionFilter>('all');
+  const [selectedTx, setSelectedTx] = useState<Transaction | null>(null);
 
   return (
     <div className="pb-24">
@@ -38,14 +40,24 @@ export function WalletPage() {
             transactions={rawTransactions}
             filter={filter}
             onFilterChange={setFilter}
+            onSelectTransaction={setSelectedTx}
           />
         </div>
       </div>
 
+      {/* Action Sheet (Deposit / Transfer) */}
       <WalletActionSheet
         action={action}
         onChange={setAction}
         availableBalance="42.75"
+        currency="ETB"
+      />
+
+      {/* Transaction Details Sheet */}
+      <TransactionDetailsSheet
+        open={Boolean(selectedTx)}
+        transaction={selectedTx}
+        onClose={() => setSelectedTx(null)}
         currency="ETB"
       />
     </div>
