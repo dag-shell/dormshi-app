@@ -78,6 +78,9 @@ export interface FoodRequest {
   disputeReason?: string;
 }
 
+export type FoodOrder = FoodRequest;
+export type Order = FoodRequest;
+
 export type TransactionType =
   | 'cashout'
   | 'deposit'

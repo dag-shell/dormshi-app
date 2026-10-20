@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation } from '@tanstack/react-router';
 import { BottomNav } from './BottomNav';
 
 const hideNavPatterns = [
+  /^\/orders\/new$/,
+  /^\/orders\/[^/]+$/,
+  /^\/orders\/[^/]+\/track$/,
+  /^\/orders\/[^/]+\/confirm$/,
   /^\/requests\/new$/,
   /^\/requests\/[^/]+$/,
   /^\/requests\/[^/]+\/track$/,
@@ -10,11 +14,17 @@ const hideNavPatterns = [
 ];
 
 const titles: [RegExp, string][] = [
-  [/^\/$/, 'Home'],
-  [/^\/requests\/new$/, 'New request'],
-  [/^\/requests\/[^/]+$/, 'Request details'],
+  [/^\/$/, 'Orders'],
+  [/^\/orders$/, 'Orders'],
+  [/^\/orders\/new$/, 'New order'],
+  [/^\/orders\/[^/]+$/, 'Order details'],
+  [/^\/orders\/[^/]+\/confirm$/, 'Confirm delivery'],
+  [/^\/orders\/[^/]+\/track$/, 'Order tracking'],
+  [/^\/requests\/new$/, 'New order'],
+  [/^\/requests\/[^/]+$/, 'Order details'],
   [/^\/requests\/[^/]+\/confirm$/, 'Confirm delivery'],
-  [/^\/requests\/[^/]+\/track$/, 'Request tracking'],
+  [/^\/requests\/[^/]+\/track$/, 'Order tracking'],
+  [/^\/offers$/, 'Offers'],
   [/^\/wallet$/, 'Wallet'],
   [/^\/profile$/, 'Profile'],
   [/^\/terms$/, 'Terms of Service'],

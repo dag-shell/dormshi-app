@@ -1,29 +1,45 @@
 import { useEffect } from 'react';
 import { backButton } from '@tma.js/sdk-react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from '@tanstack/react-router';
 
 /**
  * Component which controls the Back Button visibility.
  */
-export function BackButton() {
-    const navigate = useNavigate();
-    if(!backButton.isMounted()) {
-        backButton.mount()
-    }
+export interface BackButtonProps {
+  show?: boolean;
+  onClick?: () => void;
+}
 
-    useEffect(() => {
-        backButton.show();
+export function BackButton({ show = true, onClick }: BackButtonProps = {}) {
+  const router = useRouter();
 
-        // on click will nav to back page
-        const offClick = backButton.onClick(() => {
-            navigate(-1);
-        });
+  if (!backButton.isMounted()) {
+    backButton.mount();
+  }
 
-        return () => {
-            offClick();
-            backButton.hide();
-        };
-    }, []);
+  useEffect(() => {
+    show ? backButton.show() : backButton.hide();
 
-    return null;
+    return () => {
+      backButton.hide();
+    };
+  }, [show]);
+
+  useEffect(() => {
+    if (!show) return;
+
+    const offClick = backButton.onClick(() => {
+      if (onClick) {
+        onClick();
+      } else {
+        router.history.back();
+      }
+    });
+
+    return () => {
+      offClick();
+    };
+  }, [show, onClick, router]);
+
+  return null;
 }

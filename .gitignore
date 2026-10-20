@@ -25,3 +25,6 @@ dist-ssr
 .tgcloud/
 docs/
 .playwright-mcp/
+.tanstack/
+.agents/
+.claude/

@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { BottomSheet } from '@common/BottomSheet';
-import { UserAvatar } from '@common/UserAvatar';
+import { BottomSheet } from '@/components/common/BottomSheet';
+import { UserAvatar } from '@/components/common/UserAvatar';
 import { Button } from '@/components/ui/button';
 
 export interface OfferItemDetail {

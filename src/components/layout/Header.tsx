@@ -6,7 +6,7 @@ export interface HeaderProps {
   position?: 'left' | 'center' | 'right';
   children?: React.ReactNode;
   className?: string;
-  showBackButton?: Boolean
+  showBackButton?: boolean;
 }
 
 export function Header({
