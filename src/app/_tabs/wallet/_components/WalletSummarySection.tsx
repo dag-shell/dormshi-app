@@ -8,6 +8,8 @@ import type { WalletAction } from './WalletActionSheet';
 export interface WalletSummarySectionProps {
   availableBalance?: string;
   escrowBalance?: string;
+  earnedBalance?: string;
+  rewardBalance?: string;
   currency?: string;
   onSelectAction: (action: WalletAction) => void;
 }
@@ -37,6 +39,8 @@ const actions: ActionItem[] = [
 export function WalletSummarySection({
   availableBalance = '42.75',
   escrowBalance = '32.00',
+  earnedBalance = '35.00',
+  rewardBalance = '25.00',
   currency = 'ETB',
   onSelectAction,
 }: WalletSummarySectionProps) {
@@ -59,11 +63,26 @@ export function WalletSummarySection({
             </p>
           </div>
 
-          <div className="mt-6 flex items-center justify-between border-t border-background/15 pt-3 text-xs sm:text-sm">
-            <span className="text-background/70 font-medium">Reserved in escrow</span>
-            <span className="font-mono font-semibold text-background">
-              {escrowBalance} {currency}
-            </span>
+          {/* Sub-balances: Escrow, Earned & Rewards */}
+          <div className="mt-5 grid grid-cols-3 divide-x divide-background/15 border-t border-dashed border-background/15 pt-3 text-xs">
+            <div className="pr-2">
+              <span className="text-[11px] font-medium text-background/70 block">Escrow</span>
+              <span className="font-mono font-semibold text-background block mt-0.5 truncate">
+                {escrowBalance} {currency}
+              </span>
+            </div>
+            <div className="px-2">
+              <span className="text-[11px] font-medium text-background/70 block">Earned</span>
+              <span className="font-mono font-semibold text-background block mt-0.5 truncate">
+                {earnedBalance} {currency}
+              </span>
+            </div>
+            <div className="pl-2">
+              <span className="text-[11px] font-medium text-background/70 block">Rewards</span>
+              <span className="font-mono font-semibold text-background block mt-0.5 truncate">
+                {rewardBalance} {currency}
+              </span>
+            </div>
           </div>
         </section>
 

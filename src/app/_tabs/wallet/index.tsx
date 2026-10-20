@@ -27,6 +27,8 @@ export function WalletPage() {
           <WalletSummarySection
             availableBalance="42.75"
             escrowBalance="32.00"
+            earnedBalance="35.00"
+            rewardBalance="25.00"
             currency="ETB"
             onSelectAction={setAction}
           />

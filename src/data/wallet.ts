@@ -22,16 +22,17 @@ export const rawTransactions: Transaction[] = [
 export interface WalletRecipient {
   id: string;
   name: string;
+  phone: string;
   initials: string;
   dorm: string;
 }
 
 export const sampleRecipients: WalletRecipient[] = [
-  { id: 'u_jordan', name: 'Jordan Reyes', initials: 'JR', dorm: 'Ellis Hall' },
-  { id: 'u_priya', name: 'Priya Nair', initials: 'PN', dorm: 'Larkin House' },
-  { id: 'u_sam', name: 'Sam Whitaker', initials: 'SW', dorm: 'Brooks Hall' },
-  { id: 'u_lena', name: 'Lena Park', initials: 'LP', dorm: 'Hartley Hall 1A' },
-  { id: 'u_dev', name: 'Dev Mehta', initials: 'DM', dorm: 'Okoro Commons' }
+  { id: 'u_jordan', name: 'Jordan Reyes', phone: '0911223344', initials: 'JR', dorm: 'Ellis Hall' },
+  { id: 'u_priya', name: 'Priya Nair', phone: '0922334455', initials: 'PN', dorm: 'Larkin House' },
+  { id: 'u_sam', name: 'Sam Whitaker', phone: '0933445566', initials: 'SW', dorm: 'Brooks Hall' },
+  { id: 'u_lena', name: 'Lena Park', phone: '0944556677', initials: 'LP', dorm: 'Hartley Hall 1A' },
+  { id: 'u_dev', name: 'Dev Mehta', phone: '0955667788', initials: 'DM', dorm: 'Okoro Commons' }
 ];
 
 export const buyPresets = [50, 100, 250, 500];
